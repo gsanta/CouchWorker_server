@@ -1,9 +1,8 @@
-import IRead = require("./../interfaces/base/Read");
-import IWrite = require("./../interfaces/base/Write");
-
+import {Write} from "./Write";
+import {Read} from "./Read";
 import mongoose = require("mongoose");
 
-export class RepositoryBase<T extends mongoose.Document> implements IRead<T>, IWrite<T> {
+export class RepositoryBase<T extends mongoose.Document> implements Read<T>, Write<T> {
 
     protected model: mongoose.Model<mongoose.Document>;
 
@@ -11,20 +10,19 @@ export class RepositoryBase<T extends mongoose.Document> implements IRead<T>, IW
         this.model = schemaModel;
     }
 
-    create (item: T, callback: (error: any, result: any) => void) {
+    public create(item: T, callback: (error: any, result: any) => void) {
         this.model.create(item, callback);
     }
 
-    retrieve (callback: (error: any, result: any) => void) {
+    public findAll(callback: (error: any, result: any) => void) {
          this.model.find({}, callback)
     }
 
-    update (_id: mongoose.Types.ObjectId, item: T, callback: (error: any, result: any) => void) {
-            this.model.update({_id: _id}, item, callback);
-
+    public update(_id: mongoose.Types.ObjectId, item: T, callback: (error: any, result: any) => void) {
+        this.model.update({_id: _id}, item, callback);
     }
 
-    delete (_id: string, callback:(error: any, result: any) => void) {
+    public delete(_id: string, callback:(error: any, result: any) => void) {
         this.model.remove({_id: this.toObjectId(_id)}, (err) => callback(err, null));
 
     }
@@ -32,7 +30,6 @@ export class RepositoryBase<T extends mongoose.Document> implements IRead<T>, IW
     findById (_id: string, callback: (error: any, result: T) => void) {
         this.model.findById( _id, callback);
     }
-
 
     private toObjectId (_id: string) : mongoose.Types.ObjectId {
         return mongoose.Types.ObjectId.createFromHexString(_id)

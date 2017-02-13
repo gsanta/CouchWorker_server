@@ -1,9 +1,15 @@
 import * as express from 'express';
 import * as fs from 'fs';
+import * as bodyParser from 'body-parser';
 var app = express();
 
 var MongoClient = require('mongodb').MongoClient;
 var url = 'mongodb://localhost:27017/myproject';
+
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+app.use(bodyParser.json());
 
 MongoClient.connect(url, function(err: any, db: any) {
   console.log("Connected successfully to server");
@@ -16,9 +22,13 @@ MongoClient.connect(url, function(err: any, db: any) {
 
 app.get('/listUsers', function (req: express.Request, res: express.Response) {
    fs.readFile( __dirname + "/../" + "users.json", 'utf8', function (err, data) {
-       console.log( data );
        res.end( data );
    });
+});
+
+app.post('/addUser', function (req, res) {
+    console.log(req.body)
+    res.send(req.body)
 })
 
 var server = app.listen(8081, function () {
