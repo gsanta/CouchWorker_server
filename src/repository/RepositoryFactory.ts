@@ -14,4 +14,8 @@ export class RepositoryFactory {
             )
         );
     }
+
+    public getUserRepository(): UserRepository {
+        return this.userRepository;
+    }
 }

@@ -13,9 +13,9 @@ describe('UserBusiness', () => {
 
             let userBusiness = new UserBusiness(userRepository);
 
-            userBusiness.create(item, callback);
+            userBusiness.create(item);
             expect(userRepository.create.callCount).toBe(1);
-            expect(userRepository.create.calledWith(item, callback)).toBe(true);
+            expect(userRepository.create.calledWith(item)).toBe(true);
         });
     });
 

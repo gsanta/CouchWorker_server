@@ -1,5 +1,6 @@
 import {UserRepository} from "../repository/UserRepository";
 import {UserModel} from "../database/UserModel";
+import * as Promise from 'promise';
 
 export class UserBusiness {
     private userRepository: UserRepository;
@@ -8,8 +9,17 @@ export class UserBusiness {
         this.userRepository = userRepository;
     }
 
-    create(item: UserModel, callback: (error: any, result: any) => void) {
-        this.userRepository.create(item, callback);
+    create(item: UserModel): Promise<any> {
+        // return new Promise((resolve, reject) => {
+        //     this.userRepository.create(item, (data, error) => {
+        //         if (error) {
+        //             reject(error);
+        //         }
+        //
+        //         resolve(data);
+        //     });
+        // });
+        return Promise.reject('The error');
     }
 
     findAll (callback: (error: any, result: any) => void) {

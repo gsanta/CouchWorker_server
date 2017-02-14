@@ -1,23 +1,27 @@
 import Mongoose = require("mongoose");
 
 export class Database {
-    public static DB_CONNECTION_URL = "mongodb://localhost/couchworker";
-    public static mongooseInstance: Mongoose.Mongoose;
-    public static mongooseConnection: Mongoose.Connection;
+    private mongooseInstance: Mongoose.Mongoose;
+    private mongooseConnection: Mongoose.Connection;
 
-    constructor () {
-        Database.connect();
+    constructor (connectionUrl: string) {
+        this.connect(connectionUrl);
     }
 
-    public static connect(): void {
+    public getInstance() {
+        return this.mongooseInstance;
+    }
+
+    public getConnection() {
+        return this.mongooseConnection;
+    }
+
+    private connect(connectionUrl: string): void {
         this.mongooseConnection  = Mongoose.connection;
         this.mongooseConnection.once("open", () => {
             console.log("Conectado ao mongodb.");
         });
 
-       this.mongooseInstance = Mongoose.connect(Database.DB_CONNECTION_URL);
+       this.mongooseInstance = Mongoose.connect(connectionUrl);
     }
-
 }
-
-Database.connect();
