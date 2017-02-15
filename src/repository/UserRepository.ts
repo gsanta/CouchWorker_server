@@ -20,6 +20,10 @@ export class UserRepository {
         this.repoBase.create(document, callback);
     }
 
+    public findByEmail(email: string, callback: (error: any, result: any) => void) {
+        this.repoBase.findByEmail(email, callback);
+    }
+
     public findAll(callback: (error: any, result: any) => void) {
         this.repoBase.findAll(callback);
     }

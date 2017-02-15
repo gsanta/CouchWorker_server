@@ -1,3 +1,4 @@
+import {UserValidator} from "./business/registration/UserValidator";
 import {UserBusiness} from "./business/UserBusiness";
 import {RepositoryFactory} from "./repository/RepositoryFactory";
 import {UserRepository} from "./repository/UserRepository";
@@ -45,7 +46,35 @@ app.post('/addUser', function (req, res) {
         .catch((error: any) => {
             res.send("Error: " + error);
         });
-})
+});
+
+app.post('/findUser', function (req, res) {
+    const validator = new UserValidator();
+    const email = validator.validateEmail(req.body);
+    const userRepository = repositoryFactory.getUserRepository();
+    const userBusiness = new UserBusiness(userRepository);
+    userBusiness.findByEmail(email)
+        .then((data: any) => {
+            res.send(data)
+        })
+        .catch((error: any) => {
+            res.send("Error: " + error);
+        });
+});
+
+app.post('/deleteUser', function (req, res) {
+    const parser = new UserJSONParser(req.body);
+    const userRepository = repositoryFactory.getUserRepository();
+    const userBusiness = new UserBusiness(userRepository);
+    const userModel = parser.getUser();
+    userBusiness.create(userModel)
+        .then((data: any) => {
+            res.send(data)
+        })
+        .catch((error: any) => {
+            res.send("Error: " + error);
+        });
+});
 
 var server = app.listen(8081, function () {
 
@@ -54,18 +83,6 @@ var server = app.listen(8081, function () {
 
   console.log("Example app listening at http://%s:%s", host, port)
 });
-
-// var insertDocuments = function(db: any, callback: any) {
-//   // Get the documents collection
-//   var collection = db.collection('documents');
-//   // Insert some documents
-//   collection.insertMany([
-//     {a : 1}, {a : 2}, {a : 3}
-//   ], function(err: any, result: any) {
-//     console.log("Inserted 3 documents into the collection");
-//     callback(result);
-//   });
-// }
 
 var findDocuments = function(db: any, callback: any) {
   // Get the documents collection

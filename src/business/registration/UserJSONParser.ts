@@ -23,7 +23,7 @@ export class UserJSONParser {
     private parse(data: any): UserModel {
         const result = joi.validate(data, userSchema);
         console.log(result.error);
-        
+
         if (result.error) {
             throw new Error('Not valid');
         }

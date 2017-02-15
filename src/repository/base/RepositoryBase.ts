@@ -24,10 +24,13 @@ export class RepositoryBase<T extends mongoose.Document> implements Read<T>, Wri
 
     public delete(_id: string, callback:(error: any, result: any) => void) {
         this.model.remove({_id: this.toObjectId(_id)}, (err) => callback(err, null));
-
     }
 
-    findById (_id: string, callback: (error: any, result: T) => void) {
+    public findByEmail(email: string, callback: (error: any, result: T) => void) {
+        this.model.findById(email, callback);
+    }
+
+    public findById (_id: string, callback: (error: any, result: T) => void) {
         this.model.findById( _id, callback);
     }
 
