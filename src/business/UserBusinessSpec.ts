@@ -25,14 +25,45 @@ describe('UserBusiness', () => {
                 delete: sinon.spy()
             };
 
-            let id: any = sinon.spy();
+            let item: any = sinon.spy();
             let callback: any = sinon.spy();
 
             let userBusiness = new UserBusiness(userRepository);
 
-            userBusiness.delete(id, callback);
+            userBusiness.delete(item);
             expect(userRepository.delete.callCount).toBe(1);
-            expect(userRepository.delete.calledWith(id, callback)).toBe(true);
+            expect(userRepository.delete.calledWith(item)).toBe(true);
+        });
+    });
+
+    describe('update', () => {
+        it('should call the update of the supplied UserRepository with the correct values', () => {
+            let userRepository: any = {
+                update: sinon.spy()
+            };
+
+            let item: any = sinon.spy();
+            let userBusiness = new UserBusiness(userRepository);
+
+            userBusiness.update(item);
+            expect(userRepository.update.callCount).toBe(1);
+            expect(userRepository.update.calledWith(item)).toBe(true);
+        });
+    });
+
+    describe('findByEmail', () => {
+        it('should call the findByEmail of the supplied UserRepository with the correct values', () => {
+            let userRepository: any = {
+                findByEmail: sinon.spy()
+            };
+
+            let email: any = sinon.spy();
+
+            let userBusiness = new UserBusiness(userRepository);
+
+            userBusiness.findByEmail(email);
+            expect(userRepository.findByEmail.callCount).toBe(1);
+            expect(userRepository.findByEmail.calledWith(email)).toBe(true);
         });
     });
 });

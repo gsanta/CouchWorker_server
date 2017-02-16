@@ -1,9 +1,9 @@
+import {UserModel} from "./database/UserModel";
 import {UserValidator} from "./business/registration/UserValidator";
 import {UserBusiness} from "./business/UserBusiness";
 import {RepositoryFactory} from "./repository/RepositoryFactory";
 import {UserRepository} from "./repository/UserRepository";
 import {Database} from "./database/Database";
-import {UserJSONParser} from "./business/registration/UserJSONParser";
 import * as express from 'express';
 import * as fs from 'fs';
 import * as bodyParser from 'body-parser';
@@ -34,11 +34,12 @@ app.get('/listUsers', function (req: express.Request, res: express.Response) {
    });
 });
 
+const validator = new UserValidator();
+const userRepository = repositoryFactory.getUserRepository();
+const userBusiness = new UserBusiness(userRepository);
+
 app.post('/addUser', function (req, res) {
-    const parser = new UserJSONParser(req.body);
-    const userRepository = repositoryFactory.getUserRepository();
-    const userBusiness = new UserBusiness(userRepository);
-    const userModel = parser.getUser();
+    const userModel = validator.validateRegistration(req.body);
     userBusiness.create(userModel)
         .then((data: any) => {
             res.send(data)
@@ -49,10 +50,7 @@ app.post('/addUser', function (req, res) {
 });
 
 app.post('/findUser', function (req, res) {
-    const validator = new UserValidator();
     const email = validator.validateEmail(req.body);
-    const userRepository = repositoryFactory.getUserRepository();
-    const userBusiness = new UserBusiness(userRepository);
     userBusiness.findByEmail(email)
         .then((data: any) => {
             res.send(data)
@@ -62,12 +60,23 @@ app.post('/findUser', function (req, res) {
         });
 });
 
+app.post('/updateUser', function (req, res) {
+    const email = validator.validateRegistration(req.body);
+    userBusiness.update(email)
+        .then((data: any) => {
+            res.send(data)
+        })
+        .catch((error: any) => {
+            res.send("Error: " + error);
+        });
+});
+
 app.post('/deleteUser', function (req, res) {
-    const parser = new UserJSONParser(req.body);
-    const userRepository = repositoryFactory.getUserRepository();
-    const userBusiness = new UserBusiness(userRepository);
-    const userModel = parser.getUser();
-    userBusiness.create(userModel)
+    const email = validator.validateEmail(req.body);
+    userBusiness.findByEmail(email)
+        .then((user: UserModel) => {
+            return userBusiness.delete(user)
+        })
         .then((data: any) => {
             res.send(data)
         })

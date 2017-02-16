@@ -2,7 +2,11 @@ import {Write} from "./Write";
 import {Read} from "./Read";
 import mongoose = require("mongoose");
 
-export class RepositoryBase<T extends mongoose.Document> implements Read<T>, Write<T> {
+export interface DatabaseId extends mongoose.Document {
+    id: string;
+}
+
+export class RepositoryBase<T extends DatabaseId> implements Read<T>, Write<T> {
 
     protected model: mongoose.Model<mongoose.Document>;
 
@@ -18,16 +22,16 @@ export class RepositoryBase<T extends mongoose.Document> implements Read<T>, Wri
          this.model.find({}, callback)
     }
 
-    public update(_id: mongoose.Types.ObjectId, item: T, callback: (error: any, result: any) => void) {
-        this.model.update({_id: _id}, item, callback);
+    public update(item: T, callback: (error: any, result: any) => void) {
+        this.model.update({_id: this.toObjectId(item.id)}, item, callback);
     }
 
-    public delete(_id: string, callback:(error: any, result: any) => void) {
-        this.model.remove({_id: this.toObjectId(_id)}, (err) => callback(err, null));
+    public delete(item: T, callback:(error: any, result: any) => void) {
+        this.model.remove({_id: this.toObjectId(item.id)}, (err) => callback(err, null));
     }
 
     public findByEmail(email: string, callback: (error: any, result: T) => void) {
-        this.model.findById(email, callback);
+        this.model.findOne({email: email}, callback);
     }
 
     public findById (_id: string, callback: (error: any, result: T) => void) {
@@ -37,5 +41,4 @@ export class RepositoryBase<T extends mongoose.Document> implements Read<T>, Wri
     private toObjectId (_id: string) : mongoose.Types.ObjectId {
         return mongoose.Types.ObjectId.createFromHexString(_id)
     }
-
 }

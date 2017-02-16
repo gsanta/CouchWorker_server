@@ -10,14 +10,19 @@ export class UserRepository {
         this.repoBase = repoBase;
     }
 
-    public create (item: UserModel, callback: (error: any, result: any) => void) {
-        let document: UserDocument = <UserDocument> {
-            name: item.getName(),
-            age: item.getAge(),
-            profession: item.getProfession()
-        };
+    public create (user: UserModel, callback: (error: any, result: any) => void) {
+        const userDocument = this.toUserDocument(user);
+        this.repoBase.create(userDocument, callback);
+    }
 
-        this.repoBase.create(document, callback);
+    public update(user: UserModel, callback:(error: any, result: any) => void) {
+        const userDocument = this.toUserDocument(user);
+        this.repoBase.update(userDocument, (err: any) => callback(err, null));
+    }
+
+    public delete(user: UserModel, callback:(error: any, result: any) => void) {
+        const userDocument = this.toUserDocument(user);
+        this.repoBase.delete(userDocument, (err: any) => callback(err, null));
     }
 
     public findByEmail(email: string, callback: (error: any, result: any) => void) {
@@ -28,8 +33,12 @@ export class UserRepository {
         this.repoBase.findAll(callback);
     }
 
-    public delete(_id: string, callback:(error: any, result: any) => void) {
-        this.repoBase.delete(_id, (err) => callback(err, null));
-
+    private toUserDocument(userModel: UserModel): UserDocument {
+        return <UserDocument> {
+            name: userModel.getName(),
+            id: userModel.getUuid(),
+            age: userModel.getAge(),
+            profession: userModel.getProfession()
+        }
     }
 }

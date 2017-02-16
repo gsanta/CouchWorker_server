@@ -1,12 +1,13 @@
+import {UserModel} from "../../database/UserModel";
 import {UserRegistrationModel} from "../user/rest/UserRegistrationModel";
 import * as joi from 'joi';
 
 const alphaNumSpaceDashUscore = /^[a-z\d\-_\s]+$/i;
 const userRegistrationSchema = joi.object().keys({
-    name: joi.string().min(3).max(30).required(),
-    email: joi.string().email(),
-    age: joi.number().integer().min(1).max(200),
-    profession: joi.string().alphanum().min(3).max(30).required()
+    name: joi.string().regex(alphaNumSpaceDashUscore).min(3).max(30).required(),
+    email: joi.string().email().required(),
+    age: joi.number().integer().min(1).max(200).required(),
+    profession: joi.string().regex(alphaNumSpaceDashUscore).min(3).max(30).required()
 });
 
 const userEmailSchema = joi.object().keys({
@@ -15,21 +16,19 @@ const userEmailSchema = joi.object().keys({
 
 
 export class UserValidator {
-
-    public validateRegistration(data: any): UserRegistrationModel {
+    public validateRegistration(data: any): UserModel {
         const result = joi.validate(data, userRegistrationSchema);
-        console.log(result.error);
 
         if (result.error) {
-            throw new Error('Not valid');
+            throw new Error(result.error.toString());
         }
 
-        return {
-            name: data.name,
-            age: data.age,
-            email: data.email,
-            profession: data.prfession
-        };
+        return new UserModel(
+            data.name,
+            data.age,
+            data.profession,
+            data.email
+        );
     }
 
     public validateEmail(data: any): string {
