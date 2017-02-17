@@ -17,13 +17,9 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
-MongoClient.connect(url, function(err: any, db: any) {
-  console.log("Connected successfully to server");
-
-  findDocuments(db, function() {
-    db.close();
-  });
-});
+// MongoClient.connect(url, function(err: any, db: any) {
+//   console.log("Connected successfully to server");
+// });
 
 const database = new Database("mongodb://localhost/couchworker");
 const repositoryFactory = new RepositoryFactory(database.getInstance(), database.getConnection());
@@ -92,14 +88,3 @@ var server = app.listen(8081, function () {
 
   console.log("Example app listening at http://%s:%s", host, port)
 });
-
-var findDocuments = function(db: any, callback: any) {
-  // Get the documents collection
-  var collection = db.collection('documents');
-  // Find some documents
-  collection.find({}).toArray(function(err: any, docs: any) {
-    console.log("Found the following records");
-    console.log(docs)
-    callback(docs);
-  });
-}

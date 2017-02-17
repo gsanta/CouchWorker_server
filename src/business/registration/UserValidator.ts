@@ -11,7 +11,7 @@ const userRegistrationSchema = joi.object().keys({
 });
 
 const userEmailSchema = joi.object().keys({
-    email: joi.string().email()
+    email: joi.string().email().required()
 });
 
 
@@ -35,7 +35,7 @@ export class UserValidator {
         const result = joi.validate(data, userEmailSchema);
 
         if (result.error) {
-            throw new Error('Not valid');
+            throw new Error(result.error.toString());
         }
 
         return data.email;

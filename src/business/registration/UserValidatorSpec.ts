@@ -29,8 +29,6 @@ describe('UserValidator', () => {
                 profession: 'Software developer'
             }
 
-            // const user = userValidator.validateRegistration(data);
-
             expect(function() {userValidator.validateRegistration(data)})
                 .toThrow(new Error('ValidationError: child "email" fails because ["email" is required]'));
         });
@@ -45,10 +43,40 @@ describe('UserValidator', () => {
                 email: 'santagergely90@gmail.com'
             }
 
-            // const user = userValidator.validateRegistration(data);
-
             expect(function() {userValidator.validateRegistration(data)})
                 .toThrow(new Error('ValidationError: child "age" fails because ["age" must be a number]'));
+        });
+    });
+
+    describe('validateEmail', () => {
+        it('should return with the email if validation passes', () => {
+            const userValidator = new UserValidator();
+
+            const data = {
+                email: 'santagergely90@gmail.com'
+            }
+
+            expect(userValidator.validateEmail(data)).toEqual('santagergely90@gmail.com');
+        });
+
+        it('should throw an error if the parameter is not a valid email', () => {
+            const userValidator = new UserValidator();
+
+            const data = {
+                email: 'santagergely90'
+            }
+
+            expect(function() {userValidator.validateEmail(data)}).toThrow(new Error(
+                'ValidationError: child "email" fails because ["email" must be a valid email]'
+            ));
+        });
+
+        it('should throw an error if the email parameter is missing', () => {
+            const userValidator = new UserValidator();
+
+            expect(function() {userValidator.validateEmail({})}).toThrow(new Error(
+                'ValidationError: child "email" fails because ["email" is required]'
+            ));
         });
     });
 });

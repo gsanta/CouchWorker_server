@@ -14,6 +14,8 @@ export class UserBusiness {
         return new Promise((resolve, reject) => {
             this.userRepository.create(item, (data, error) => {
                 if (error) {
+                    console.log(data)
+                    console.log(error);
                     reject(error);
                 }
 
