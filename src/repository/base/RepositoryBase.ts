@@ -14,16 +14,40 @@ export class RepositoryBase<T extends DatabaseId> implements Read<T>, Write<T> {
         this.model = schemaModel;
     }
 
-    public create(item: T, callback: (error: any, result: any) => void) {
-        this.model.create(item, callback);
+    public create(item: T): Promise<T> {
+        return new Promise((resolve, reject) => {
+            this.model.create(item, (error: any, result: T) => {
+                if (error) {
+                    reject(error);
+                }
+
+                resolve(result);
+            });
+        });
     }
 
-    public findAll(callback: (error: any, result: any) => void) {
-         this.model.find({}, callback)
+    public findAll(): Promise<T> {
+        return new Promise((resolve, reject) => {
+            this.model.find({}, (error: any, result: T) => {
+                if (error) {
+                    reject(error);
+                }
+
+                resolve(result);
+            });
+        });
     }
 
-    public update(item: T, callback: (error: any, result: any) => void) {
-        this.model.update({_id: this.toObjectId(item.id)}, item, callback);
+    public update(item: T): Promise<T> {
+        return new Promise((resolve, reject) => {
+            this.model.update({_id: this.toObjectId(item.id)}, (error: any, result: T) => {
+                if (error) {
+                    reject(error);
+                }
+
+                resolve(result);
+            });
+        });
     }
 
     public delete(item: T, callback:(error: any, result: any) => void) {

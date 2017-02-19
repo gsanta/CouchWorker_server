@@ -12,12 +12,12 @@ export class UserRepository {
 
     public create (user: UserModel, callback: (error: any, result: any) => void) {
         const userDocument = this.toUserDocument(user);
-        this.repoBase.create(userDocument, callback);
+        // this.repoBase.create(userDocument, callback);
     }
 
     public update(user: UserModel, callback:(error: any, result: any) => void) {
         const userDocument = this.toUserDocument(user);
-        this.repoBase.update(userDocument, (err: any) => callback(err, null));
+        // this.repoBase.update(userDocument, (err: any) => callback(err, null));
     }
 
     public delete(user: UserModel, callback:(error: any, result: any) => void) {
@@ -30,7 +30,7 @@ export class UserRepository {
     }
 
     public findAll(callback: (error: any, result: any) => void) {
-        this.repoBase.findAll(callback);
+        // this.repoBase.findAll(callback);
     }
 
     private toUserDocument(userModel: UserModel): UserDocument {
