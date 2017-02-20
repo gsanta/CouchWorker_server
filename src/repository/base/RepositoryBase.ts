@@ -50,16 +50,41 @@ export class RepositoryBase<T extends DatabaseId> implements Read<T>, Write<T> {
         });
     }
 
-    public delete(item: T, callback:(error: any, result: any) => void) {
-        this.model.remove({_id: this.toObjectId(item.id)}, (err) => callback(err, null));
+    public delete(item: T): Promise<T> {
+        return new Promise((resolve, reject) => {
+            this.model.remove({_id: this.toObjectId(item.id)}, (error: any) => {
+                if (error) {
+                    reject(error);
+                }
+
+                resolve();
+            });
+        });
+
     }
 
-    public findByEmail(email: string, callback: (error: any, result: T) => void) {
-        this.model.findOne({email: email}, callback);
+    public findByEmail(email: string): Promise<T> {
+        return new Promise((resolve, reject) => {
+            this.model.findOne({email: email}, (error: any, result: T) => {
+                if (error) {
+                    reject(error);
+                }
+
+                resolve(result);
+            });
+        });
     }
 
-    public findById (_id: string, callback: (error: any, result: T) => void) {
-        this.model.findById( _id, callback);
+    public findById (_id: string): Promise<T> {
+        return new Promise((resolve, reject) => {
+            this.model.findById( _id, (error: any, result: T) => {
+                if (error) {
+                    reject(error);
+                }
+
+                resolve(result);
+            });
+        });
     }
 
     private toObjectId (_id: string) : mongoose.Types.ObjectId {

@@ -5,4 +5,5 @@ export interface UserDocument extends DatabaseId {
     name: string;
     age: number;
     profession: string;
+    email: string;
 }

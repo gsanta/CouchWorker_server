@@ -12,15 +12,15 @@ export class UserBusiness {
 
     public create(item: UserModel): Promise<any> {
         return new Promise((resolve, reject) => {
-            this.userRepository.create(item, (data, error) => {
-                if (error) {
-                    console.log(data)
-                    console.log(error);
-                    reject(error);
-                }
-
-                resolve(data);
-            });
+            // this.userRepository.create(item, (data, error) => {
+            //     if (error) {
+            //         console.log(data)
+            //         console.log(error);
+            //         reject(error);
+            //     }
+            //
+            //     resolve(data);
+            // });
         });
     }
 
