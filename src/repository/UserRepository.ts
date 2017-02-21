@@ -16,14 +16,16 @@ export class UserRepository {
             .then(userDocument => this.toUserModel(userDocument));
     }
 
-    public update(user: UserModel, callback:(error: any, result: any) => void) {
+    public update(user: UserModel): Promise<UserModel> {
         const userDocument = this.toUserDocument(user);
-        // this.repoBase.update(userDocument, (err: any) => callback(err, null));
+        return this.repoBase.update(userDocument)
+            .then(userDocument => this.toUserModel(userDocument));
     }
 
-    public delete(user: UserModel, callback:(error: any, result: any) => void) {
+    public delete(user: UserModel): Promise<UserModel> {
         const userDocument = this.toUserDocument(user);
-        // this.repoBase.delete(userDocument, (err: any) => callback(err, null));
+        return this.repoBase.delete(userDocument)
+            .then(() => user);
     }
 
     public findByEmail(email: string, callback: (error: any, result: any) => void) {
@@ -37,9 +39,10 @@ export class UserRepository {
     private toUserDocument(userModel: UserModel): UserDocument {
         return <UserDocument> {
             name: userModel.getName(),
-            id: userModel.getUuid(),
             age: userModel.getAge(),
-            profession: userModel.getProfession()
+            profession: userModel.getProfession(),
+            email: userModel.getEmail(),
+            id: userModel.getUuid()
         }
     }
 
@@ -48,7 +51,8 @@ export class UserRepository {
             userDocument.name,
             userDocument.age,
             userDocument.profession,
-            userDocument.email
+            userDocument.email,
+            userDocument.id
         )
     }
 }

@@ -26,25 +26,25 @@ export class UserBusiness {
 
     public delete (item: UserModel): Promise<any> {
         return new Promise((resolve, reject) => {
-            this.userRepository.delete(item, (data, error) => {
-                if (error) {
-                    reject(error);
-                }
-
-                resolve(data);
-            });
+            // this.userRepository.delete(item, (data, error) => {
+            //     if (error) {
+            //         reject(error);
+            //     }
+            //
+            //     resolve(data);
+            // });
         });
     }
 
     public update (item: UserModel): Promise<any> {
         return new Promise((resolve, reject) => {
-            this.userRepository.update(item, (data, error) => {
-                if (error) {
-                    reject(error);
-                }
-
-                resolve(data);
-            });
+            // this.userRepository.update(item, (data, error) => {
+            //     if (error) {
+            //         reject(error);
+            //     }
+            //
+            //     resolve(data);
+            // });
         });
     }
 

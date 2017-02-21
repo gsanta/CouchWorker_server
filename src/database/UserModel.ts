@@ -11,6 +11,7 @@ export class UserModel {
         this.age = age;
         this.profession = profession;
         this.email = email;
+        this.uuid = uuid;
     }
 
     public getName(): string {
