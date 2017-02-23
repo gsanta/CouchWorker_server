@@ -1,6 +1,6 @@
 import {UserRegistrationModel} from "./user/rest/UserRegistrationModel";
 import {UserRepository} from "../repository/UserRepository";
-import {UserModel} from "../database/UserModel";
+import {UserModel} from "./UserModel";
 import * as Promise from 'promise';
 
 export class UserBusiness {
@@ -26,7 +26,7 @@ export class UserBusiness {
         return this.userRepository.findByEmail(email);
     }
 
-    findAll (callback: (error: any, result: any) => void) {
-        this.userRepository.findAll();
+    public findAll (): Promise<UserModel[]> {
+        return this.userRepository.findAll();
     }
 }

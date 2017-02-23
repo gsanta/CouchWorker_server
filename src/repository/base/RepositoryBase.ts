@@ -2,7 +2,7 @@ import {Write} from "./Write";
 import {Read} from "./Read";
 import mongoose = require("mongoose");
 
-export interface DatabaseId extends mongoose.Document {
+export interface DatabaseId {
     id: string;
 }
 

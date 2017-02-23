@@ -73,11 +73,9 @@ describe('UserBusiness', () => {
                 findAll: sinon.spy()
             };
 
-            let email: any = sinon.spy();
-
             let userBusiness = new UserBusiness(userRepository);
 
-            userBusiness.findAll(email);
+            userBusiness.findAll();
             expect(userRepository.findAll.callCount).toBe(1);
         });
     });

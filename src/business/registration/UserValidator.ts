@@ -1,4 +1,4 @@
-import {UserModel} from "../../database/UserModel";
+import {UserModel} from "../UserModel";
 import {UserRegistrationModel} from "../user/rest/UserRegistrationModel";
 import * as joi from 'joi';
 
@@ -23,12 +23,19 @@ export class UserValidator {
             throw new Error(result.error.toString());
         }
 
-        return new UserModel(
-            data.name,
-            data.age,
-            data.profession,
-            data.email
-        );
+        return new UserModel({
+            name: data.name,
+            age: data.age,
+            profession: data.profession,
+            email: data.email,
+            id: undefined,
+            address: {
+                country: data.country,
+                city: data.city,
+                street: data.street,
+                house: data.house
+            }
+        });
     }
 
     public validateEmail(data: any): string {

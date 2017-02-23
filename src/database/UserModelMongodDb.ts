@@ -1,17 +1,19 @@
+import {UserModel} from '../business/UserModel';
+import {UserDocument} from './UserDocument';
 
-export class UserModel {
+export class UserModelMongodDb implements UserModel {
     private name: string;
     private age: number;
     private profession: string;
     private email: string
     private uuid: string;
 
-    constructor(name: string, age: number, profession: string, email: string, uuid?: string) {
-        this.name = name;
-        this.age = age;
-        this.profession = profession;
-        this.email = email;
-        this.uuid = uuid;
+    constructor(userDocument: UserDocument) {
+        this.name = userDocument.name;
+        this.age = userDocument.age;
+        this.profession = userDocument.profession;
+        this.email = userDocument.email;
+        this.uuid = userDocument.id;
     }
 
     public getName(): string {
