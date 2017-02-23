@@ -26,9 +26,9 @@ export class RepositoryBase<T extends DatabaseId> implements Read<T>, Write<T> {
         });
     }
 
-    public findAll(): Promise<T> {
+    public findAll(): Promise<T[]> {
         return new Promise((resolve, reject) => {
-            this.model.find({}, (error: any, result: T) => {
+            this.model.find({}, (error: any, result: T[]) => {
                 if (error) {
                     reject(error);
                 }

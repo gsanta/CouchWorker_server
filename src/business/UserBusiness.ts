@@ -11,56 +11,22 @@ export class UserBusiness {
     }
 
     public create(item: UserModel): Promise<any> {
-        return new Promise((resolve, reject) => {
-            // this.userRepository.create(item, (data, error) => {
-            //     if (error) {
-            //         console.log(data)
-            //         console.log(error);
-            //         reject(error);
-            //     }
-            //
-            //     resolve(data);
-            // });
-        });
+        return this.userRepository.create(item);
     }
 
     public delete (item: UserModel): Promise<any> {
-        return new Promise((resolve, reject) => {
-            // this.userRepository.delete(item, (data, error) => {
-            //     if (error) {
-            //         reject(error);
-            //     }
-            //
-            //     resolve(data);
-            // });
-        });
+        return this.userRepository.delete(item)
     }
 
     public update (item: UserModel): Promise<any> {
-        return new Promise((resolve, reject) => {
-            // this.userRepository.update(item, (data, error) => {
-            //     if (error) {
-            //         reject(error);
-            //     }
-            //
-            //     resolve(data);
-            // });
-        });
+        return this.userRepository.update(item);
     }
 
     public findByEmail(email: string): Promise<UserModel> {
-        return new Promise((resolve, reject) => {
-            this.userRepository.findByEmail(email, (data, error) => {
-                if (error) {
-                    reject(error);
-                }
-
-                resolve(data);
-            });
-        });
+        return this.userRepository.findByEmail(email);
     }
 
     findAll (callback: (error: any, result: any) => void) {
-        this.userRepository.findAll(callback)
+        this.userRepository.findAll();
     }
 }

@@ -66,4 +66,19 @@ describe('UserBusiness', () => {
             expect(userRepository.findByEmail.calledWith(email)).toBe(true);
         });
     });
+
+    describe('findAll', () => {
+        it('should call the findAll of the supplied UserRepository with the correct values', () => {
+            let userRepository: any = {
+                findAll: sinon.spy()
+            };
+
+            let email: any = sinon.spy();
+
+            let userBusiness = new UserBusiness(userRepository);
+
+            userBusiness.findAll(email);
+            expect(userRepository.findAll.callCount).toBe(1);
+        });
+    });
 });

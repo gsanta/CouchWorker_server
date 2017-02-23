@@ -28,12 +28,14 @@ export class UserRepository {
             .then(() => user);
     }
 
-    public findByEmail(email: string, callback: (error: any, result: any) => void) {
-        // this.repoBase.findByEmail(email, callback);
+    public findByEmail(email: string): Promise<UserModel> {
+        return this.repoBase.findByEmail(email)
+            .then(userDocument => this.toUserModel(userDocument));
     }
 
-    public findAll(callback: (error: any, result: any) => void) {
-        // this.repoBase.findAll(callback);
+    public findAll(): Promise<UserModel[]> {
+        return this.repoBase.findAll()
+            .then(docs => docs.map(doc => this.toUserModel(doc)));
     }
 
     private toUserDocument(userModel: UserModel): UserDocument {
