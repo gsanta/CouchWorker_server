@@ -1,12 +1,11 @@
-import {Write} from "./Write";
-import {Read} from "./Read";
+import { QueryMetaData } from './QueryMetaData';
 import mongoose = require("mongoose");
 
 export interface DatabaseId {
     id: string;
 }
 
-export class RepositoryBase<T extends DatabaseId> implements Read<T>, Write<T> {
+export class RepositoryBase<T extends DatabaseId> {
 
     protected model: mongoose.Model<mongoose.Document>;
 
@@ -17,18 +16,6 @@ export class RepositoryBase<T extends DatabaseId> implements Read<T>, Write<T> {
     public create(item: T): Promise<T> {
         return new Promise((resolve, reject) => {
             this.model.create(item, (error: any, result: T) => {
-                if (error) {
-                    reject(error);
-                }
-
-                resolve(result);
-            });
-        });
-    }
-
-    public findAll(): Promise<T[]> {
-        return new Promise((resolve, reject) => {
-            this.model.find({}, (error: any, result: T[]) => {
                 if (error) {
                     reject(error);
                 }
@@ -60,7 +47,38 @@ export class RepositoryBase<T extends DatabaseId> implements Read<T>, Write<T> {
                 resolve();
             });
         });
+    }
 
+    public findAll(queryMetaData: QueryMetaData): Promise<T[]> {
+        return new Promise((resolve, reject) => {
+            this.model
+                .find({})
+                .skip(queryMetaData.page * queryMetaData.limit)
+                .limit(queryMetaData.limit)
+                .exec((error: any, result: T[]) => {
+                    if (error) {
+                        reject(error);
+                    }
+
+                    resolve(result);
+                });
+        });
+    }
+
+    public findBy(item: T, queryMetaData: QueryMetaData): Promise<T[]> {
+        return new Promise((resolve, reject) => {
+            this.model
+                .find(item)
+                .skip(queryMetaData.page * queryMetaData.limit)
+                .limit(queryMetaData.limit)
+                .exec((error: any, result: T[]) => {
+                    if (error) {
+                        reject(error);
+                    }
+
+                    resolve(result);
+                });
+        });
     }
 
     public findByEmail(email: string): Promise<T> {

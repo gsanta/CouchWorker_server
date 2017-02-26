@@ -1,6 +1,7 @@
 import { RepositoryBase } from '../../../repository/RepositoryBase';
 import { MongooseUserDocument } from './MongooseUserDocument';
 import { UserModel } from '../UserModel';
+import { QueryMetaData } from '../../../repository/QueryMetaData';
 
 export class UserRepository {
     private repoBase: RepositoryBase<MongooseUserDocument>;
@@ -26,15 +27,21 @@ export class UserRepository {
         return this.repoBase.delete(userDocument)
             .then(() => user);
     }
+    
+    public findBy(user: UserModel, queryMetaData: QueryMetaData): Promise<UserModel[]> {
+        const userDocument = this.toUserDocument(user);
+        return this.repoBase.findBy(userDocument, queryMetaData)
+            .then(docs => docs.map(doc => this.toUserModel(doc)));
+    }
+
+    public findAll(queryMetaData: QueryMetaData): Promise<UserModel[]> {
+        return this.repoBase.findAll(queryMetaData)
+            .then(docs => docs.map(doc => this.toUserModel(doc)));
+    }
 
     public findByEmail(email: string): Promise<UserModel> {
         return this.repoBase.findByEmail(email)
             .then(userDocument => this.toUserModel(userDocument));
-    }
-
-    public findAll(): Promise<UserModel[]> {
-        return this.repoBase.findAll()
-            .then(docs => docs.map(doc => this.toUserModel(doc)));
     }
 
     private toUserDocument(userModel: UserModel): MongooseUserDocument {

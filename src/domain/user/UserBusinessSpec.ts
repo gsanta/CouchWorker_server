@@ -51,6 +51,38 @@ describe('UserBusiness', () => {
         });
     });
 
+    describe('findAll', () => {
+        it('should call the findAll of the supplied UserRepository with the correct values', () => {
+            let userRepository: any = {
+                findAll: sinon.spy()
+            };
+
+            let queryMetaData: any = sinon.spy();
+
+            let userBusiness = new UserBusiness(userRepository);
+
+            userBusiness.findAll(queryMetaData);
+            expect(userRepository.findAll.callCount).toBe(1);
+            expect(userRepository.findAll.calledWith(queryMetaData)).toBe(true);
+        });
+    });
+
+    describe('findBy', () => {
+        it('should call the findBy of the supplied UserRepository with the correct values', () => {
+            let userRepository: any = {
+                findBy: sinon.spy()
+            };
+            let item: any = sinon.spy();
+            let queryMetaData: any = sinon.spy();            
+
+            let userBusiness = new UserBusiness(userRepository);
+
+            userBusiness.findBy(item, queryMetaData);
+            expect(userRepository.findBy.callCount).toBe(1);
+            expect(userRepository.findBy.calledWith(item, queryMetaData)).toBe(true);
+        });
+    });
+
     describe('findByEmail', () => {
         it('should call the findByEmail of the supplied UserRepository with the correct values', () => {
             let userRepository: any = {
@@ -64,19 +96,6 @@ describe('UserBusiness', () => {
             userBusiness.findByEmail(email);
             expect(userRepository.findByEmail.callCount).toBe(1);
             expect(userRepository.findByEmail.calledWith(email)).toBe(true);
-        });
-    });
-
-    describe('findAll', () => {
-        it('should call the findAll of the supplied UserRepository with the correct values', () => {
-            let userRepository: any = {
-                findAll: sinon.spy()
-            };
-
-            let userBusiness = new UserBusiness(userRepository);
-
-            userBusiness.findAll();
-            expect(userRepository.findAll.callCount).toBe(1);
         });
     });
 });

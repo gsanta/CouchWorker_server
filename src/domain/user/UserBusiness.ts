@@ -2,6 +2,7 @@
 import {UserModel} from "./UserModel";
 import * as Promise from 'promise';
 import { UserRepository } from './repository/UserRepository';
+import { QueryMetaData } from '../../repository/QueryMetaData';
 
 export class UserBusiness {
     private userRepository: UserRepository;
@@ -26,7 +27,11 @@ export class UserBusiness {
         return this.userRepository.findByEmail(email);
     }
 
-    public findAll (): Promise<UserModel[]> {
-        return this.userRepository.findAll();
+    public findBy(item: UserModel, queryMetaData: QueryMetaData): Promise<UserModel[]> {
+        return this.userRepository.findBy(item, queryMetaData);
+    }
+
+    public findAll (queryMetaData: QueryMetaData): Promise<UserModel[]> {
+        return this.userRepository.findAll(queryMetaData);
     }
 }

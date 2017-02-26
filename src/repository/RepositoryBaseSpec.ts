@@ -15,11 +15,24 @@ let {RepositoryBase} = proxyquire('./RepositoryBase', {
 
 describe('RepositoryBase', () => {
     let schemaModel: any;
+    let queryMetaData: any = {
+        page: 3,
+        limit: 2
+    }
+
+    let execStub: any;
+    let skipStub: any;
+    let limitStub: any;
+
     let item: any;
     let error: any;
     let result: any;
 
     beforeEach(() => {
+        item = sinon.spy();
+        error = sinon.spy();
+        result = sinon.spy();
+        
         schemaModel = {
             create: sinon.stub(),
             find: sinon.stub(),
@@ -29,9 +42,35 @@ describe('RepositoryBase', () => {
             findById: sinon.stub()
         };
 
-        item = sinon.spy();
-        error = sinon.spy();
-        result = sinon.spy();
+        execStub = {
+            exec: sinon.stub()
+        }
+
+        limitStub = {
+            limit: sinon.stub()
+        }
+
+        limitStub
+            .limit
+            .withArgs(queryMetaData.limit)
+            .returns(execStub);
+
+        skipStub = {
+            skip: sinon.stub()
+        }
+        
+        skipStub
+            .skip
+            .withArgs(queryMetaData.page * queryMetaData.limit)
+            .returns(limitStub);
+
+        schemaModel.find
+            .withArgs(item)
+            .returns(skipStub)
+
+        schemaModel.find
+            .withArgs({})
+            .returns(skipStub)
     });
 
     describe('create', () => {
@@ -63,38 +102,6 @@ describe('RepositoryBase', () => {
                 });
 
             schemaModel.create.callArgWith(1, error, null);
-        });
-    });
-
-    describe('findAll', () => {
-        it('should call the find method of model with the correct parameters', () => {
-            let repositoryBase = new RepositoryBase(schemaModel);
-            repositoryBase.findAll();
-            expect(schemaModel.find.getCall(0).args[0]).toEqual({});
-        });
-
-        it('should resolve the promise with the correct data if there is no error', (done) => {
-            let repositoryBase = new RepositoryBase(schemaModel);
-            repositoryBase.findAll()
-                .then((data: any) => {
-                    expect(data).toBe(result);
-                    done();
-                })
-                .catch((err: any) => done.fail(err));
-
-            schemaModel.find.callArgWith(1, null, result);
-        });
-
-        it('should reject the promise with error data if there is an error', (done) => {
-            let repositoryBase = new RepositoryBase(schemaModel);
-            repositoryBase.findAll()
-                .then(() => done.fail('should reject the promise'))
-                .catch((err: any) => {
-                    expect(err).toEqual(error);
-                    done();
-                });
-
-            schemaModel.find.callArgWith(1, error, null);
         });
     });
 
@@ -198,6 +205,76 @@ describe('RepositoryBase', () => {
                 });
 
             schemaModel.remove.callArgWith(1, error);
+        });
+    });
+
+    describe('findAll', () => {
+        it('should call the correct methods of the given model', () => {
+            let repositoryBase = new RepositoryBase(schemaModel);
+            repositoryBase.findAll(queryMetaData);
+            expect(schemaModel.find.callCount).toBe(1);
+            expect(skipStub.skip.callCount).toBe(1);
+            expect(limitStub.limit.callCount).toBe(1);
+            expect(execStub.exec.callCount).toBe(1);
+        });
+
+        it('should resolve the promise with the correct data if there is no error', (done) => {
+            let repositoryBase = new RepositoryBase(schemaModel);
+            repositoryBase.findAll(queryMetaData)
+                .then((data: any) => {
+                    expect(data).toBe(result);
+                    done();
+                })
+                .catch((err: any) => done.fail(err));
+
+            execStub.exec.callArgWith(0, null, result);
+        });
+
+        it('should reject the promise with error data if there is an error', (done) => {
+            let repositoryBase = new RepositoryBase(schemaModel);
+            repositoryBase.findAll(queryMetaData)
+                .then(() => done.fail('should reject the promise'))
+                .catch((err: any) => {
+                    expect(err).toEqual(error);
+                    done();
+                });
+
+            execStub.exec.callArgWith(0, error, null);
+        });
+    });
+
+    describe('findBy', () => {
+        it('should call the correct methods of the given model', () => {
+            let repositoryBase = new RepositoryBase(schemaModel);
+            repositoryBase.findBy(item, queryMetaData);
+            expect(schemaModel.find.callCount).toBe(1);
+            expect(skipStub.skip.callCount).toBe(1);
+            expect(limitStub.limit.callCount).toBe(1);
+            expect(execStub.exec.callCount).toBe(1);
+        });
+
+        it('should resolve the promise with the correct data if there is no error', (done) => {
+            let repositoryBase = new RepositoryBase(schemaModel);
+            repositoryBase.findBy(item, queryMetaData)
+                .then((data: any) => {
+                    expect(data).toBe(result);
+                    done();
+                })
+                .catch((err: any) => done.fail(err));
+
+            execStub.exec.callArgWith(0, null, result);
+        });
+
+        it('should reject the promise with error data if there is an error', (done) => {
+            let repositoryBase = new RepositoryBase(schemaModel);
+            repositoryBase.findBy(item, queryMetaData)
+                .then(() => done.fail('should reject the promise'))
+                .catch((err: any) => {
+                    expect(err).toEqual(error);
+                    done();
+                });
+
+            execStub.exec.callArgWith(0, error, null);
         });
     });
 

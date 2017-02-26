@@ -8,6 +8,7 @@ describe('UserRepository', () => {
     let userModel: UserModel;
     let userDocument: MongooseUserDocument;
     let repositoryBase: any;
+    let queryMetaData: any = sinon.spy();
 
     beforeEach(() => {
         userDocument = <MongooseUserDocument> {
@@ -31,7 +32,8 @@ describe('UserRepository', () => {
             update: sinon.stub(),
             delete: sinon.stub(),
             findByEmail: sinon.stub(),
-            findAll: sinon.stub()
+            findAll: sinon.stub(),
+            findBy: sinon.stub()
         };
 
 
@@ -178,6 +180,139 @@ describe('UserRepository', () => {
         });
     });
 
+    describe('findAll', () => {
+        let userDocument2: any;
+        let userModel2: any;
+
+        beforeEach(() => {
+            userDocument2 = {
+                name: 'Santa Gergely2',
+                age: 27,
+                profession: 'Software Developer2',
+                email: 'santagergely90@gmail.com2',
+                id: '12345',
+                address: {
+                    country: 'Hungary2',
+                    city: 'Budapest2'
+                }
+            };
+
+            userModel2 = new UserModel(userDocument2);
+        });
+
+        it('should call the findAll method of RepositoryBase with the correct parameters', () => {
+            let userRepository = new UserRepository(repositoryBase);
+
+            repositoryBase.findAll.returns({
+                then: (callback: any) => callback([userDocument, userDocument2])
+            });
+
+            userRepository.findAll(queryMetaData);
+
+            expect(repositoryBase.findAll.callCount).toBe(1);
+            expect(repositoryBase.findAll.calledWith(queryMetaData)).toBe(true);
+        });
+
+        it('should return with a Promise<UserModel[]> if no error occures', (done) => {
+            let userRepository = new UserRepository(repositoryBase);
+            repositoryBase.findAll
+                .returns(new Promise((resolve, reject) => {
+                    resolve([userDocument, userDocument2]);
+                }));
+
+            userRepository.findAll(queryMetaData)
+            .then((models) => {
+                expect(models.length).toEqual(2);
+                expect(models[0]).toEqual(userModel);
+                expect(models[1]).toEqual(userModel2);
+                done();
+            })
+            .catch(() => done.fail('This Promise should have been resolved'));
+        });
+
+        it('should return with a rejectet Promise if an error occures', (done) => {
+            let userRepository = new UserRepository(repositoryBase);
+            repositoryBase.findAll.returns(new Promise((resolve, reject) => {
+                reject('Error happened');
+            }));
+
+            userRepository.findAll(queryMetaData)
+            .then(() => done.fail('This Promise should have been rejected'))
+            .catch((error: any) => {
+                expect(error).toEqual('Error happened');
+                done();
+            });
+        });
+    });
+
+    describe('findBy', () => {
+        let userDocument2: any;
+        let userModel2: any;
+
+        beforeEach(() => {
+            userDocument2 = {
+                name: 'Santa Gergely2',
+                age: 27,
+                profession: 'Software Developer2',
+                email: 'santagergely90@gmail.com2',
+                id: '12345',
+                address: {
+                    country: 'Hungary2',
+                    city: 'Budapest2'
+                }
+            };
+
+            userModel2 = new UserModel(userDocument2);
+        });
+
+        it('should call the findBy method of RepositoryBase with the correct parameters', () => {
+            let userRepository = new UserRepository(repositoryBase);
+
+            repositoryBase.findBy.withArgs(userDocument).returns({
+                then: (callback: any) => callback([userDocument, userDocument2])
+            });
+
+            userRepository.findBy(userModel, queryMetaData);
+
+            expect(repositoryBase.findBy.callCount).toBe(1);
+            expect(repositoryBase.findBy.calledWith(userDocument, queryMetaData)).toBe(true);
+        });
+
+        it('should return with a Promise<UserModel[]> if no error occures', (done) => {
+            let userRepository = new UserRepository(repositoryBase);
+            repositoryBase.findBy
+                .withArgs(userDocument)
+                .returns(new Promise((resolve, reject) => {
+                    resolve([userDocument, userDocument2]);
+                }));
+
+            userRepository.findBy(userModel, queryMetaData)
+            .then((models) => {
+                expect(models.length).toEqual(2);
+                expect(models[0]).toEqual(userModel);
+                expect(models[1]).toEqual(userModel2);
+                done();
+            })
+            .catch(() => done.fail('This Promise should have been resolved'));
+        });
+
+        it('should return with a rejectet Promise if an error occures', (done) => {
+            let userRepository = new UserRepository(repositoryBase);
+            repositoryBase.findBy
+                .withArgs(userDocument)
+                .returns(new Promise((resolve, reject) => {
+                    reject('Error happened');
+                }));
+
+            userRepository.findBy(userModel, queryMetaData)
+            .then(() => done.fail('This Promise should have been rejected'))
+            .catch((error: any) => {
+                expect(error).toEqual('Error happened');
+                done();
+            });
+        });
+    });
+
     describe('findByEmail', () => {
         let email = 'abcd';
 
@@ -217,70 +352,6 @@ describe('UserRepository', () => {
             }));
 
             userRepository.findByEmail(email)
-            .then(() => done.fail('This Promise should have been rejected'))
-            .catch((error: any) => {
-                expect(error).toEqual('Error happened');
-                done();
-            });
-        });
-    });
-
-    describe('findAll', () => {
-        let userDocument2: any;
-        let userModel2: any;
-
-        beforeEach(() => {
-            userDocument2 = {
-                name: 'Santa Gergely2',
-                age: 27,
-                profession: 'Software Developer2',
-                email: 'santagergely90@gmail.com2',
-                id: '12345',
-                address: {
-                    country: 'Hungary2',
-                    city: 'Budapest2'
-                }
-            };
-
-            userModel2 = new UserModel(userDocument2);
-        });
-
-        it('should call the findAll method of RepositoryBase with the correct parameters', () => {
-            let userRepository = new UserRepository(repositoryBase);
-
-            repositoryBase.findAll.returns({
-                then: (callback: any) => callback([userDocument, userDocument2])
-            });
-
-            userRepository.findAll();
-
-            expect(repositoryBase.findAll.callCount).toBe(1);
-        });
-
-        it('should return with a Promise<UserModel[]> if no error occures', (done) => {
-            let userRepository = new UserRepository(repositoryBase);
-            repositoryBase.findAll
-                .returns(new Promise((resolve, reject) => {
-                    resolve([userDocument, userDocument2]);
-                }));
-
-            userRepository.findAll()
-            .then((models) => {
-                expect(models.length).toEqual(2);
-                expect(models[0]).toEqual(userModel);
-                expect(models[1]).toEqual(userModel2);
-                done();
-            })
-            .catch(() => done.fail('This Promise should have been resolved'));
-        });
-
-        it('should return with a rejectet Promise if an error occures', (done) => {
-            let userRepository = new UserRepository(repositoryBase);
-            repositoryBase.findAll.returns(new Promise((resolve, reject) => {
-                reject('Error happened');
-            }));
-
-            userRepository.findAll()
             .then(() => done.fail('This Promise should have been rejected'))
             .catch((error: any) => {
                 expect(error).toEqual('Error happened');
