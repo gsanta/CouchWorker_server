@@ -1,5 +1,5 @@
+import { DatabaseId } from '../../repository/RepositoryBase';
 import mongoose = require("mongoose");
-import {DatabaseId} from '../repository/base/RepositoryBase';
 
 export interface AddressDocument {
     country: string;

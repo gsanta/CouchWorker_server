@@ -1,7 +1,7 @@
-import {UserDocument} from "../database/UserDocument";
-import {RepositoryBase} from "./base/RepositoryBase";
-import {UserSchema} from "../database/UserSchema";
-import {UserRepository} from "./UserRepository";
+import {RepositoryBase} from "./RepositoryBase";
+import { UserRepository } from '../domain/user/repository/UserRepository';
+import { MongooseUserDocument } from '../domain/user/repository/MongooseUserDocument';
+import { UserSchema } from '../domain/user/repository/UserSchema';
 import Mongoose = require("mongoose");
 
 export class RepositoryFactory {
@@ -9,7 +9,7 @@ export class RepositoryFactory {
 
     constructor(mongooseInstance: Mongoose.Mongoose, mongooseConnection: Mongoose.Connection) {
         this.userRepository = new UserRepository(
-            new RepositoryBase<UserDocument>(
+            new RepositoryBase<MongooseUserDocument>(
                 new UserSchema(mongooseInstance, mongooseConnection).getModel()
             )
         );

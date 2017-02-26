@@ -1,30 +1,30 @@
-import {UserModel} from '../database/UserModel';
-import {UserDocument} from '../database/UserDocument';
 import {UserRepository} from './UserRepository';
 import * as proxyquire from 'proxyquire';
 import * as sinon from 'sinon';
+import { UserModel } from '../UserModel';
+import { MongooseUserDocument } from './MongooseUserDocument';
 
 describe('UserRepository', () => {
     let userModel: UserModel;
-    let userDocument: any;
+    let userDocument: MongooseUserDocument;
     let repositoryBase: any;
 
     beforeEach(() => {
-        userModel = new UserModel(
-            'Santa Gergely',
-            26,
-            'Software Developer',
-            'santagergely90@gmail.com',
-            '1234'
-        );
-
-        userDocument = {
+        userDocument = <MongooseUserDocument> {
             name: 'Santa Gergely',
             age: 26,
             profession: 'Software Developer',
             email: 'santagergely90@gmail.com',
-            id: '1234'
+            id: '1234',
+            address: {
+                country: 'Hungary',
+                city: 'Budapest',
+                street: 'Haller utca',
+                house: '15/a'
+            }
         };
+
+        userModel = new UserModel(userDocument);
 
         repositoryBase = {
             create: sinon.stub(),
@@ -99,16 +99,14 @@ describe('UserRepository', () => {
                 age: 27,
                 profession: 'Software Developer updated',
                 email: 'santagergely90@gmail.com updated',
-                id: '12345'
+                id: '12345',
+                address: {
+                    country: 'Hungary2',
+                    city: 'Budapest2'
+                }
             };
 
-            let updatedUserModel = new UserModel(
-                'Santa Gergely updated',
-                27,
-                'Software Developer updated',
-                'santagergely90@gmail.com updated',
-                '12345'
-            );
+            let updatedUserModel = new UserModel(updatedUserDocument);
 
             let userRepository = new UserRepository(repositoryBase);
             repositoryBase.update.returns(new Promise((resolve, reject) => {
@@ -237,16 +235,14 @@ describe('UserRepository', () => {
                 age: 27,
                 profession: 'Software Developer2',
                 email: 'santagergely90@gmail.com2',
-                id: '12345'
+                id: '12345',
+                address: {
+                    country: 'Hungary2',
+                    city: 'Budapest2'
+                }
             };
 
-            userModel2 = new UserModel(
-                userDocument2.name,
-                userDocument2.age,
-                userDocument2.profession,
-                userDocument2.email,
-                userDocument2.id
-            );
+            userModel2 = new UserModel(userDocument2);
         });
 
         it('should call the findAll method of RepositoryBase with the correct parameters', () => {

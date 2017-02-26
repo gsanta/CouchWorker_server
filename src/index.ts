@@ -1,12 +1,11 @@
-import {UserModel} from "./database/UserModel";
-import {UserValidator} from "./business/registration/UserValidator";
-import {UserBusiness} from "./business/UserBusiness";
 import {RepositoryFactory} from "./repository/RepositoryFactory";
-import {UserRepository} from "./repository/UserRepository";
-import {Database} from "./database/Database";
 import * as express from 'express';
 import * as fs from 'fs';
 import * as bodyParser from 'body-parser';
+import { Database } from './repository/Database';
+import { UserValidator } from './domain/user/validation/UserValidator';
+import { UserBusiness } from './domain/user/UserBusiness';
+import { UserModel } from './domain/user/UserModel';
 var app = express();
 
 var MongoClient = require('mongodb').MongoClient;

@@ -1,12 +1,11 @@
-import {RepositoryBase} from "./base/RepositoryBase";
-import {UserDocument} from "../database/UserDocument";
-import {UserSchema} from "../database/UserSchema";
-import {UserModel} from "../database/UserModel";
+import { RepositoryBase } from '../../../repository/RepositoryBase';
+import { MongooseUserDocument } from './MongooseUserDocument';
+import { UserModel } from '../UserModel';
 
 export class UserRepository {
-    private repoBase: RepositoryBase<UserDocument>;
+    private repoBase: RepositoryBase<MongooseUserDocument>;
 
-    constructor (repoBase: RepositoryBase<UserDocument>) {
+    constructor (repoBase: RepositoryBase<MongooseUserDocument>) {
         this.repoBase = repoBase;
     }
 
@@ -38,23 +37,23 @@ export class UserRepository {
             .then(docs => docs.map(doc => this.toUserModel(doc)));
     }
 
-    private toUserDocument(userModel: UserModel): UserDocument {
-        return <UserDocument> {
+    private toUserDocument(userModel: UserModel): MongooseUserDocument {
+        return <MongooseUserDocument> {
             name: userModel.getName(),
             age: userModel.getAge(),
             profession: userModel.getProfession(),
             email: userModel.getEmail(),
-            id: userModel.getUuid()
+            id: userModel.getUuid(),
+            address: {
+                country: userModel.getAddress().getCountry(),
+                city: userModel.getAddress().getCity(),
+                street: userModel.getAddress().getStreet(),
+                house: userModel.getAddress().getHouse()
+            }
         }
     }
 
-    private toUserModel(userDocument: UserDocument): UserModel {
-        return new UserModel(
-            userDocument.name,
-            userDocument.age,
-            userDocument.profession,
-            userDocument.email,
-            userDocument.id
-        )
+    private toUserModel(userDocument: MongooseUserDocument): UserModel {
+        return new UserModel(userDocument);
     }
 }

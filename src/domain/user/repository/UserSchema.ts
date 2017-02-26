@@ -1,4 +1,4 @@
-import {UserDocument} from "./UserDocument";
+import { MongooseUserDocument } from './MongooseUserDocument';
 import Mongoose = require("mongoose");
 
 export class UserSchema {
@@ -10,8 +10,8 @@ export class UserSchema {
         this.mConnection = mongooseConnection;
     }
 
-    public getModel(): Mongoose.Model<UserDocument> {
-        return this.mConnection.model<UserDocument>("Users", this.getSchema());
+    public getModel(): Mongoose.Model<MongooseUserDocument> {
+        return this.mConnection.model<MongooseUserDocument>("Users", this.getSchema());
     }
 
     public getSchema(): Mongoose.Schema {

@@ -1,5 +1,4 @@
 import {UserModel} from "../UserModel";
-import {UserRegistrationModel} from "../user/rest/UserRegistrationModel";
 import * as joi from 'joi';
 
 const alphaNumSpaceDashUscore = /^[a-z\d\-_\s]+$/i;

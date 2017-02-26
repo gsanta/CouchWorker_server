@@ -1,7 +1,7 @@
-import {UserRegistrationModel} from "./user/rest/UserRegistrationModel";
-import {UserRepository} from "../repository/UserRepository";
+
 import {UserModel} from "./UserModel";
 import * as Promise from 'promise';
+import { UserRepository } from './repository/UserRepository';
 
 export class UserBusiness {
     private userRepository: UserRepository;
