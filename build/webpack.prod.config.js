@@ -11,7 +11,7 @@ module.exports = function createWebpackConfig() {
         },
         output: {
             path: path.resolve(__dirname + '/../', 'dist/client'),
-            filename: 'js/[name].js',
+            filename: 'js/bundle.js',
             libraryTarget: 'var',
             library: 'couchWorker',
             publicPath: 'http://localhost:8765/'
