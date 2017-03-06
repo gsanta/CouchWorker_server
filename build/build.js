@@ -38,7 +38,7 @@ module.exports = function(gulp, config) {
         var watchOptions;
  
         new WebpackDevServer(compiler, {
-            contentBase: config.demoSrc,
+            contentBase: config.contentBase,
             watchOptions: watchOptions
         }).listen(8765, '0.0.0.0', function(err) {
             if(err) throw new gutil.PluginError('webpack-dev-server', err);

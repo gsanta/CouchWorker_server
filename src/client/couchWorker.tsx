@@ -1,5 +1,12 @@
 import {render} from 'react-dom';
 import * as React from 'react';
-import {App} from './App';
+import { AddTodoForm, TodoList } from './App';
 
-render(<App/>, document.getElementById('couch-worker-container'));
+render(
+    <div>
+        <h1>Todo</h1>
+        <AddTodoForm />
+        <TodoList />
+    </div>,
+    document.getElementById('couch-worker-container')
+);
