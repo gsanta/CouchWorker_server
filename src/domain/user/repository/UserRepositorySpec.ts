@@ -3,6 +3,7 @@ import * as proxyquire from 'proxyquire';
 import * as sinon from 'sinon';
 import { UserModel } from '../UserModel';
 import { MongooseUserDocument } from './MongooseUserDocument';
+import { Promise } from 'es6-promise';
 
 describe('UserRepository', () => {
     let userModel: UserModel;

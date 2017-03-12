@@ -2,6 +2,7 @@ import * as React from 'react';
 import { todoApp } from './store';
 import { createStore } from 'redux';
 import { addTodo, deleteTodo, completeTodo } from './actions';
+require('./node_modules/bootstrap/dist/css/bootstrap.css');
 
 var defaultState: any = {
   todo: {
@@ -9,9 +10,9 @@ var defaultState: any = {
   }
 };
 
-var store = createStore(todoApp, defaultState);
+// var store = createStore(todoApp, defaultState);
 
-export class AddTodoForm extends React.Component<any, any> {
+/*export class AddTodoForm extends React.Component<any, any> {
   state = {
     message: ''
   };
@@ -94,7 +95,7 @@ export class TodoList extends React.Component<any, any> {
       <ol>{ items }</ol>
     );
   }
-}
+}*/
 
 // export class App extends React.Component<any, any> {
 

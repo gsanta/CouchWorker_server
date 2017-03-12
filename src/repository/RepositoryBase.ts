@@ -1,5 +1,6 @@
 import { QueryMetaData } from './QueryMetaData';
 import mongoose = require("mongoose");
+import { Promise } from 'es6-promise';
 
 export interface DatabaseId {
     id: string;

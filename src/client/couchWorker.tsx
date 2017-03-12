@@ -1,12 +1,23 @@
 import {render} from 'react-dom';
 import * as React from 'react';
-import { AddTodoForm, TodoList } from './App';
+import { Provider } from 'react-redux';
+import { RootModel } from './RootModel';
+import { configureStore } from './store';
+import { HostsWrapper } from './components/HostsWrapper';
+import { HostModel } from './HostModel';
+import { List } from 'immutable';
+
+let initialState: RootModel = {
+    hosts: List<HostModel>([
+        new HostModel('Santa Gergely', 27)
+    ])
+}
+
+let store = configureStore(initialState);
 
 render(
-    <div>
-        <h1>Todo</h1>
-        <AddTodoForm />
-        <TodoList />
-    </div>,
+    <Provider store={store}>
+        <HostsWrapper />
+    </Provider>,
     document.getElementById('couch-worker-container')
 );
