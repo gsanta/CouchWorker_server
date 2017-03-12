@@ -34,8 +34,29 @@ module.exports = function createWebpackConfig() {
                     use: "source-map-loader"
                 },
                 {
+                    test: /\.scss$/,
+                    use: [
+                        {
+                            loader: 'style-loader'
+                        },
+                        {
+                            loader: "css-loader"
+                        }, 
+                        {
+                            loader: "sass-loader"
+                        }
+                    ]
+                },   
+                {
                     test: /\.css$/,
                     use: [ 'style-loader', 'css-loader' ]
+                },
+                {
+                    test:   /\.(ttf|otf|eot|svg|woff2?)(\?.+)?$/,
+                    loader: 'url-loader',
+                    options:  {
+                        limit: 10000
+                    }
                 }
             ]
         },

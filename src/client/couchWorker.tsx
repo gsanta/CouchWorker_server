@@ -6,7 +6,9 @@ import { configureStore } from './store';
 import { HostsWrapper } from './components/HostsWrapper';
 import { HostModel } from './HostModel';
 import { List } from 'immutable';
+
 require('bootstrap/dist/css/bootstrap.css');
+require('./couchWorker.scss');
 
 let initialState: RootModel = {
     hosts: List<HostModel>([
