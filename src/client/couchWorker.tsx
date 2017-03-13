@@ -12,7 +12,9 @@ require('./couchWorker.scss');
 
 let initialState: RootModel = {
     hosts: List<HostModel>([
-        new HostModel('Santa Gergely', 27)
+        new HostModel('Santa Gergely', 27),
+        new HostModel('User2', 28),
+        new HostModel('User3', 29)        
     ])
 }
 

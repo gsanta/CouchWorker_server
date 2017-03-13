@@ -10,23 +10,6 @@ var fs = require('fs');
  
 module.exports = function(gulp, config) {
     gutil.log('Configuring build tasks.');
- 
-    // var tsProject = ts.createProject(config.tsConfig);
- 
-    // gulp.task('ts-build', function() {
-    //     let compileSucceeded = true;
-    //     let tsResult = tsProject.src()
-    //         .pipe(tsProject())
-    //         .on('error', () => { compileSucceeded = false; });
-    //     return merge([
-    //         tsResult.js.pipe(gulp.dest(config.distDir)),
-    //         tsResult.dts.pipe(gulp.dest(config.distDir))
-    //     ]).on('end', () => {
-    //         if (!compileSucceeded) {
-    //             throw new Error('Compilation failed.');
-    //         }
-    //     });
-    // });
 
     gulp.task('build-client', ['copy-html', 'build-webpack'], function() {});
     gulp.task('watch-client', ['watch-webpack'], function() {});
@@ -64,5 +47,22 @@ module.exports = function(gulp, config) {
             if(err) throw new gutil.PluginError('webpack-dev-server', err);
             gutil.log('[webpack-dev-server]', 'http://localhost:8765/');
         });
-    }); 
+    });
+
+    var tsProject = ts.createProject('./tsconfig.json');
+ 
+    gulp.task('ts-build', function() {
+        let compileSucceeded = true;
+        let tsResult = tsProject.src()
+            .pipe(tsProject())
+            .on('error', () => { compileSucceeded = false; });
+        return merge([
+            tsResult.js.pipe(gulp.dest(config.distDir + '/ts')),
+            tsResult.dts.pipe(gulp.dest(config.distDir + '/ts'))
+        ]).on('end', () => {
+            if (!compileSucceeded) {
+                throw new Error('Compilation failed.');
+            }
+        });
+    });
 };

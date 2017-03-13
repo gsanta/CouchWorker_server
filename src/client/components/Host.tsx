@@ -1,7 +1,10 @@
 import { HostModel } from '../HostModel';
 import { Panel } from 'react-bootstrap';
 import { Table } from 'react-bootstrap';
+import { Image } from 'react-bootstrap';
 import * as React from 'react';
+
+const thumbnail = require('../assets/thumbnail.png');
 
 export interface HostProps {
     host: HostModel
@@ -10,6 +13,7 @@ export interface HostProps {
 export function Host(props: HostProps) {
     return (
         <Panel>
+            <Image src={thumbnail} rounded />
             <Table striped bordered condensed hover>
                 <tbody>
                     <tr>

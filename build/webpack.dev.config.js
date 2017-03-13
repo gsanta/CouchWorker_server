@@ -60,6 +60,13 @@ module.exports = function createWebpackConfig() {
                     options:  {
                         limit: 10000
                     }
+                },
+                {
+                    test: /\.(jpg|png)$/,
+                    loader: 'file-loader',
+                    options: {
+                        name: './images/[hash].[ext]',
+                    },
                 }
             ]
         },
