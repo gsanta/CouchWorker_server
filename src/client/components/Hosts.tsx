@@ -10,7 +10,7 @@ export interface HostsProps {
 }
 
 export function Hosts(props: HostsProps) {
-    let hosts = props.hosts.map(host => Host(host));
+    let hosts = props.hosts.map((host, index) => <Host host={host} key={index}/>);
 
     return (
         <Row>

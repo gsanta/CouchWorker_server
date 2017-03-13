@@ -35,21 +35,24 @@ module.exports = function createWebpackConfig() {
                 },
                 {
                     test: /\.scss$/,
-                    use: [
-                        {
-                            loader: 'style-loader'
-                        },
-                        {
-                            loader: "css-loader"
-                        }, 
-                        {
-                            loader: "sass-loader"
-                        }
-                    ]
+                    use: ExtractTextPlugin.extract({
+                        fallback: 'style-loader',
+                        use: [
+                            {
+                                loader: "css-loader"
+                            }, 
+                            {
+                                loader: "sass-loader"
+                            }
+                        ]
+                    })
                 },   
                 {
                     test: /\.css$/,
-                    use: [ 'style-loader', 'css-loader' ]
+                    use: ExtractTextPlugin.extract({
+                        fallback: 'style-loader',
+                        use: [ 'css-loader' ]
+                    })
                 },
                 {
                     test:   /\.(ttf|otf|eot|svg|woff2?)(\?.+)?$/,
@@ -63,5 +66,8 @@ module.exports = function createWebpackConfig() {
         resolve: {
             extensions: [".tsx", ".ts", ".js"]
         },
+        plugins: [
+            new ExtractTextPlugin('css/app.css')   
+        ]
     };
 }

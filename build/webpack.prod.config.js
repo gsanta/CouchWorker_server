@@ -11,10 +11,9 @@ module.exports = function createWebpackConfig() {
         },
         output: {
             path: path.resolve(__dirname + '/../', 'dist/client'),
-            filename: 'js/bundle.js',
+            filename: 'js/[name].js',
             libraryTarget: 'var',
-            library: 'couchWorker',
-            publicPath: 'http://localhost:8765/'
+            library: 'couchWorker'
         },
          module: {
             rules: [
@@ -32,11 +31,42 @@ module.exports = function createWebpackConfig() {
                     enforce: 'pre',
                     test: /\.tsx?$/,
                     use: "source-map-loader"
+                },
+                {
+                    test: /\.scss$/,
+                    use: ExtractTextPlugin.extract({
+                        fallback: 'style-loader',
+                        use: [
+                            {
+                                loader: "css-loader"
+                            }, 
+                            {
+                                loader: "sass-loader"
+                            }
+                        ]
+                    })
+                },   
+                {
+                    test: /\.css$/,
+                    use: ExtractTextPlugin.extract({
+                        fallback: 'style-loader',
+                        use: [ 'css-loader' ]
+                    })
+                },
+                {
+                    test:   /\.(ttf|otf|eot|svg|woff2?)(\?.+)?$/,
+                    loader: 'url-loader',
+                    options:  {
+                        limit: 10000
+                    }
                 }
             ]
         },
         resolve: {
             extensions: [".tsx", ".ts", ".js"]
         },
+        plugins: [
+            new ExtractTextPlugin('css/app.css')
+        ]
     };
 }

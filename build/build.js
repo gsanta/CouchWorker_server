@@ -28,6 +28,26 @@ module.exports = function(gulp, config) {
     //     });
     // });
 
+    gulp.task('build-client', ['copy-html', 'build-webpack'], function() {});
+    gulp.task('watch-client', ['watch-webpack'], function() {});
+
+    gulp.task('build-webpack', function(callback) {
+        var createWebpackConfig = require('./webpack.prod.config.js');
+
+        webpack(createWebpackConfig(), function(err, stats) {
+            if(err) throw new gutil.PluginError("webpack", err);
+            gutil.log("[webpack]", stats.toString({
+                // output options
+            }));
+            callback();
+        });
+    })
+
+    gulp.task('copy-html', function() {
+        gulp.src(config.contentBase + '/**/*')
+        .pipe(gulp.dest(config.distDir + '/client'));
+    });
+
     gulp.task('watch-webpack', function(callback) {
         var createWebpackConfig = require('./webpack.dev.config.js');
  
