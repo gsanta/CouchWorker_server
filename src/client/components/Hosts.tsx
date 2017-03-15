@@ -14,7 +14,7 @@ export function Hosts(props: HostsProps) {
 
     return (
         <Row>
-            <Col xs={6} xsOffset={3}>
+            <Col xs={6} xsOffset={3} className='cw-hosts-col'>
                 {hosts}
             </Col>
         </Row>

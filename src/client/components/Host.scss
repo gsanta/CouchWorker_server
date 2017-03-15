@@ -1,0 +1,27 @@
+
+.cw-host-panel {
+    height: 200px;
+
+    &.panel {
+        background: #977254;
+    }
+}
+
+.cw-host-thumbnail {
+    width: calc(100% - 40px);
+}
+
+.cw-host-panel-row {
+    display: -webkit-flex;
+    display: flex;
+    width: 100%;
+    // height: 250px;
+}
+
+.cw-host-panel-col1 {
+    width: 200px;
+}
+
+.cw-host-panel-col2 {
+    width: calc(100% - 200px);
+}
