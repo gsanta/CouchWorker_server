@@ -3,6 +3,8 @@ import { Panel, Col, Row } from 'react-bootstrap';
 import { Table } from 'react-bootstrap';
 import { Image } from 'react-bootstrap';
 import * as React from 'react';
+import { StarRatingWrapper } from './StarRatingWrapper';
+import { AgeFormatter } from './AgeFormatter';
 
 const thumbnail = require('../assets/thumbnail.png');
 require('./Host.scss')
@@ -19,18 +21,17 @@ export function Host(props: HostProps) {
                     <Image src={thumbnail} className='cw-host-thumbnail'/>
                 </div>
                 <div className='cw-host-panel-col2'>
-                    <Table striped bordered condensed hover>
-                        <tbody>
-                            <tr>
-                                <td>Name:</td>
-                                <td>{props.host.getName()}</td>
-                            </tr>
-                            <tr>
-                                <td>Age:</td>
-                                <td>{props.host.getAge()}</td>
-                            </tr>
-                        </tbody>
-                    </Table>
+                    <div>
+                        {props.host.getPersonalInfo().getFirstName()}&nbsp;
+                        {props.host.getPersonalInfo().getLastName()}, &nbsp;
+                        <AgeFormatter date={props.host.getPersonalInfo().getBirthDate()} />
+                    </div>
+                    <div>
+                        {props.host.getAddress().getCity()}, {props.host.getAddress().getCountry()}
+                    </div>
+                    <div>
+                        <StarRatingWrapper rate={props.host.getRating().getRating()}/>
+                    </div>
                 </div>
             </div>
 
