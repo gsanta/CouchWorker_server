@@ -9,6 +9,10 @@ import { List } from 'immutable';
 import { AddressModel } from '../domain/user/AddressModel';
 import { RatingModel } from '../domain/user/RatingModel';
 import { PersonalInfoModel } from '../domain/user/PersonalInfoModel';
+import { Router, Route, browserHistory } from 'react-router';
+import { Registration } from './components/Registration';
+import { UserModel } from '../domain/user/UserModel';
+import { RegistrationWrapper } from './components/RegistrationWrapper';
 
 require('bootstrap/dist/css/bootstrap.css');
 require('./couchWorker.scss');
@@ -39,14 +43,28 @@ let initialState: RootModel = {
             }),
             new RatingModel(4.2)
         )        
-    ])
+    ]),
+    user: new UserModel({
+        name: 'New User',
+        age: 25,
+        profession: 'Drummer',
+        email: 'new_user@gmail.com',
+        address: {
+            country: 'Hungary',
+            city: 'Budapest'
+        },
+        id: null
+    })
 }
 
 let store = configureStore(initialState);
 
 render(
     <Provider store={store}>
-        <HostsWrapper />
+        <Router history={browserHistory}>
+            <Route path='/' component={HostsWrapper} />
+            <Route path='/register' component={RegistrationWrapper} />
+        </Router>
     </Provider>,
     document.getElementById('couch-worker-container')
 );

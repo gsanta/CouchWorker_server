@@ -42,7 +42,8 @@ module.exports = function(gulp, config) {
  
         new WebpackDevServer(compiler, {
             contentBase: config.contentBase,
-            watchOptions: watchOptions
+            watchOptions: watchOptions,
+            historyApiFallback: true
         }).listen(8765, '0.0.0.0', function(err) {
             if(err) throw new gutil.PluginError('webpack-dev-server', err);
             gutil.log('[webpack-dev-server]', 'http://localhost:8765/');
