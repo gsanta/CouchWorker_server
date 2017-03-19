@@ -1,17 +1,14 @@
 import { DatabaseId } from '../../repository/RepositoryBase';
+import { AddressDocument } from './AddressModel';
 import mongoose = require("mongoose");
 
-export interface AddressDocument {
-    country: string;
-    city: string;
-    street?: string;
-    house?: string;
+export interface PersonalInfoDocument {
+    firstName: string;
+    lastName: string;
+    birthDate: Date;
+    email: string;
 }
 
-export interface UserDocument extends DatabaseId {
-    name: string;
-    age: number;
+export interface UserDocument extends AddressDocument, PersonalInfoDocument, DatabaseId {
     profession: string;
-    email: string;
-    address: AddressDocument;
 }

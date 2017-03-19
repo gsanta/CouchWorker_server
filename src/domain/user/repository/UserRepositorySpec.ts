@@ -13,17 +13,16 @@ describe('UserRepository', () => {
 
     beforeEach(() => {
         userDocument = <MongooseUserDocument> {
-            name: 'Santa Gergely',
-            age: 26,
-            profession: 'Software Developer',
+            firstName: 'Santa',
+            lastName: 'Gergely',
+            birthDate: new Date(1990, 3, 1),
             email: 'santagergely90@gmail.com',
+            profession: 'Software Developer',
             id: '1234',
-            address: {
-                country: 'Hungary',
-                city: 'Budapest',
-                street: 'Haller utca',
-                house: '15/a'
-            }
+            country: 'Hungary',
+            city: 'Budapest',
+            street: 'Haller utca',
+            house: '15/a'
         };
 
         userModel = new UserModel(userDocument);
@@ -98,15 +97,14 @@ describe('UserRepository', () => {
 
         it('should return with the updated Promise<UserModel> if no error occures', (done) => {
             let updatedUserDocument = {
-                name: 'Santa Gergely updated',
-                age: 27,
-                profession: 'Software Developer updated',
+                firstName: 'Santa',
+                lastName: 'Gergely David',
+                birthDate: new Date(1990, 3, 1),
                 email: 'santagergely90@gmail.com updated',
+                profession: 'Software Developer updated',
                 id: '12345',
-                address: {
-                    country: 'Hungary2',
-                    city: 'Budapest2'
-                }
+                country: 'Hungary2',
+                city: 'Budapest2'
             };
 
             let updatedUserModel = new UserModel(updatedUserDocument);

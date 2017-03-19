@@ -3,9 +3,9 @@ import * as joi from 'joi';
 
 const alphaNumSpaceDashUscore = /^[a-z\d\-_\s]+$/i;
 const userRegistrationSchema = joi.object().keys({
-    name: joi.string().regex(alphaNumSpaceDashUscore).min(3).max(30).required(),
+    firstName: joi.string().regex(alphaNumSpaceDashUscore).min(3).max(30).required(),
+    lastName: joi.string().regex(alphaNumSpaceDashUscore).min(3).max(30).required(),
     email: joi.string().email().required(),
-    age: joi.number().integer().min(1).max(200).required(),
     profession: joi.string().regex(alphaNumSpaceDashUscore).min(3).max(30).required()
 });
 
@@ -23,17 +23,16 @@ export class UserValidator {
         }
 
         return new UserModel({
-            name: data.name,
-            age: data.age,
-            profession: data.profession,
+            firstName: data.firstName,
+            lastName: data.lastName,
+            birthDate: new Date(Date.now()),
             email: data.email,
+            profession: data.profession,
             id: undefined,
-            address: {
-                country: data.country,
-                city: data.city,
-                street: data.street,
-                house: data.house
-            }
+            country: data.country,
+            city: data.city,
+            street: data.street,
+            house: data.house
         });
     }
 

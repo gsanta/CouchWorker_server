@@ -1,4 +1,10 @@
-import {AddressDocument} from './UserDocument';
+
+export interface AddressDocument {
+    country: string;
+    city: string;
+    street?: string;
+    house?: string;
+}
 
 export class AddressModel {
     private addressDocument: AddressDocument;

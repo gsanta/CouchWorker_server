@@ -13,8 +13,8 @@ describe('hostsReducers', () => {
             };
 
             let state = List<HostModel>([
-                    new HostModel(new PersonalInfoModel('User1', null, null), null, null),
-                    new HostModel(new PersonalInfoModel('User2', null, null), null, null),
+                    new HostModel(new PersonalInfoModel('User1', null, null, null), null, null),
+                    new HostModel(new PersonalInfoModel('User2', null, null, null), null, null),
                 ]);
 
             let newState = hosts(state, action);
@@ -26,13 +26,13 @@ describe('hostsReducers', () => {
             let action = {
                 type: RECEIVE_HOSTS,
                 hosts: List<HostModel>([
-                    new HostModel(new PersonalInfoModel('User1', null, null), null, null),
-                    new HostModel(new PersonalInfoModel('User2', null, null), null, null),
+                    new HostModel(new PersonalInfoModel('User1', null, null, null), null, null),
+                    new HostModel(new PersonalInfoModel('User2', null, null, null), null, null),
                 ])
             };
 
             let state = List<HostModel>([
-                new HostModel(new PersonalInfoModel('User3', null, null), null, null)
+                new HostModel(new PersonalInfoModel('User3', null, null, null), null, null)
             ]);
 
             let newState = hosts(state, action);

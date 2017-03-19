@@ -1,41 +1,40 @@
-import {UserDocument, AddressDocument} from './UserDocument';
-import {AddressModel} from './AddressModel';
+import { UserDocument } from './UserDocument';
+import { AddressModel } from './AddressModel';
+import { PersonalInfoModel } from './PersonalInfoModel';
 
 export class UserModel {
-    private name: string;
-    private age: number;
     private profession: string;
-    private email: string
     private uuid: string;
+    private personalInfo: PersonalInfoModel;
     private address: AddressModel;
 
     constructor(userDocument: UserDocument) {
-        this.name = userDocument.name;
-        this.age = userDocument.age;
         this.profession = userDocument.profession;
-        this.email = userDocument.email;
         this.uuid = userDocument.id;
-        this.address = new AddressModel(userDocument.address);
-    }
-
-    public getName(): string {
-        return this.name;
-    }
-
-    public getAge(): number {
-        return this.age;
+        this.personalInfo = new PersonalInfoModel(
+            userDocument.firstName,
+            userDocument.lastName,
+            userDocument.birthDate,
+            userDocument.email                        
+        );
+        this.address = new AddressModel({
+            country: userDocument.country,
+            city: userDocument.city,
+            street: userDocument.street,
+            house: userDocument.house
+        });
     }
 
     public getProfession(): string {
         return this.profession;
     }
 
-    public getEmail(): string {
-        return this.email;
-    }
-
     public getUuid(): string {
         return this.uuid;
+    }
+
+    public getPersonalInfo(): PersonalInfoModel {
+        return this.personalInfo;
     }
 
     public getAddress(): AddressModel {
