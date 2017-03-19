@@ -75,6 +75,7 @@ module.exports = function createWebpackConfig() {
         },
         plugins: [
             new ExtractTextPlugin('css/app.css')   
-        ]
+        ],
+        devtool: 'eval'
     };
 }
