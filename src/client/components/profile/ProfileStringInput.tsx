@@ -1,7 +1,7 @@
 import * as React from 'react'; 
 import { FormGroup, ControlLabel, FormControl, HelpBlock } from 'react-bootstrap';
 
-export function ProfileStringInput(props: ProfileStringInput) {
+export function ProfileStringInput(props: ProfileStringInputProps) {
     return (
         <FormGroup
                 controlId={props.controlId}
@@ -12,7 +12,7 @@ export function ProfileStringInput(props: ProfileStringInput) {
                 type='text'
                 value={props.value}
                 placeholder={props.placeHolder}
-                onChange={() => null}
+                onChange={props.onChange}
             />
             <FormControl.Feedback />
             <HelpBlock>{props.helpBlock}</HelpBlock>
@@ -20,9 +20,9 @@ export function ProfileStringInput(props: ProfileStringInput) {
     )
 }
 
-export interface ProfileStringInput {
+export interface ProfileStringInputProps {
     value: string;
-    onChange: (value: string) => void;
+    onChange: (event: React.ChangeEvent<any>) => void;
     validationState: 'success' | 'warning' | 'error';
     controlId: string;
     placeHolder: string;

@@ -8,7 +8,7 @@ describe('<ProfileName/>', () => {
         const wrapper = shallow(
             <ProfileStringInput
                 value={'Santa'}
-                onChange={(value: string) => null}
+                onChange={(event: React.ChangeEvent<any>) => null}
                 validationState='success'
                 controlId='cw-form-profile-name'
                 placeHolder='Enter text'
