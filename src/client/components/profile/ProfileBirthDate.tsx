@@ -7,8 +7,6 @@ export class ProfileBirthDate extends React.Component<ProfileBirthDateProps, nul
     public componentDidUpdate() {
         // Access ISO String and formatted values from the DOM.
         var hiddenInputElement = document.getElementsByClassName('cw-profile-birth-date-datepicker')[0] as HTMLInputElement;
-        console.log(hiddenInputElement.value); // ISO String, ex: "2016-11-19T12:00:00.000Z"
-        console.log(hiddenInputElement.getAttribute('data-formattedvalue')) // Formatted String, ex: "11/19/2016"
     }
 
     public render() {
@@ -18,21 +16,15 @@ export class ProfileBirthDate extends React.Component<ProfileBirthDateProps, nul
                 <DatePicker 
                     className='cw-profile-birth-date-datepicker'
                     value={this.props.date.toISOString()}
-                    onChange={this.onChange.bind(this)}
+                    onChange={this.props.onChange}
                 />
                 <HelpBlock>Help</HelpBlock>
             </FormGroup>
         )
     }
-
-    onChange(value, formattedValue) {
-        this.setState({
-            value: value, // ISO String, ex: "2016-11-19T12:00:00.000Z"
-            formattedValue: formattedValue // Formatted String, ex: "11/19/2016"
-        });
-    }
 }
 
 export interface ProfileBirthDateProps {
     date: Date;
+    onChange: (isoString: string) => void;
 }

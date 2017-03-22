@@ -8,21 +8,23 @@ export class UserModel {
     private personalInfo: PersonalInfoModel;
     private address: AddressModel;
 
-    constructor(userDocument: UserDocument) {
-        this.profession = userDocument.profession;
-        this.uuid = userDocument.id;
-        this.personalInfo = new PersonalInfoModel(
-            userDocument.firstName,
-            userDocument.lastName,
-            userDocument.birthDate,
-            userDocument.email                        
-        );
-        this.address = new AddressModel({
-            country: userDocument.country,
-            city: userDocument.city,
-            street: userDocument.street,
-            house: userDocument.house
-        });
+    constructor(userDocument?: UserDocument) {
+        if (userDocument) {
+            this.profession = userDocument.profession;
+            this.uuid = userDocument.id;
+            this.personalInfo = new PersonalInfoModel(
+                userDocument.firstName,
+                userDocument.lastName,
+                userDocument.birthDate,
+                userDocument.email                        
+            );
+            this.address = new AddressModel({
+                country: userDocument.country,
+                city: userDocument.city,
+                street: userDocument.street,
+                house: userDocument.house
+            });
+        }
     }
 
     public getProfession(): string {

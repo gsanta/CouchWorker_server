@@ -22,7 +22,7 @@ export class Profile extends React.Component<RegistrationProps, RegistrationStat
         return (
             <form>
                 <ProfileStringInput 
-                    value={this.props.user.getPersonalInfo().getFirstName()}
+                    value={this.state.user.getPersonalInfo().getFirstName()}
                     onChange={this.onFirstNameChange.bind(this)}
                     validationState='success'
                     controlId='cw-form-profile-first-name'
@@ -31,7 +31,7 @@ export class Profile extends React.Component<RegistrationProps, RegistrationStat
                     helpBlock='Validation is based on string length.'
                 />
                 <ProfileStringInput
-                    value={this.props.user.getPersonalInfo().getLastName()}
+                    value={this.state.user.getPersonalInfo().getLastName()}
                     onChange={this.onLastNameChange.bind(this)}
                     validationState='success'
                     controlId='cw-form-profile-last-name'
@@ -40,7 +40,7 @@ export class Profile extends React.Component<RegistrationProps, RegistrationStat
                     helpBlock='Validation is based on string length.'
                 />
                 <ProfileStringInput
-                    value={this.props.user.getProfession()}
+                    value={this.state.user.getProfession()}
                     onChange={this.onProfessionChange.bind(this)}
                     validationState='success'
                     controlId='cw-form-profile-profession'
@@ -49,8 +49,8 @@ export class Profile extends React.Component<RegistrationProps, RegistrationStat
                     helpBlock='Validation is based on string length.'
                 />
                 <ProfileStringInput
-                    value={this.props.user.getAddress().getCountry()}
-                    onChange={(event: React.ChangeEvent<any>) => null}
+                    value={this.state.user.getAddress().getCountry()}
+                    onChange={this.onCountryChange.bind(this)}
                     validationState='success'
                     controlId='cw-form-profile-country'
                     placeHolder='Enter country'
@@ -58,15 +58,18 @@ export class Profile extends React.Component<RegistrationProps, RegistrationStat
                     helpBlock='Validation is based on string length.'
                 />
                 <ProfileStringInput
-                    value={this.props.user.getAddress().getCity()}
-                    onChange={(event: React.ChangeEvent<any>) => null}
+                    value={this.state.user.getAddress().getCity()}
+                    onChange={this.onCityChange.bind(this)}
                     validationState='success'
                     controlId='cw-form-profile-city'
                     placeHolder='Enter city'
                     controlLabel='City'
                     helpBlock='Validation is based on string length.'
                 />
-                <ProfileBirthDate date={this.props.user.getPersonalInfo().getBirthDate()}/>
+                <ProfileBirthDate 
+                    date={this.state.user.getPersonalInfo().getBirthDate()}
+                    onChange={this.onBirthDateChange.bind(this)}
+                />
             </form>
         );
     }
@@ -91,6 +94,30 @@ export class Profile extends React.Component<RegistrationProps, RegistrationStat
         this.setState({
             user: this.state.user.setProfession(event.target.value) 
         });        
+    }
+
+    private onCountryChange(event: React.ChangeEvent<any>) {
+        this.setState({
+            user: this.state.user.setAddress(
+                this.state.user.getAddress().setCountry(event.target.valuee)
+            )
+        });
+    }
+
+    private onCityChange(event: React.ChangeEvent<any>) {
+        this.setState({
+            user: this.state.user.setAddress(
+                this.state.user.getAddress().setCity(event.target.value)
+            )
+        });
+    }
+
+    private onBirthDateChange(isoString: string) {
+        this.setState({
+            user: this.state.user.setPersonalInfo(
+                this.state.user.getPersonalInfo().setBirthDate(new Date(Date.parse(isoString)))            
+            )
+        });
     }
 }
 
