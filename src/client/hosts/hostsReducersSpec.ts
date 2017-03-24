@@ -13,8 +13,14 @@ describe('hostsReducers', () => {
             };
 
             let state = List<HostModel>([
-                    new HostModel(new PersonalInfoModel('User1', null, null, null), null, null),
-                    new HostModel(new PersonalInfoModel('User2', null, null, null), null, null),
+                    new HostModel({
+                        firstName: 'User2',
+                        lastName: null,
+                        birthDate: null,
+                        email: null,
+                        address: null,
+                        rating: null
+                    })
                 ]);
 
             let newState = hosts(state, action);
@@ -26,13 +32,34 @@ describe('hostsReducers', () => {
             let action = {
                 type: RECEIVE_HOSTS,
                 hosts: List<HostModel>([
-                    new HostModel(new PersonalInfoModel('User1', null, null, null), null, null),
-                    new HostModel(new PersonalInfoModel('User2', null, null, null), null, null),
+                    new HostModel({
+                        firstName: 'User1',
+                        lastName: null,
+                        birthDate: null,
+                        email: null,
+                        address: null,
+                        rating: null
+                    }),
+                    new HostModel({
+                        firstName: 'User2',
+                        lastName: null,
+                        birthDate: null,
+                        email: null,
+                        address: null,
+                        rating: null
+                    }),
                 ])
             };
 
             let state = List<HostModel>([
-                new HostModel(new PersonalInfoModel('User3', null, null, null), null, null)
+                new HostModel({
+                    firstName: 'User3',
+                    lastName: null,
+                    birthDate: null,
+                    email: null,
+                    address: null,
+                    rating: null
+                })
             ]);
 
             let newState = hosts(state, action);

@@ -19,28 +19,43 @@ require('./couchWorker.scss');
 let initialState: RootModel = {
     hosts: List<HostModel>([
         new HostModel(
-            new PersonalInfoModel('Santa', 'Gergely', new Date(1990, 2, 0), 'santagergely@gmail.com'),
-            new AddressModel({
-                country: 'Hungary',
-                city: 'Budapest'
-            }),
-            new RatingModel(5)
+            {
+                firstName: 'Santa',
+                lastName: 'Gergely',
+                birthDate: new Date(1990, 2, 0),
+                email: 'santagergely@gmail.com',
+                address: new AddressModel({
+                    country: 'Hungary',
+                    city: 'Budapest'
+                }),
+                rating: new RatingModel(5)             
+            }
         ),
         new HostModel(
-            new PersonalInfoModel('User2', 'Abcd', new Date(1920, 1, 12), 'user2@gmail.com'),
-            new AddressModel({
-                country: 'London',
-                city: 'UK'
-            }),
-            new RatingModel(3.4)
+            {
+                firstName: 'User2',
+                lastName: 'Abcd',
+                birthDate: new Date(1920, 1, 12),
+                email: 'user2@gmail.com',
+                address: new AddressModel({
+                    country: 'London',
+                    city: 'UK'
+                }),
+                rating: new RatingModel(3.4) 
+            }
         ),
         new HostModel(
-            new PersonalInfoModel('User3', 'Efgh', new Date(1988, 4, 20), 'user3@gmail.com'),
-            new AddressModel({
-                country: 'Hungary',
-                city: 'Budapest'
-            }),
-            new RatingModel(4.2)
+            {
+                firstName: 'User3',
+                lastName: 'Efgh',
+                birthDate: new Date(1988, 4, 20),
+                email: 'user3@gmail.com',
+                address: new AddressModel({
+                    country: 'Hungary',
+                    city: 'Budapest'
+                }),
+                rating: new RatingModel(4.2) 
+            }
         )        
     ]),
     user: new UserModel({

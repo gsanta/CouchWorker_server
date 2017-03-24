@@ -10,28 +10,43 @@ describe('hostsActions', () => {
         it('should return receive hosts info', () => {
             let hosts = List<HostModel>([
                 new HostModel(
-                    new PersonalInfoModel('Santa Gergely', null, null, null),
-                    new AddressModel({
-                        country: 'Hungary',
-                        city: 'Budapest'
-                    }),
-                    new RatingModel(5)
+                    {
+                        firstName: 'Santa Gergely',
+                        lastName: null,
+                        birthDate: null,
+                        email: null,
+                        address: new AddressModel({
+                            country: 'Hungary',
+                            city: 'Budapest'
+                        }),
+                        rating: new RatingModel(5) 
+                    }
                 ),
                 new HostModel(
-                    new PersonalInfoModel('User2', null, null, null),
-                    new AddressModel({
-                        country: 'London',
-                        city: 'UK'
-                    }),
-                    new RatingModel(3.4)
+                    {
+                        firstName: 'User2',
+                        lastName: null,
+                        birthDate: null,
+                        email: null,
+                        address: new AddressModel({
+                            country: 'London',
+                            city: 'UK'
+                        }),
+                        rating: new RatingModel(3.4) 
+                    }
                 ),
                 new HostModel(
-                    new PersonalInfoModel('User2', null, null, null),
-                    new AddressModel({
-                        country: 'Hungary',
-                        city: 'Budapest'
-                    }),
-                    new RatingModel(4.2)
+                    {
+                        firstName: 'User3',
+                        lastName: null,
+                        birthDate: null,
+                        email: null,
+                        address: new AddressModel({
+                            country: 'Hungary',
+                            city: 'Budapest'
+                        }),
+                        rating: new RatingModel(4.2) 
+                    }
                 )         
             ])
 

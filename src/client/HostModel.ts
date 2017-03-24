@@ -2,15 +2,30 @@ import { AddressModel } from '../domain/user/AddressModel';
 import { RatingModel } from '../domain/user/RatingModel';
 import { PersonalInfoModel } from '../domain/user/PersonalInfoModel';
 
+export interface HostDocument {
+    firstName: string;
+    lastName: string;
+    birthDate: Date;
+    email: string;
+    address: AddressModel;
+    rating: RatingModel;
+}
+
 export class HostModel {
+    private firstName: string;
+    private lastName: string;
+    private birthDate: Date;
+    private email: string;
     private address: AddressModel;
     private rating: RatingModel;
-    private personalInfo: PersonalInfoModel;
 
-    constructor(personalInfo: PersonalInfoModel, address: AddressModel, rating: RatingModel) {
-        this.address = address;
-        this.rating = rating;
-        this.personalInfo = personalInfo;
+    constructor(hostDocument: HostDocument) {
+        this.firstName = hostDocument.firstName,
+        this.lastName = hostDocument.lastName,
+        this.birthDate = hostDocument.birthDate,
+        this.email = hostDocument.email    
+        this.address = hostDocument.address;
+        this.rating = hostDocument.rating;
     }
 
     public getAddress(): AddressModel {
@@ -21,7 +36,19 @@ export class HostModel {
         return this.rating;
     }
 
-    public getPersonalInfo(): PersonalInfoModel {
-        return this.personalInfo;
+    public getFirstName(): string {
+        return this.firstName;
+    }
+
+    public getLastName(): string {
+        return this.lastName;
+    }
+
+    public getBirthDate(): Date {
+        return this.birthDate;
+    }
+
+    public getEmail(): string {
+        return this.email;
     }
 }

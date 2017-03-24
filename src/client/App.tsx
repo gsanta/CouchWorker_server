@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { todoApp } from './store';
+// import { todoApp } from './store';
 import { createStore } from 'redux';
 import { addTodo, deleteTodo, completeTodo } from './actions';
 require('./node_modules/bootstrap/dist/css/bootstrap.css');

@@ -3,21 +3,22 @@ import { AddressModel } from './AddressModel';
 import { PersonalInfoModel } from './PersonalInfoModel';
 
 export class UserModel {
-    private profession: string;
     private uuid: string;
-    private personalInfo: PersonalInfoModel;
+    private firstName: string;
+    private lastName: string;
+    private birthDate: Date;
+    private email: string;
+    private profession: string;
     private address: AddressModel;
 
     constructor(userDocument?: UserDocument) {
         if (userDocument) {
             this.profession = userDocument.profession;
             this.uuid = userDocument.id;
-            this.personalInfo = new PersonalInfoModel(
-                userDocument.firstName,
-                userDocument.lastName,
-                userDocument.birthDate,
-                userDocument.email                        
-            );
+            this.firstName = userDocument.firstName,
+            this.lastName = userDocument.lastName,
+            this.birthDate = userDocument.birthDate,
+            this.email = userDocument.email                        
             this.address = new AddressModel({
                 country: userDocument.country,
                 city: userDocument.city,
@@ -49,15 +50,44 @@ export class UserModel {
         return clone;
     }
 
-    public getPersonalInfo(): PersonalInfoModel {
-        return this.personalInfo;
+    public getFirstName() {
+        return this.firstName;
     }
 
-    public setPersonalInfo(personalInfo: PersonalInfoModel): UserModel {
-        let clone = this.copy();
-        clone.personalInfo = personalInfo;
+    public setFirstName(firstName: string): UserModel {
+        let copy = this.copy();
+        copy.firstName = firstName;
+        return copy;
+    }
 
-        return clone;
+    public getLastName() {
+        return this.lastName;
+    }
+
+    public setLastName(lastName: string): UserModel {
+        let copy = this.copy();
+        copy.lastName = lastName;
+        return copy;
+    }
+
+    public getBirthDate() {
+        return this.birthDate;
+    }
+
+    public setBirthDate(birthDate: Date): UserModel {
+        let copy = this.copy();
+        copy.birthDate = birthDate;
+        return copy;
+    }
+
+    public getEmail(): string {
+        return this.email;
+    }
+
+    public setEmail(email: string): UserModel {
+        let copy = this.copy();
+        copy.email = email;
+        return copy;
     }
 
     public getAddress(): AddressModel {
@@ -72,12 +102,15 @@ export class UserModel {
     }
 
     private copy(): UserModel {
-        let clone = new UserModel(null);
-        clone.profession = this.profession;
-        clone.uuid = this.uuid;
-        clone.personalInfo = this.personalInfo;
-        clone.address = this.address;
+        let copy = new UserModel(null);
+        copy.profession = this.profession;
+        copy.uuid = this.uuid;
+        copy.firstName = this.firstName;
+        copy.lastName = this.lastName;
+        copy.birthDate = this.birthDate;
+        copy.email = this.email;
+        copy.address = this.address;
 
-        return clone;
+        return copy;
     }
 }

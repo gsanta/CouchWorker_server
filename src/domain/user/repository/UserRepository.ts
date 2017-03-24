@@ -46,10 +46,10 @@ export class UserRepository {
 
     private toUserDocument(userModel: UserModel): MongooseUserDocument {
         return <MongooseUserDocument> {
-            firstName: userModel.getPersonalInfo().getFirstName(),
-            lastName: userModel.getPersonalInfo().getLastName(),
-            email: userModel.getPersonalInfo().getEmail(),            
-            birthDate: userModel.getPersonalInfo().getBirthDate(),            
+            firstName: userModel.getFirstName(),
+            lastName: userModel.getLastName(),
+            email: userModel.getEmail(),            
+            birthDate: userModel.getBirthDate(),            
             profession: userModel.getProfession(),
             id: userModel.getUuid(),
             country: userModel.getAddress().getCountry(),

@@ -22,9 +22,9 @@ export function Host(props: HostProps) {
                 </div>
                 <div className='cw-host-panel-col2'>
                     <div>
-                        {props.host.getPersonalInfo().getFirstName()}&nbsp;
-                        {props.host.getPersonalInfo().getLastName()}, &nbsp;
-                        <AgeFormatter date={props.host.getPersonalInfo().getBirthDate()} />
+                        {props.host.getFirstName()}&nbsp;
+                        {props.host.getLastName()}, &nbsp;
+                        <AgeFormatter date={props.host.getBirthDate()} />
                     </div>
                     <div>
                         {props.host.getAddress().getCity()}, {props.host.getAddress().getCountry()}

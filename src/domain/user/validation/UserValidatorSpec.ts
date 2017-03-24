@@ -14,10 +14,10 @@ describe('UserValidator', () => {
 
             const user = userValidator.validateRegistration(data);
 
-            expect(user.getPersonalInfo().getFirstName()).toBe(data.firstName);
-            expect(user.getPersonalInfo().getLastName()).toBe(data.lastName);
+            expect(user.getFirstName()).toBe(data.firstName);
+            expect(user.getLastName()).toBe(data.lastName);
             expect(user.getProfession()).toBe(data.profession);
-            expect(user.getPersonalInfo().getEmail()).toEqual(data.email);
+            expect(user.getEmail()).toEqual(data.email);
         });
 
         it ('should throw an error if required fields are missing', () => {
