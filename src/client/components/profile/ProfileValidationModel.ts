@@ -64,4 +64,16 @@ export class ProfileValidationModel {
     public getProfessionValidationError(): string {
         return this.professionValidationError;
     }
+
+    public hasError(): boolean {
+        return !!(
+            this.firstNameValidationError ||
+            this.lastNameValidationError ||
+            this.birthDateValidationError ||
+            this.emailValidationError ||
+            this.countryValidationError ||
+            this.cityValidationError ||
+            this.professionValidationError
+        );
+    }
 }
