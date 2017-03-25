@@ -1,11 +1,21 @@
 import * as React from 'react'; 
 import { FormGroup, ControlLabel, FormControl, HelpBlock } from 'react-bootstrap';
 
+function getValidationState(isValid: boolean): "error" | null {
+    return isValid ? null: 'error';
+}
+
 export function ProfileStringInput(props: ProfileStringInputProps) {
+    let error = null;
+
+    if (props.error) {
+        error = <HelpBlock>{props.error}</HelpBlock>
+    }
+
     return (
         <FormGroup
                 controlId={props.controlId}
-                validationState={props.validationState}
+                validationState={getValidationState(!props.error)}
             >
             <ControlLabel>{props.controlLabel}</ControlLabel>
             <FormControl
@@ -15,7 +25,7 @@ export function ProfileStringInput(props: ProfileStringInputProps) {
                 onChange={props.onChange}
             />
             <FormControl.Feedback />
-            <HelpBlock>{props.helpBlock}</HelpBlock>
+            {error}
         </FormGroup>
     )
 }
@@ -23,9 +33,8 @@ export function ProfileStringInput(props: ProfileStringInputProps) {
 export interface ProfileStringInputProps {
     value: string;
     onChange: (event: React.ChangeEvent<any>) => void;
-    validationState: 'success' | 'warning' | 'error';
     controlId: string;
     placeHolder: string;
     controlLabel: string;
-    helpBlock: string; 
+    error: string;
 }

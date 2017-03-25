@@ -3,6 +3,7 @@ let gulp = require('gulp'),
     buildModule = require('./build/build');
 
 let config = {
+    configDir: './build',
     distDir: './dist',
     contentBase: './test/harness'
 }

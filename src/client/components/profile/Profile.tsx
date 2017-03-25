@@ -1,4 +1,3 @@
-
 import * as React from 'react';
 import { UserModel } from '../../../domain/user/UserModel';
 import { FormGroup } from 'react-bootstrap';
@@ -8,6 +7,8 @@ import { HelpBlock } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import { ProfileBirthDate } from './ProfileBirthDate';
 import { ProfileStringInput } from './ProfileStringInput';
+import { validateProfile } from './validateProfile';
+import { ProfileValidationModel } from './ProfileValidationModel';
 
 export class Profile extends React.Component<RegistrationProps, RegistrationState> {
 
@@ -15,7 +16,8 @@ export class Profile extends React.Component<RegistrationProps, RegistrationStat
         super();
 
         this.state = {
-            user: props.user
+            user: props.user,
+            validation: validateProfile(props.user)
         }
     }
 
@@ -26,52 +28,49 @@ export class Profile extends React.Component<RegistrationProps, RegistrationStat
     }
 
     public render() {
+        let validation = validateProfile(this.state.user);
+
         return (
             <form>
                 <ProfileStringInput 
                     value={this.state.user.getFirstName()}
                     onChange={this.onFirstNameChange.bind(this)}
-                    validationState='success'
                     controlId='cw-form-profile-first-name'
                     placeHolder='Enter first name'
                     controlLabel='First name'
-                    helpBlock='Validation is based on string length.'
+                    error={validation.getFirstNameValidationError()}
                 />
                 <ProfileStringInput
                     value={this.state.user.getLastName()}
                     onChange={this.onLastNameChange.bind(this)}
-                    validationState='success'
                     controlId='cw-form-profile-last-name'
                     placeHolder='Enter last name'
                     controlLabel='Last name'
-                    helpBlock='Validation is based on string length.'
+                    error={validation.getLastNameValidationError()}
                 />
                 <ProfileStringInput
                     value={this.state.user.getProfession()}
                     onChange={this.onProfessionChange.bind(this)}
-                    validationState='success'
                     controlId='cw-form-profile-profession'
                     placeHolder='Enter profession'
                     controlLabel='Profession'
-                    helpBlock='Validation is based on string length.'
+                    error={validation.getProfessionValidationError()}
                 />
                 <ProfileStringInput
                     value={this.state.user.getAddress().getCountry()}
                     onChange={this.onCountryChange.bind(this)}
-                    validationState='success'
                     controlId='cw-form-profile-country'
                     placeHolder='Enter country'
                     controlLabel='Country'
-                    helpBlock='Validation is based on string length.'
+                    error={validation.getCountryValidationError()}
                 />
                 <ProfileStringInput
                     value={this.state.user.getAddress().getCity()}
                     onChange={this.onCityChange.bind(this)}
-                    validationState='success'
                     controlId='cw-form-profile-city'
                     placeHolder='Enter city'
                     controlLabel='City'
-                    helpBlock='Validation is based on string length.'
+                    error={validation.getCityValidationError()}
                 />
                 <ProfileBirthDate 
                     date={this.state.user.getBirthDate()}
@@ -132,6 +131,7 @@ export class Profile extends React.Component<RegistrationProps, RegistrationStat
 
 interface RegistrationState {
     user: UserModel;
+    validation: ProfileValidationModel;
 }
 
 export interface RegistrationProps {

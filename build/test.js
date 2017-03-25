@@ -1,12 +1,24 @@
 var jasmine = require('gulp-jasmine'),
-    JasmineSpecReporter = require('jasmine-spec-reporter').SpecReporter;
+    JasmineSpecReporter = require('jasmine-spec-reporter').SpecReporter,
+    es = require('event-stream');
 
 module.exports = function(gulp, config) {
     gulp.task('unit-test', ['ts-build'], function () {
-        return gulp.src(config.distDir + '/**/*Spec.js')
+        return es.concat(
+                gulp.src(config.distDir + '/**/*Spec.js'),
+                gulp.src(config.configDir + '/**/jsdomSetup.js')
+            )
             .pipe(jasmine({
                 reporter: new JasmineSpecReporter({
-                    displayStacktrace: 'all'
+                    displayStacktrace: 'all',
+                    config: {
+                        spec_files: [
+                            '/**/*Spec.js'
+                        ],
+                        helpers: [
+                            '/**/jsdomSetup.js'
+                        ]
+                    }
                 })
             }));
     });
