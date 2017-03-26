@@ -48,6 +48,14 @@ export class Profile extends React.Component<RegistrationProps, RegistrationStat
                     error={validation.getLastNameValidationError()}
                 />
                 <ProfileStringInput
+                    value={this.state.user.getEmail()}
+                    onChange={this.onEmailChange.bind(this)}
+                    controlId='cw-form-profile-email'
+                    placeHolder='Enter email'
+                    controlLabel='Email'
+                    error={validation.getEmailValidationError()}
+                />
+                <ProfileStringInput
                     value={this.state.user.getProfession()}
                     onChange={this.onProfessionChange.bind(this)}
                     controlId='cw-form-profile-profession'
@@ -74,6 +82,7 @@ export class Profile extends React.Component<RegistrationProps, RegistrationStat
                 <ProfileBirthDate 
                     date={this.state.user.getBirthDate()}
                     onChange={this.onBirthDateChange.bind(this)}
+                    error={validation.getBirthDateValidationError()}
                 />
                 <Button
                     bsStyle="primary"
@@ -83,6 +92,16 @@ export class Profile extends React.Component<RegistrationProps, RegistrationStat
                     disabled={validation.hasError()}
                 >
                     Update profile
+                </Button>
+                {' '}
+                <Button
+                    onClick={() => {
+                        this.setState({
+                            user: this.props.user
+                        })
+                    }}
+                >
+                    Cancel
                 </Button>
             </form>
         );
@@ -119,6 +138,12 @@ export class Profile extends React.Component<RegistrationProps, RegistrationStat
             user: this.state.user.setAddress(
                 this.state.user.getAddress().setCity(event.target.value)
             )
+        });
+    }
+
+    private onEmailChange(event: React.ChangeEvent<any>) {
+        this.setState({
+            user: this.state.user.setEmail(event.target.value)
         });
     }
 

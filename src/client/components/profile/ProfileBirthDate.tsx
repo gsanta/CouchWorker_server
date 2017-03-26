@@ -10,6 +10,12 @@ export class ProfileBirthDate extends React.Component<ProfileBirthDateProps, nul
     }
 
     public render() {
+        let error = null;
+
+        if (this.props.error) {
+            error = <HelpBlock>{this.props.error}</HelpBlock>
+        }
+
         return (
             <FormGroup>
                 <ControlLabel>Label</ControlLabel>
@@ -18,7 +24,7 @@ export class ProfileBirthDate extends React.Component<ProfileBirthDateProps, nul
                     value={this.props.date.toISOString()}
                     onChange={this.props.onChange}
                 />
-                <HelpBlock>Help</HelpBlock>
+                {error}
             </FormGroup>
         )
     }
@@ -27,4 +33,5 @@ export class ProfileBirthDate extends React.Component<ProfileBirthDateProps, nul
 export interface ProfileBirthDateProps {
     date: Date;
     onChange: (isoString: string) => void;
+    error: string;
 }
