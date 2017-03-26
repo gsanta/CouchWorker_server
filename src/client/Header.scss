@@ -1,0 +1,24 @@
+
+.cw-header {
+    display: block;
+    position: fixed;
+    width: 100%;
+    background: red;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    z-index: 2;
+
+    .navbar {
+        border-radius: 0;
+    }
+
+    .navbar-nav li.cw-login-button {
+        background: #0099CC;
+
+        a {
+            color: white;
+        }
+    }
+}

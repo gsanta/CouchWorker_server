@@ -12,8 +12,19 @@ import { PersonalInfoModel } from '../domain/user/PersonalInfoModel';
 import { Router, Route, browserHistory } from 'react-router';
 import { UserModel } from '../domain/user/UserModel';
 import { ProfileWrapper } from './components/profile/ProfileWrapper';
+import { Header } from './Header';
+import createHistory from 'history/createBrowserHistory'
+import * as reactRouter from 'react-router-redux';
+
+const ReactRouter: any = reactRouter;
+
+const history = createHistory()
+
+// Get the current location.
+const location = history.location
 
 require('bootstrap/dist/css/bootstrap.css');
+// require('./bootstrapOverwrite.scss');
 require('./couchWorker.scss');
 
 let initialState: RootModel = {
@@ -56,7 +67,20 @@ let initialState: RootModel = {
                 }),
                 rating: new RatingModel(4.2) 
             }
-        )        
+        ),
+        new HostModel(
+            {
+                firstName: 'User3',
+                lastName: 'Efgh',
+                birthDate: new Date(1988, 4, 20),
+                email: 'user3@gmail.com',
+                address: new AddressModel({
+                    country: 'Hungary',
+                    city: 'Budapest'
+                }),
+                rating: new RatingModel(4.2) 
+            }
+        )      
     ]),
     user: new UserModel({
         firstName: 'New',
@@ -70,14 +94,20 @@ let initialState: RootModel = {
     })
 }
 
-let store = configureStore(initialState);
+const middleware = ReactRouter.routerMiddleware(history)
+let store = configureStore(initialState, middleware);
 
 render(
     <Provider store={store}>
-        <Router history={browserHistory}>
-            <Route path='/' component={HostsWrapper} />
-            <Route path='/register' component={ProfileWrapper} />
-        </Router>
+        <ReactRouter.ConnectedRouter history={history as any}>
+             <div className='cw-root'>
+                <Header/>
+                <div className='cw-content'>
+                    <Route path='/' component={HostsWrapper} />
+                    <Route path='/register' component={ProfileWrapper} />
+                </div>
+            </div>
+        </ReactRouter.ConnectedRouter>
     </Provider>,
     document.getElementById('couch-worker-container')
 );
