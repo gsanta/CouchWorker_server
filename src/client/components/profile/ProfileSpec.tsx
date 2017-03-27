@@ -3,7 +3,7 @@ import { UserModel } from '../../../domain/user/UserModel';
 import { Profile } from './Profile';
 import * as React from 'react';
 import { Button } from 'react-bootstrap';
-import { ProfileStringInput } from './ProfileStringInput';
+import { StringInput } from '../form/StringInput';
 
 describe('<Profile/>', () => {
     describe('if the valid state of \'Profile\' changes', () => {
@@ -28,11 +28,11 @@ describe('<Profile/>', () => {
 
             expect(wrapper.find(Button).prop('disabled')).toBeFalsy();
 
-            wrapper.find(ProfileStringInput).first().simulate('change', { target: { value: '' }});
+            wrapper.find(StringInput).first().simulate('change', { target: { value: '' }});
 
             expect(wrapper.find(Button).prop('disabled')).toBeTruthy();
 
-            wrapper.find(ProfileStringInput).first().simulate('change', { target: { value: 'abcd' }});
+            wrapper.find(StringInput).first().simulate('change', { target: { value: 'abcd' }});
 
             expect(wrapper.find(Button).prop('disabled')).toBeFalsy();                  
         });  

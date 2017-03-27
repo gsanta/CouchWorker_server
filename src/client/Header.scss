@@ -14,10 +14,12 @@
         border-radius: 0;
     }
 
-    .navbar-nav li.cw-login-button {
+    .navbar-nav li.cw-login-button, navbar-nav li.cw-login-button.active {
         background: #0099CC;
 
-        a {
+        a, a:focus, a:hover {
+            background: #0099CC;
+            text-decoration: none;
             color: white;
         }
     }

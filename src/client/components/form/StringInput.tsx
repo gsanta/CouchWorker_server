@@ -5,7 +5,7 @@ function getValidationState(isValid: boolean): "error" | null {
     return isValid ? null: 'error';
 }
 
-export function ProfileStringInput(props: ProfileStringInputProps) {
+export function StringInput(props: StringInputProps) {
     let error = null;
 
     if (props.error) {
@@ -19,7 +19,7 @@ export function ProfileStringInput(props: ProfileStringInputProps) {
             >
             <ControlLabel>{props.controlLabel}</ControlLabel>
             <FormControl
-                type='text'
+                type={props.type}
                 value={props.value}
                 placeholder={props.placeHolder}
                 onChange={props.onChange}
@@ -30,11 +30,16 @@ export function ProfileStringInput(props: ProfileStringInputProps) {
     )
 }
 
-export interface ProfileStringInputProps {
+(StringInput as any).defaultProps = {
+    type: 'text'
+}
+
+export interface StringInputProps {
     value: string;
     onChange: (event: React.ChangeEvent<any>) => void;
     controlId: string;
     placeHolder: string;
     controlLabel: string;
     error: string;
+    type?: 'text' | 'password';
 }

@@ -6,9 +6,9 @@ import { FormControl } from 'react-bootstrap';
 import { HelpBlock } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import { ProfileBirthDate } from './ProfileBirthDate';
-import { ProfileStringInput } from './ProfileStringInput';
 import { validateProfile } from './validateProfile';
 import { ProfileValidationModel } from './ProfileValidationModel';
+import { StringInput } from '../form/StringInput';
 
 export class Profile extends React.Component<RegistrationProps, RegistrationState> {
 
@@ -31,7 +31,7 @@ export class Profile extends React.Component<RegistrationProps, RegistrationStat
         let validation = validateProfile(this.state.user);
         return (
             <form>
-                <ProfileStringInput 
+                <StringInput
                     value={this.state.user.getFirstName()}
                     onChange={this.onFirstNameChange.bind(this)}
                     controlId='cw-form-profile-first-name'
@@ -39,7 +39,7 @@ export class Profile extends React.Component<RegistrationProps, RegistrationStat
                     controlLabel='First name'
                     error={validation.getFirstNameValidationError()}
                 />
-                <ProfileStringInput
+                <StringInput
                     value={this.state.user.getLastName()}
                     onChange={this.onLastNameChange.bind(this)}
                     controlId='cw-form-profile-last-name'
@@ -47,7 +47,7 @@ export class Profile extends React.Component<RegistrationProps, RegistrationStat
                     controlLabel='Last name'
                     error={validation.getLastNameValidationError()}
                 />
-                <ProfileStringInput
+                <StringInput
                     value={this.state.user.getEmail()}
                     onChange={this.onEmailChange.bind(this)}
                     controlId='cw-form-profile-email'
@@ -55,7 +55,7 @@ export class Profile extends React.Component<RegistrationProps, RegistrationStat
                     controlLabel='Email'
                     error={validation.getEmailValidationError()}
                 />
-                <ProfileStringInput
+                <StringInput
                     value={this.state.user.getProfession()}
                     onChange={this.onProfessionChange.bind(this)}
                     controlId='cw-form-profile-profession'
@@ -63,7 +63,7 @@ export class Profile extends React.Component<RegistrationProps, RegistrationStat
                     controlLabel='Profession'
                     error={validation.getProfessionValidationError()}
                 />
-                <ProfileStringInput
+                <StringInput
                     value={this.state.user.getAddress().getCountry()}
                     onChange={this.onCountryChange.bind(this)}
                     controlId='cw-form-profile-country'
@@ -71,7 +71,7 @@ export class Profile extends React.Component<RegistrationProps, RegistrationStat
                     controlLabel='Country'
                     error={validation.getCountryValidationError()}
                 />
-                <ProfileStringInput
+                <StringInput
                     value={this.state.user.getAddress().getCity()}
                     onChange={this.onCityChange.bind(this)}
                     controlId='cw-form-profile-city'

@@ -9,22 +9,13 @@ import { List } from 'immutable';
 import { AddressModel } from '../domain/user/AddressModel';
 import { RatingModel } from '../domain/user/RatingModel';
 import { PersonalInfoModel } from '../domain/user/PersonalInfoModel';
-import { Router, Route, browserHistory } from 'react-router';
+import { Router, Route, browserHistory, IndexRoute } from 'react-router';
 import { UserModel } from '../domain/user/UserModel';
 import { ProfileWrapper } from './components/profile/ProfileWrapper';
-import { Header } from './Header';
-import createHistory from 'history/createBrowserHistory'
-import * as reactRouter from 'react-router-redux';
-
-const ReactRouter: any = reactRouter;
-
-const history = createHistory()
-
-// Get the current location.
-const location = history.location
+import { App } from './App';
+import { Login } from './components/login/Login';
 
 require('bootstrap/dist/css/bootstrap.css');
-// require('./bootstrapOverwrite.scss');
 require('./couchWorker.scss');
 
 let initialState: RootModel = {
@@ -67,20 +58,7 @@ let initialState: RootModel = {
                 }),
                 rating: new RatingModel(4.2) 
             }
-        ),
-        new HostModel(
-            {
-                firstName: 'User3',
-                lastName: 'Efgh',
-                birthDate: new Date(1988, 4, 20),
-                email: 'user3@gmail.com',
-                address: new AddressModel({
-                    country: 'Hungary',
-                    city: 'Budapest'
-                }),
-                rating: new RatingModel(4.2) 
-            }
-        )      
+        )        
     ]),
     user: new UserModel({
         firstName: 'New',
@@ -94,20 +72,17 @@ let initialState: RootModel = {
     })
 }
 
-const middleware = ReactRouter.routerMiddleware(history)
-let store = configureStore(initialState, middleware);
+let store = configureStore(initialState);
 
 render(
     <Provider store={store}>
-        <ReactRouter.ConnectedRouter history={history as any}>
-             <div className='cw-root'>
-                <Header/>
-                <div className='cw-content'>
-                    <Route path='/' component={HostsWrapper} />
-                    <Route path='/register' component={ProfileWrapper} />
-                </div>
-            </div>
-        </ReactRouter.ConnectedRouter>
+        <Router history={browserHistory}>
+            <Route path='/' component={App}>
+                <IndexRoute component={HostsWrapper} />
+                <Route path='/register' component={ProfileWrapper} />
+                <Route path='/login' component={Login} />
+            </Route>
+        </Router>
     </Provider>,
     document.getElementById('couch-worker-container')
 );
