@@ -36,29 +36,12 @@ export class Login extends React.Component<null, LoginState> {
                         error={null}
                         type='password'
                     />
-                <Button
-                    bsStyle="primary"
-                    onClick={() => {
-                        this.props.onSubmit(this.state.user)
-                    }}
-                    disabled={validation.hasError()}
-                >
-                    Update profile
-                </Button>
-                {' '}
-                <Button
-                    onClick={() => {
-                        this.setState({
-                            user: this.props.user
-                        })
-                    }}
-                >
-                    Cancel
-                </Button>
                 </form>
             </div>
         );
     }
+
+
 
     private onEmailChange(event: React.ChangeEvent<any>) {
         this.setState({
