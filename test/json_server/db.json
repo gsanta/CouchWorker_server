@@ -1,0 +1,11 @@
+{
+    "profile": {
+        "firstName": "New",
+        "lastName": "User",
+        "email": "new_user@gmail.com",
+        "profession": "Drummer",
+        "country": "Hungary",
+        "city": "Budapest",
+        "id": null
+    }
+}

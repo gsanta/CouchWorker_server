@@ -60,7 +60,7 @@ let initialState: RootModel = {
             }
         )        
     ]),
-    user: null 
+    user: new UserModel()
     // new UserModel({
     //     firstName: 'New',
     //     lastName: 'User',

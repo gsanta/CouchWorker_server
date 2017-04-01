@@ -21,7 +21,7 @@ export class ProfileBirthDate extends React.Component<ProfileBirthDateProps, nul
                 <ControlLabel>Label</ControlLabel>
                 <DatePicker 
                     className='cw-profile-birth-date-datepicker'
-                    value={this.props.date.toISOString()}
+                    value={this.props.date ? this.props.date.toISOString() : null}
                     onChange={this.props.onChange}
                 />
                 {error}

@@ -53,7 +53,7 @@ export class Profile extends React.Component<RegistrationProps, RegistrationStat
                     controlId='cw-form-profile-email'
                     placeHolder='Enter email'
                     controlLabel='Email'
-                    error={validation.getEmailValidationError()}
+                    error={validation.getEmailErrorMessage()}
                 />
                 <StringInput
                     value={this.state.user.getProfession()}

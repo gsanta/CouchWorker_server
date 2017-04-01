@@ -29,7 +29,7 @@ export class LastNameValidationError<T extends setLastNameValidationError> exten
 
 export function validateFirstName(userModel: UserModel): Optional<FirstNameValidationError<ProfileValidationModel>> {
     let validationError: FirstNameValidationError<ProfileValidationModel> = null; 
-    if (userModel.getFirstName().length === 0) {
+    if (!userModel.getFirstName() || userModel.getFirstName().length === 0) {
         validationError = new FirstNameValidationError<ProfileValidationModel>('First name is required.');
     }
     
@@ -38,7 +38,7 @@ export function validateFirstName(userModel: UserModel): Optional<FirstNameValid
 
 export function validateLastName(userModel: UserModel): Optional<LastNameValidationError<ProfileValidationModel>> {
     let validationError: LastNameValidationError<ProfileValidationModel> = null;
-    if (userModel.getLastName().length === 0) {
+    if (!userModel.getLastName() || userModel.getLastName().length === 0) {
         validationError = new LastNameValidationError<ProfileValidationModel>('Last name is required.');
     }
 

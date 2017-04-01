@@ -12,7 +12,7 @@ export class AddressModel {
     private street: string;
     private house: string;
 
-    constructor(addressDocument: AddressDocument) {
+    constructor(addressDocument?: AddressDocument) {
         if (addressDocument) {
             this.country = addressDocument.country;
             this.city = addressDocument.city;

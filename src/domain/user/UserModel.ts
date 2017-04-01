@@ -25,6 +25,8 @@ export class UserModel {
                 street: userDocument.street,
                 house: userDocument.house
             });
+        } else {
+            this.address = new AddressModel()
         }
     }
 

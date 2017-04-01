@@ -4,7 +4,7 @@ export class ProfileValidationModel {
     private firstNameValidationError: string;
     private lastNameValidationError: string;
     private birthDateValidationError: string;
-    private emailValidationError: string;
+    private emailErrorMessage: string;
     private countryValidationError: string;
     private cityValidationError: string;
     private professionValidationError: string;
@@ -33,12 +33,12 @@ export class ProfileValidationModel {
         return this.birthDateValidationError;
     }
 
-    public setEmailValidationError(errorMessage: string) {
-        this.emailValidationError = errorMessage;
+    public setEmailErrorMessage(errorMessage: string) {
+        this.emailErrorMessage = errorMessage;
     }
 
-    public getEmailValidationError(): string {
-        return this.emailValidationError;
+    public getEmailErrorMessage(): string {
+        return this.emailErrorMessage;
     }
 
     public setCountryValidationError(errorMessage: string) {
@@ -70,7 +70,7 @@ export class ProfileValidationModel {
             this.firstNameValidationError ||
             this.lastNameValidationError ||
             this.birthDateValidationError ||
-            this.emailValidationError ||
+            this.emailErrorMessage ||
             this.countryValidationError ||
             this.cityValidationError ||
             this.professionValidationError
