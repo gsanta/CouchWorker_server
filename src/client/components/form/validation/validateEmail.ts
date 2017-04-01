@@ -18,7 +18,7 @@ export class EmailValidationError<T extends setEmailError> extends ValidationErr
 
 export function validateEmail<T extends setEmailError>(model: getEmail): OptionalEmailValidationError<T> {
     let validationError: EmailValidationError<setEmailError> = null;
-    if (model.getEmail().length === 0) {
+    if (!model.getEmail() || model.getEmail().length === 0) {
         validationError = new EmailValidationError<setEmailError>('Email is required.');
     } else if (!validator.isEmail(model.getEmail())) {
         validationError = new EmailValidationError<setEmailError>('Not a valid email.');        

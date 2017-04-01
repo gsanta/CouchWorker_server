@@ -13,7 +13,7 @@ import { Router, Route, browserHistory, IndexRoute } from 'react-router';
 import { UserModel } from '../domain/user/UserModel';
 import { ProfileWrapper } from './components/profile/ProfileWrapper';
 import { App } from './App';
-import { Login } from './components/login/Login';
+import { LoginWrapper } from './components/login/LoginWrapper';
 
 require('bootstrap/dist/css/bootstrap.css');
 require('./couchWorker.scss');
@@ -80,7 +80,7 @@ render(
             <Route path='/' component={App}>
                 <IndexRoute component={HostsWrapper} />
                 <Route path='/register' component={ProfileWrapper} />
-                <Route path='/login' component={Login} />
+                <Route path='/login' component={LoginWrapper} />
             </Route>
         </Router>
     </Provider>,

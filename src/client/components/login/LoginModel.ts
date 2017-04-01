@@ -4,7 +4,7 @@ export class LoginModel {
     private email: string;
     private password: string;
 
-    constructor(email: string = null, password: string = null) {
+    constructor(email: string = '', password: string = '') {
         this.email = email;
         this.password = password;
     }

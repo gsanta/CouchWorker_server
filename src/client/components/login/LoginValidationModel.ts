@@ -19,4 +19,11 @@ export class LoginValidationModel {
     public getPasswordErrorMessage(): string {
         return this.passwordError;
     }
+
+    public hasError(): boolean {
+        return !!(
+            this.getEmailErrorMessage() ||
+            this.getPasswordErrorMessage()
+        )
+    }
 }

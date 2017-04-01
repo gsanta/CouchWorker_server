@@ -17,7 +17,7 @@ export class PasswordValidationError<T extends setPasswordError> extends Validat
 
 export function validatePassword<T extends setPasswordError>(model: getPassword): OptionalPasswordValidationError<T> {
     let validationError: PasswordValidationError<setPasswordError> = null;
-    if (model.getPassword().length === 0) {
+    if (!model.getPassword() || model.getPassword().length === 0) {
         validationError = new PasswordValidationError<setPasswordError>('Password is required.');
     }
 

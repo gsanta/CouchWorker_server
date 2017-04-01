@@ -3,6 +3,7 @@ import { ProfileValidationModel } from './ProfileValidationModel';
 import { ValidationError } from '../form/validation/ValidationError';
 import { Optional } from '../form/validation/Optional';
 import { validateEmail } from '../form/validation/validateEmail';
+import { ValidatorFunc } from '../form/validation/ValidatorFunc';
 
 type setFirstNameValidationError = {setFirstNameValidationError: (error: string) => void};  
 export class FirstNameValidationError<T extends setFirstNameValidationError> extends ValidationError<T> {
@@ -44,11 +45,9 @@ export function validateLastName(userModel: UserModel): Optional<LastNameValidat
     return new Optional<LastNameValidationError<ProfileValidationModel>>(validationError);
 }
 
-type validator = (user: UserModel) => Optional<FirstNameValidationError<ProfileValidationModel>>;
-
 export function validateProfile(
     user: UserModel,
-    validators: validator[] = [
+    validators: ValidatorFunc<UserModel, ProfileValidationModel>[] = [
         validateFirstName,
         validateLastName,
         validateEmail
