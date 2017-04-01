@@ -139,7 +139,6 @@ app.post('/deleteUser', function (req, res) {
 });
 
 // app.post("/login", function(req, res) {
-//     debugger;
 //     if(req.body.name && req.body.password){
 //         var name = req.body.name;
 //         var password = req.body.password;

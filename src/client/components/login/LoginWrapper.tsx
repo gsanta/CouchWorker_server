@@ -8,10 +8,13 @@ const mapStateToProps = (state: RootModel) => {
   return {};
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch, props: any) => {
   return {
     onSubmit: (model: LoginModel) => {
-      dispatch(login(model))
+        dispatch(login(model))
+        .then((data) => {
+            props.history.push('/register');
+        });
     }
   }
 }

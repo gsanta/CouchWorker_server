@@ -60,16 +60,17 @@ let initialState: RootModel = {
             }
         )        
     ]),
-    user: new UserModel({
-        firstName: 'New',
-        lastName: 'User',
-        birthDate: new Date(1980, 11, 28),
-        email: 'new_user@gmail.com',
-        profession: 'Drummer',
-        country: 'Hungary',
-        city: 'Budapest',
-        id: null
-    })
+    user: null 
+    // new UserModel({
+    //     firstName: 'New',
+    //     lastName: 'User',
+    //     birthDate: new Date(1980, 11, 28),
+    //     email: 'new_user@gmail.com',
+    //     profession: 'Drummer',
+    //     country: 'Hungary',
+    //     city: 'Budapest',
+    //     id: null
+    // })
 }
 
 let store = configureStore(initialState);
