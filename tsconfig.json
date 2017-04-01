@@ -12,6 +12,7 @@
         "src/**/*"
     ],
     "exclude": [
+        "node_modules/typescript/lib/lib.d.ts",
         "node_modules",
         "!node_modules/@types"
     ]

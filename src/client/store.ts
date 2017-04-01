@@ -8,6 +8,7 @@ import { RootModel } from './RootModel';
 import { RECEIVE_HOSTS } from './hosts/hostsActions';
 import { hosts } from './hosts/hostsReducers';
 import { profile } from './profile/profileReducers';
+import thunk from 'redux-thunk';
 
 const rootReducer = combineReducers({
     hosts,
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
 export function configureStore(state: RootModel) {
   return createStore(
     rootReducer,
-    state
+    state,
+    applyMiddleware(thunk)
   )
 }

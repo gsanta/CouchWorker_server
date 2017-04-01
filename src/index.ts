@@ -78,6 +78,19 @@ const validator = new UserValidator();
 const userRepository = repositoryFactory.getUserRepository();
 const userBusiness = new UserBusiness(userRepository);
 
+app.post('/api/login', function (req, res) {
+    res.send({
+        firstName: 'New',
+        lastName: 'User',
+        birthDate: new Date(1980, 11, 28),
+        email: 'new_user@gmail.com',
+        profession: 'Drummer',
+        country: 'Hungary',
+        city: 'Budapest',
+        id: null
+    });
+});
+
 app.post('/addUser', function (req, res) {
     const userModel = validator.validateRegistration(req.body);
     userBusiness.create(userModel)
@@ -125,34 +138,34 @@ app.post('/deleteUser', function (req, res) {
         });
 });
 
-app.post("/login", function(req, res) {
-    debugger;
-    if(req.body.name && req.body.password){
-        var name = req.body.name;
-        var password = req.body.password;
-    }
+// app.post("/login", function(req, res) {
+//     debugger;
+//     if(req.body.name && req.body.password){
+//         var name = req.body.name;
+//         var password = req.body.password;
+//     }
 
-    let user: any;
-    for (let i = 0; i < users.length; i++) {
-        if (users[i].name === name) {
-            user = users[i];
-            break;
-        }
-    }
-    // usually this would be a database call:
-    if(!user){
-        res.status(401).json({message:"no such user found"});
-    }
+//     let user: any;
+//     for (let i = 0; i < users.length; i++) {
+//         if (users[i].name === name) {
+//             user = users[i];
+//             break;
+//         }
+//     }
+//     // usually this would be a database call:
+//     if(!user){
+//         res.status(401).json({message:"no such user found"});
+//     }
 
-    if(user.password === req.body.password) {
-        // from now on we'll identify the user by the id and the id is the only personalized value that goes into our token
-        var payload = {id: user.id};
-        var token = jwt.sign(payload, jwtOptions.secretOrKey);
-        res.json({message: "ok", token: token});
-    } else {
-      res.status(401).json({message:"passwords did not match"});
-    }
-});
+//     if(user.password === req.body.password) {
+//         // from now on we'll identify the user by the id and the id is the only personalized value that goes into our token
+//         var payload = {id: user.id};
+//         var token = jwt.sign(payload, jwtOptions.secretOrKey);
+//         res.json({message: "ok", token: token});
+//     } else {
+//       res.status(401).json({message:"passwords did not match"});
+//     }
+// });
 
 app.get("/secret", passport.authenticate('jwt', { session: false }), function(req, res){
     res.json("Success! You can not see this without a token");
