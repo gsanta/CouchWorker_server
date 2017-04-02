@@ -29,6 +29,8 @@ export function Host(props: HostProps) {
                     <div>
                         {props.host.getAddress().getCity()}, {props.host.getAddress().getCountry()}
                     </div>
+                </div>
+                <div className='cw-host-panel-col3'>
                     <div>
                         <StarRatingWrapper rate={props.host.getRating().getRating()}/>
                     </div>

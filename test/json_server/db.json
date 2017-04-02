@@ -11,31 +11,148 @@
 
     "hosts": [
         {
-            "firstName": "Santa",
-            "lastName": "Gergely",
+            "firstName": "FirstName 1",
+            "lastName": "LastName 1",
             "birthDate": null,
-            "email": "santagergely@gmail.com",
+            "email": "user1@gmail.com",
             "country": "Hungary",
             "city": "Budapest",
             "rating": 5             
         },
         {
-            "firstName": "User2",
-            "lastName": "Abcd",
+            "firstName": "FirstName 2",
+            "lastName": "LastName 2",
             "birthDate": null,
             "email": "user2@gmail.com",
-            "country": "London",
-            "city": "UK",
-            "rating": 3.4 
+            "country": "Hungary",
+            "city": "Budapest",
+            "rating": 5             
         },
         {
-            "firstName": "User3",
-            "lastName": "Efgh",
+            "firstName": "FirstName 3",
+            "lastName": "LastName 3",
             "birthDate": null,
             "email": "user3@gmail.com",
             "country": "Hungary",
             "city": "Budapest",
-            "rating": 4.2 
+            "rating": 5             
+        },
+        {
+            "firstName": "FirstName 4",
+            "lastName": "LastName 4",
+            "birthDate": null,
+            "email": "user4@gmail.com",
+            "country": "Hungary",
+            "city": "Budapest",
+            "rating": 5             
+        },
+        {
+            "firstName": "FirstName 5",
+            "lastName": "LastName 5",
+            "birthDate": null,
+            "email": "user5@gmail.com",
+            "country": "Hungary",
+            "city": "Budapest",
+            "rating": 5             
+        },
+        {
+            "firstName": "FirstName 6",
+            "lastName": "LastName 6",
+            "birthDate": null,
+            "email": "user6@gmail.com",
+            "country": "Hungary",
+            "city": "Budapest",
+            "rating": 5             
+        },
+        {
+            "firstName": "FirstName 7",
+            "lastName": "LastName 7",
+            "birthDate": null,
+            "email": "user7@gmail.com",
+            "country": "Hungary",
+            "city": "Budapest",
+            "rating": 5             
+        },
+        {
+            "firstName": "FirstName 8",
+            "lastName": "LastName 8",
+            "birthDate": null,
+            "email": "user8@gmail.com",
+            "country": "Hungary",
+            "city": "Budapest",
+            "rating": 5             
+        },
+        {
+            "firstName": "FirstName 9",
+            "lastName": "LastName 9",
+            "birthDate": null,
+            "email": "user1@gmail.com",
+            "country": "Hungary",
+            "city": "Budapest",
+            "rating": 5             
+        },
+        {
+            "firstName": "FirstName 10",
+            "lastName": "LastName 10",
+            "birthDate": null,
+            "email": "user10@gmail.com",
+            "country": "Hungary",
+            "city": "Budapest",
+            "rating": 5             
+        },
+        {
+            "firstName": "FirstName 11",
+            "lastName": "LastName 11",
+            "birthDate": null,
+            "email": "user11@gmail.com",
+            "country": "Hungary",
+            "city": "Budapest",
+            "rating": 5             
+        },
+        {
+            "firstName": "FirstName 12",
+            "lastName": "LastName 12",
+            "birthDate": null,
+            "email": "user12@gmail.com",
+            "country": "Hungary",
+            "city": "Budapest",
+            "rating": 5             
+        },
+        {
+            "firstName": "FirstName 13",
+            "lastName": "LastName 13",
+            "birthDate": null,
+            "email": "user13@gmail.com",
+            "country": "Hungary",
+            "city": "Budapest",
+            "rating": 5             
+        },
+        {
+            "firstName": "FirstName 14",
+            "lastName": "LastName 14",
+            "birthDate": null,
+            "email": "user14@gmail.com",
+            "country": "Hungary",
+            "city": "Budapest",
+            "rating": 5             
+        },
+        {
+            "firstName": "FirstName 15",
+            "lastName": "LastName 15",
+            "birthDate": null,
+            "email": "user15@gmail.com",
+            "country": "Hungary",
+            "city": "Budapest",
+            "rating": 5             
+        },
+        {
+            "firstName": "FirstName 16",
+            "lastName": "LastName 16",
+            "birthDate": null,
+            "email": "user1@gmail.com",
+            "country": "Hungary",
+            "city": "Budapest",
+            "rating": 5             
         }
     ]
 }

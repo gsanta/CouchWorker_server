@@ -17,6 +17,7 @@ import { LoginWrapper } from './components/login/LoginWrapper';
 
 require('bootstrap/dist/css/bootstrap.css');
 require('./couchWorker.scss');
+require('./bootstrapOverwrite.scss');
 
 let initialState: RootModel = {
     hosts: List<HostModel>(),

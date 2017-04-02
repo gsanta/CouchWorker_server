@@ -14,13 +14,26 @@
         border-radius: 0;
     }
 
+    .navbar-nav li.cw-menu-button, navbar-nav li.cw-menu-button.active {
+        a, a:focus, a:hover {
+            text-decoration: none;
+            color: white;
+        }
+    }
+
     .navbar-nav li.cw-login-button, navbar-nav li.cw-login-button.active {
         background: #0099CC;
 
         a, a:focus, a:hover {
             background: #0099CC;
-            text-decoration: none;
-            color: white;
+        }
+    }
+
+    .navbar-nav li.cw-hosts-button, navbar-nav li.cw-hosts-button.active {
+        background: #FFBA00;
+
+        a, a:focus, a:hover {
+            background: #FFBA00;
         }
     }
 }

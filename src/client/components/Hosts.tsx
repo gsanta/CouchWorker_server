@@ -4,6 +4,7 @@ import { List } from 'immutable';
 import { Host } from './Host';
 import { Row } from 'react-bootstrap';
 import { Col } from 'react-bootstrap';
+require('./Hosts.scss');
 
 export interface HostsProps {
     hosts: List<HostModel>;
@@ -13,10 +14,15 @@ export function Hosts(props: HostsProps) {
     let hosts = props.hosts.map((host, index) => <Host host={host} key={index}/>);
 
     return (
+        <div className='cw-hosts-col'>
+            {hosts}
+        </div>
+    );
+    /*return (
         <Row>
             <Col xs={6} xsOffset={3} className='cw-hosts-col'>
                 {hosts}
             </Col>
         </Row>
-    );
+    );*/
 }

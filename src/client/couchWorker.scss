@@ -1,3 +1,4 @@
+@import './constants.scss';
 
 body {
     padding: 10px;
@@ -5,4 +6,10 @@ body {
 
 .cw-content {
     padding-top: 50px;
+    color: $textColor;
+    
+    // bootstrap puts -15px left/right margin on rows which causes :horizontal
+    // scrollbar to appear, this was one suggested solution I found to resolve it
+    // https://github.com/twbs/bootstrap/issues/6686
+    width: calc(100% - 30px);
 }

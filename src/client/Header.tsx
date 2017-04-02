@@ -14,11 +14,23 @@ export function Header() {
                     <Nav pullRight>
                         <LinkContainer to="/login">
                             <NavItem 
-                                className='cw-login-button'
+                                className='cw-menu-button cw-login-button'
                                 eventKey={1}
                                 href="#"
                             >
                                 Log in
+                            </NavItem>
+                        </LinkContainer>
+                    </Nav>
+
+                    <Nav pullRight>
+                        <LinkContainer to="/">
+                            <NavItem 
+                                className='cw-menu-button  cw-hosts-button'
+                                eventKey={2}
+                                href="#"
+                            >
+                                Hosts
                             </NavItem>
                         </LinkContainer>
                     </Nav>

@@ -1,14 +1,10 @@
 
 .cw-host-panel {
-    height: 200px;
-
-    &.panel {
-        background: #977254;
-    }
+    height: 120px;
 }
 
 .cw-host-thumbnail {
-    width: calc(100% - 40px);
+    height: 118px;
 }
 
 .cw-host-panel-row {
@@ -19,9 +15,15 @@
 }
 
 .cw-host-panel-col1 {
-    width: 200px;
+    width: 150px;
 }
 
 .cw-host-panel-col2 {
-    width: calc(100% - 200px);
+    width: 450px;
+    padding: 10px;
+}
+
+.cw-host-panel-col3 {
+    width: 100px;
+    padding: 10px;
 }

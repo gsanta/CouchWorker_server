@@ -1,2 +1,9 @@
+@import './constants.scss';
 
+.panel {
+    border: 1px solid $borderGray;
+}
 
+.panel-body {
+    padding: 0;
+}
