@@ -1,8 +1,9 @@
 import { HostModel } from '../HostModel';
 import { List } from 'immutable';
 import { hosts } from './hostsReducers';
-import { RECEIVE_HOSTS } from './hostsActions';
 import { PersonalInfoModel } from '../../domain/user/PersonalInfoModel';
+import { FETCH_HOSTS } from './hostsActions';
+import { ASYNC_STATES } from '../utils/AsyncStates';
 
 
 describe('hostsReducers', () => {
@@ -17,8 +18,9 @@ describe('hostsReducers', () => {
                         firstName: 'User2',
                         lastName: null,
                         birthDate: null,
+                        country: null,
+                        city: null,
                         email: null,
-                        address: null,
                         rating: null
                     })
                 ]);
@@ -30,14 +32,16 @@ describe('hostsReducers', () => {
 
         it('should use the hosts from the action when the action type is RECEIVE_HOSTS', () => {
             let action = {
-                type: RECEIVE_HOSTS,
+                type: FETCH_HOSTS,
+                state: ASYNC_STATES.SUCCESS,
                 hosts: List<HostModel>([
                     new HostModel({
                         firstName: 'User1',
                         lastName: null,
                         birthDate: null,
                         email: null,
-                        address: null,
+                        country: null,
+                        city: null,
                         rating: null
                     }),
                     new HostModel({
@@ -45,7 +49,8 @@ describe('hostsReducers', () => {
                         lastName: null,
                         birthDate: null,
                         email: null,
-                        address: null,
+                        country: null,
+                        city: null,
                         rating: null
                     }),
                 ])
@@ -57,7 +62,8 @@ describe('hostsReducers', () => {
                     lastName: null,
                     birthDate: null,
                     email: null,
-                    address: null,
+                    country: null,
+                    city: null,
                     rating: null
                 })
             ]);

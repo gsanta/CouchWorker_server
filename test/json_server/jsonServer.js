@@ -3,11 +3,17 @@ const server = jsonServer.create()
 const router = jsonServer.router('./test/json_server/db.json')
 const middlewares = jsonServer.defaults()
 const bodyParser = require('body-parser');
+const db = require('./db.json');
 
 // Set default middlewares (logger, static, cors and no-cache)
 server.use(middlewares)
 
 server.use(jsonServer.bodyParser);
+
+// Add this before server.use(router)
+server.use(jsonServer.rewriter({
+  '/api/': '/'
+}));
 
 // server.use(bodyParser.json());
 
@@ -15,7 +21,7 @@ server.use(jsonServer.bodyParser);
 server.post('/login', (req, res) => {
     // res.send('hello')
     // console.log(req)
-  res.send(req.body)
+    res.send(db.profile);
 })
 
 // To handle POST, PUT and PATCH you need to use a body-parser

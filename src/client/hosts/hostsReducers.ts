@@ -1,11 +1,15 @@
 import { List } from 'immutable';
 import { HostModel } from '../HostModel';
-import { RECEIVE_HOSTS } from './hostsActions';
+import { FETCH_HOSTS } from './hostsActions';
+import { ASYNC_STATES } from '../utils/AsyncStates';
 
 export function hosts(state: List<HostModel> = List<HostModel>(), action: any): List<HostModel> {
   switch (action.type) {
-    case RECEIVE_HOSTS:
-      return action.hosts;
+    case FETCH_HOSTS:
+        if (action.state === ASYNC_STATES.SUCCESS) {
+            return action.hosts;        
+        }
+      return state;
     default:
       return state;
   }

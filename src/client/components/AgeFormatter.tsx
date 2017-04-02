@@ -8,6 +8,10 @@ function calculateYear(date: Date) {
 }
 
 export function AgeFormatter(props: {date: Date}) {
+    if (!props.date) {
+        return <span>-</span>
+    }
+    
     return (
         <span>{calculateYear(props.date)}</span>
     )

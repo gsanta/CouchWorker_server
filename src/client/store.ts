@@ -5,7 +5,6 @@ import * as assign from 'object-assign';
 import { HostModel } from './HostModel';
 import { List } from 'immutable';
 import { RootModel } from './RootModel';
-import { RECEIVE_HOSTS } from './hosts/hostsActions';
 import { hosts } from './hosts/hostsReducers';
 import { profile } from './profile/profileReducers';
 import thunk from 'redux-thunk';

@@ -26,15 +26,15 @@ describe('<Profile/>', () => {
                 />
             );
 
-            expect(wrapper.find(Button).prop('disabled')).toBeFalsy();
+            expect(wrapper.find(Button).first().prop('disabled')).toBeFalsy();
 
             wrapper.find(StringInput).first().simulate('change', { target: { value: '' }});
 
-            expect(wrapper.find(Button).prop('disabled')).toBeTruthy();
+            expect(wrapper.find(Button).first().prop('disabled')).toBeTruthy();
 
             wrapper.find(StringInput).first().simulate('change', { target: { value: 'abcd' }});
 
-            expect(wrapper.find(Button).prop('disabled')).toBeFalsy();                  
+            expect(wrapper.find(Button).first().prop('disabled')).toBeFalsy();                  
         });  
     })
 });

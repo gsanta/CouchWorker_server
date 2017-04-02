@@ -46,7 +46,7 @@ module.exports = function(gulp, config) {
             historyApiFallback: true,
             proxy: {
                 "/api/*": {
-                    target: "http://localhost:8081"
+                    target: "http://localhost:3000"
                 }
             }
         }).listen(8765, '0.0.0.0', function(err) {

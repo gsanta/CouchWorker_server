@@ -1,4 +1,5 @@
-import { receiveHosts, RECEIVE_HOSTS } from './hostsActions';
+import { ASYNC_STATES } from '../utils/AsyncStates';
+import { receiveHosts, FETCH_HOSTS } from './hostsActions';
 import { HostModel } from '../HostModel';
 import { List } from 'immutable';
 import { AddressModel } from '../../domain/user/AddressModel';
@@ -15,11 +16,9 @@ describe('hostsActions', () => {
                         lastName: null,
                         birthDate: null,
                         email: null,
-                        address: new AddressModel({
-                            country: 'Hungary',
-                            city: 'Budapest'
-                        }),
-                        rating: new RatingModel(5) 
+                        country: 'Hungary',
+                        city: 'Budapest',
+                        rating: 5 
                     }
                 ),
                 new HostModel(
@@ -28,11 +27,9 @@ describe('hostsActions', () => {
                         lastName: null,
                         birthDate: null,
                         email: null,
-                        address: new AddressModel({
-                            country: 'London',
-                            city: 'UK'
-                        }),
-                        rating: new RatingModel(3.4) 
+                        country: 'London',
+                        city: 'UK',
+                        rating: 3.4 
                     }
                 ),
                 new HostModel(
@@ -41,18 +38,17 @@ describe('hostsActions', () => {
                         lastName: null,
                         birthDate: null,
                         email: null,
-                        address: new AddressModel({
-                            country: 'Hungary',
-                            city: 'Budapest'
-                        }),
-                        rating: new RatingModel(4.2) 
+                        country: 'Hungary',
+                        city: 'Budapest',
+                        rating: 4.2 
                     }
                 )         
-            ])
+            ]);
 
             let action = receiveHosts(hosts);
 
-            expect(action.type).toEqual(RECEIVE_HOSTS);
+            expect(action.type).toEqual(FETCH_HOSTS);
+            expect(action.state).toEqual(ASYNC_STATES.SUCCESS);
             expect(action.hosts).toEqual(hosts);
         });
     });

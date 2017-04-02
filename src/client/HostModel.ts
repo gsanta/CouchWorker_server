@@ -1,14 +1,13 @@
-import { AddressModel } from '../domain/user/AddressModel';
+import { AddressModel, AddressDocument } from '../domain/user/AddressModel';
 import { RatingModel } from '../domain/user/RatingModel';
 import { PersonalInfoModel } from '../domain/user/PersonalInfoModel';
 
-export interface HostDocument {
+export interface HostDocument extends AddressDocument {
     firstName: string;
     lastName: string;
     birthDate: Date;
     email: string;
-    address: AddressModel;
-    rating: RatingModel;
+    rating: number;
 }
 
 export class HostModel {
@@ -24,8 +23,13 @@ export class HostModel {
         this.lastName = hostDocument.lastName,
         this.birthDate = hostDocument.birthDate,
         this.email = hostDocument.email    
-        this.address = hostDocument.address;
-        this.rating = hostDocument.rating;
+        this.address = new AddressModel({
+            country: hostDocument.country,
+            city: hostDocument.city,
+            street: hostDocument.street,
+            house: hostDocument.house
+        });
+        this.rating = new RatingModel(hostDocument.rating);
     }
 
     public getAddress(): AddressModel {

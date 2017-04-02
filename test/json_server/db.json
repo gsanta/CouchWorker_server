@@ -7,5 +7,35 @@
         "country": "Hungary",
         "city": "Budapest",
         "id": null
-    }
+    },
+
+    "hosts": [
+        {
+            "firstName": "Santa",
+            "lastName": "Gergely",
+            "birthDate": null,
+            "email": "santagergely@gmail.com",
+            "country": "Hungary",
+            "city": "Budapest",
+            "rating": 5             
+        },
+        {
+            "firstName": "User2",
+            "lastName": "Abcd",
+            "birthDate": null,
+            "email": "user2@gmail.com",
+            "country": "London",
+            "city": "UK",
+            "rating": 3.4 
+        },
+        {
+            "firstName": "User3",
+            "lastName": "Efgh",
+            "birthDate": null,
+            "email": "user3@gmail.com",
+            "country": "Hungary",
+            "city": "Budapest",
+            "rating": 4.2 
+        }
+    ]
 }

@@ -2,13 +2,9 @@ import { Dispatch } from 'redux';
 import { LoginModel } from './LoginModel';
 // import 'whatwg-fetch';
 import { UserModel } from '../../../domain/user/UserModel';
+import { ASYNC_STATES } from '../../utils/AsyncStates';
 
 export const LOGIN = 'LOGIN';
-export enum ASYNC_STATES {
-    STARTED,
-    SUCCESS,
-    FAILURE
-}
 
 export function requestLogin(login: LoginModel) {
     return {

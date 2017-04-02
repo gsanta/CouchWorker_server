@@ -19,47 +19,48 @@ require('bootstrap/dist/css/bootstrap.css');
 require('./couchWorker.scss');
 
 let initialState: RootModel = {
-    hosts: List<HostModel>([
-        new HostModel(
-            {
-                firstName: 'Santa',
-                lastName: 'Gergely',
-                birthDate: new Date(1990, 2, 0),
-                email: 'santagergely@gmail.com',
-                address: new AddressModel({
-                    country: 'Hungary',
-                    city: 'Budapest'
-                }),
-                rating: new RatingModel(5)             
-            }
-        ),
-        new HostModel(
-            {
-                firstName: 'User2',
-                lastName: 'Abcd',
-                birthDate: new Date(1920, 1, 12),
-                email: 'user2@gmail.com',
-                address: new AddressModel({
-                    country: 'London',
-                    city: 'UK'
-                }),
-                rating: new RatingModel(3.4) 
-            }
-        ),
-        new HostModel(
-            {
-                firstName: 'User3',
-                lastName: 'Efgh',
-                birthDate: new Date(1988, 4, 20),
-                email: 'user3@gmail.com',
-                address: new AddressModel({
-                    country: 'Hungary',
-                    city: 'Budapest'
-                }),
-                rating: new RatingModel(4.2) 
-            }
-        )        
-    ]),
+    hosts: List<HostModel>(),
+    // List<HostModel>([
+    //     new HostModel(
+    //         {
+    //             firstName: 'Santa',
+    //             lastName: 'Gergely',
+    //             birthDate: new Date(1990, 2, 0),
+    //             email: 'santagergely@gmail.com',
+    //             address: new AddressModel({
+    //                 country: 'Hungary',
+    //                 city: 'Budapest'
+    //             }),
+    //             rating: new RatingModel(5)             
+    //         }
+    //     ),
+    //     new HostModel(
+    //         {
+    //             firstName: 'User2',
+    //             lastName: 'Abcd',
+    //             birthDate: new Date(1920, 1, 12),
+    //             email: 'user2@gmail.com',
+    //             address: new AddressModel({
+    //                 country: 'London',
+    //                 city: 'UK'
+    //             }),
+    //             rating: new RatingModel(3.4) 
+    //         }
+    //     ),
+    //     new HostModel(
+    //         {
+    //             firstName: 'User3',
+    //             lastName: 'Efgh',
+    //             birthDate: new Date(1988, 4, 20),
+    //             email: 'user3@gmail.com',
+    //             address: new AddressModel({
+    //                 country: 'Hungary',
+    //                 city: 'Budapest'
+    //             }),
+    //             rating: new RatingModel(4.2) 
+    //         }
+    //     )        
+    // ]),
     user: new UserModel()
     // new UserModel({
     //     firstName: 'New',
