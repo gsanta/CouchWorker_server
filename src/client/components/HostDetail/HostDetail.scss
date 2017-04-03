@@ -1,0 +1,25 @@
+
+
+.cw-host-detail-panel {
+    width: 700px;
+    margin: 0 auto;
+
+    .cw-host-detail-panel-row {
+        display: -webkit-flex;
+        display: flex;
+        width: 100%;
+        
+        .cw-host-detail-panel-col1 {
+            width: 250px;
+
+            .cw-host-detail-thumbnail {
+                width: 240px;
+            }
+        }
+
+        .cw-host-detail-panel-col2 {
+            width: 450px;
+            padding: 10px;
+        }
+    }
+}

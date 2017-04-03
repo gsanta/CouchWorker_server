@@ -8,6 +8,7 @@ export interface HostDocument extends AddressDocument {
     birthDate: Date;
     email: string;
     rating: number;
+    id: string;
 }
 
 export class HostModel {
@@ -17,6 +18,7 @@ export class HostModel {
     private email: string;
     private address: AddressModel;
     private rating: RatingModel;
+    private id: string;
 
     constructor(hostDocument: HostDocument) {
         this.firstName = hostDocument.firstName,
@@ -30,6 +32,7 @@ export class HostModel {
             house: hostDocument.house
         });
         this.rating = new RatingModel(hostDocument.rating);
+        this.id = hostDocument.id;
     }
 
     public getAddress(): AddressModel {
@@ -54,5 +57,9 @@ export class HostModel {
 
     public getEmail(): string {
         return this.email;
+    }
+
+    public getId(): string {
+        return this.id;
     }
 }

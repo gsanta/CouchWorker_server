@@ -14,6 +14,7 @@ import { UserModel } from '../domain/user/UserModel';
 import { ProfileWrapper } from './components/profile/ProfileWrapper';
 import { App } from './App';
 import { LoginWrapper } from './components/login/LoginWrapper';
+import { HostDetailWrapper } from './components/HostDetail/HostDetailWrapper';
 
 require('bootstrap/dist/css/bootstrap.css');
 require('./couchWorker.scss');
@@ -83,6 +84,7 @@ render(
             <Route path='/' component={App}>
                 <IndexRedirect to="/hosts" />
                 <Route path='/hosts(/:page)' component={HostsWrapper} />                
+                <Route path='/host(/:id)' component={HostDetailWrapper} />                
                 <Route path='/register' component={ProfileWrapper} />
                 <Route path='/login' component={LoginWrapper} />
             </Route>

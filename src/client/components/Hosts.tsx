@@ -31,17 +31,19 @@ export function Hosts(props: HostsProps) {
         <div className='cw-hosts-col'>
             {hosts}
 
-            <Pagination
-                prev
-                next
-                first
-                last
-                ellipsis
-                items={pages}
-                maxButtons={5}
-                activePage={currentPage}
-                onSelect={props.onPageSelect as any}
-            />
+            <div className="text-center">
+                <Pagination
+                    prev
+                    next
+                    first
+                    last
+                    ellipsis
+                    items={pages}
+                    maxButtons={5}
+                    activePage={currentPage}
+                    onSelect={props.onPageSelect as any}
+                />
+            </div>
         </div>
     );
 }

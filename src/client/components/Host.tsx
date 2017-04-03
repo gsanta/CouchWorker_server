@@ -5,6 +5,7 @@ import { Image } from 'react-bootstrap';
 import * as React from 'react';
 import { StarRatingWrapper } from './StarRatingWrapper';
 import { AgeFormatter } from './AgeFormatter';
+import { Link } from 'react-router';
 
 const thumbnail = require('../assets/thumbnail.png');
 require('./Host.scss')
@@ -22,8 +23,10 @@ export function Host(props: HostProps) {
                 </div>
                 <div className='cw-host-panel-col2'>
                     <div>
-                        {props.host.getFirstName()}&nbsp;
-                        {props.host.getLastName()}, &nbsp;
+                        <Link to={`/host/${props.host.getId()}`}>
+                            {props.host.getFirstName()}&nbsp;
+                            {props.host.getLastName()}, &nbsp;
+                        </Link>
                         <AgeFormatter date={props.host.getBirthDate()} />
                     </div>
                     <div>
@@ -36,7 +39,6 @@ export function Host(props: HostProps) {
                     </div>
                 </div>
             </div>
-
         </Panel>
     )
 }

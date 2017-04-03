@@ -30,35 +30,6 @@ class _HostsWrapper extends React.Component<any, any> {
         this.props.fetchHosts();
     }
 
-    public componentDidUpdate() {
-        // this.props.fetchHosts(
-        //     List<HostModel>([
-        //         new HostModel(
-        //             {
-        //                 firstName: 'Santa',
-        //                 lastName: 'Gergely',
-        //                 birthDate: new Date(1990, 2, 0),
-        //                 email: 'santagergely@gmail.com',
-        //                 country: 'Hungary',
-        //                 city: 'Budapest',
-        //                 rating: 5             
-        //             }
-        //         ),
-        //         new HostModel(
-        //             {
-        //                 firstName: 'User2',
-        //                 lastName: 'Abcd',
-        //                 birthDate: new Date(1920, 1, 12),
-        //                 email: 'user2@gmail.com',
-        //                 country: 'London',
-        //                 city: 'UK',
-        //                 rating: 3.4 
-        //             }
-        //         )
-        //     ])
-        // );
-    }
-
     public render() {
         return (
             <Hosts {...this.props}/>

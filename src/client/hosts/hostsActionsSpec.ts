@@ -18,7 +18,8 @@ describe('hostsActions', () => {
                         email: null,
                         country: 'Hungary',
                         city: 'Budapest',
-                        rating: 5 
+                        rating: 5,
+                        id: null
                     }
                 ),
                 new HostModel(
@@ -29,7 +30,8 @@ describe('hostsActions', () => {
                         email: null,
                         country: 'London',
                         city: 'UK',
-                        rating: 3.4 
+                        rating: 3.4, 
+                        id: null
                     }
                 ),
                 new HostModel(
@@ -40,7 +42,8 @@ describe('hostsActions', () => {
                         email: null,
                         country: 'Hungary',
                         city: 'Budapest',
-                        rating: 4.2 
+                        rating: 4.2,
+                        id: null 
                     }
                 )         
             ]);

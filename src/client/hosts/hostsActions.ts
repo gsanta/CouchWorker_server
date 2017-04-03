@@ -43,7 +43,8 @@ function parseHosts(json: any): List<HostModel> {
             email: host.email,
             rating: host.rating,
             country: host.country,
-            city: host.city
+            city: host.city,
+            id: host.id
         });
     });
 

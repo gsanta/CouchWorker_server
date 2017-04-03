@@ -21,7 +21,8 @@ describe('hostsReducers', () => {
                         country: null,
                         city: null,
                         email: null,
-                        rating: null
+                        rating: null,
+                        id: null
                     })
                 ]);
 
@@ -42,7 +43,8 @@ describe('hostsReducers', () => {
                         email: null,
                         country: null,
                         city: null,
-                        rating: null
+                        rating: null,
+                        id: null
                     }),
                     new HostModel({
                         firstName: 'User2',
@@ -51,7 +53,8 @@ describe('hostsReducers', () => {
                         email: null,
                         country: null,
                         city: null,
-                        rating: null
+                        rating: null,
+                        id: null
                     }),
                 ])
             };
@@ -64,7 +67,8 @@ describe('hostsReducers', () => {
                     email: null,
                     country: null,
                     city: null,
-                    rating: null
+                    rating: null,
+                    id: null
                 })
             ]);
 
