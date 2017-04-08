@@ -1,25 +1,25 @@
 import { ValidationError } from './ValidationError';
 import { Optional } from '../Optional';
 
-type setPasswordError = {setPasswordErrorMessage: (error: string) => void};
+type setPasswordError<T> = {setPasswordErrorMessage: (error: string) => T};
 type getPassword = {getPassword: () => string};
-type OptionalPasswordValidationError<T extends setPasswordError> = Optional<PasswordValidationError<T>>;
+type OptionalPasswordValidationError<T extends setPasswordError<T>> = Optional<PasswordValidationError<T>>;
 
-export class PasswordValidationError<T extends setPasswordError> extends ValidationError<T> {
+export class PasswordValidationError<T extends setPasswordError<T>> extends ValidationError<T> {
     constructor(errorMessage: string) {
         super(errorMessage);
     }
 
-    public setError(errorHolder: T): void {
-        errorHolder.setPasswordErrorMessage(this.errorMessage);
+    public setError(errorHolder: T): T {
+        return errorHolder.setPasswordErrorMessage(this.errorMessage);
     }
 }
 
-export function validatePassword<T extends setPasswordError>(model: getPassword): OptionalPasswordValidationError<T> {
-    let validationError: PasswordValidationError<setPasswordError> = null;
+export function validatePassword<T extends setPasswordError<T>>(model: getPassword): OptionalPasswordValidationError<T> {
+    let validationError: PasswordValidationError<T> = null;
     if (!model.getPassword() || model.getPassword().length === 0) {
-        validationError = new PasswordValidationError<setPasswordError>('Password is required.');
+        validationError = new PasswordValidationError<T>('Password is required.');
     }
 
-    return new Optional<PasswordValidationError<setPasswordError>>(validationError);
+    return new Optional<PasswordValidationError<T>>(validationError);
 }

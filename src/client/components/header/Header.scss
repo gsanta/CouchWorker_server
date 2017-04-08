@@ -29,6 +29,14 @@
         }
     }
 
+    .navbar-nav li.cw-signup-button, navbar-nav li.cw-signup-button.active {
+        background: red;
+
+        a, a:focus, a:hover {
+            background: red;
+        }
+    }
+
     .navbar-nav li.cw-logout-button, navbar-nav li.cw-logout-button.active {
         background: #0099CC;
 

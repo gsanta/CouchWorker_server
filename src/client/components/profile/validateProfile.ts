@@ -5,25 +5,25 @@ import { Optional } from '../../../shared/Optional';
 import { ValidatorFunc } from '../../../shared/validation/ValidatorFunc';
 import { validateEmail } from '../../../shared/validation/validateEmail';
 
-type setFirstNameValidationError = {setFirstNameValidationError: (error: string) => void};  
-export class FirstNameValidationError<T extends setFirstNameValidationError> extends ValidationError<T> {
+type setFirstNameValidationError<T> = {setFirstNameValidationError: (error: string) => T};  
+export class FirstNameValidationError<T extends setFirstNameValidationError<T>> extends ValidationError<T> {
     constructor(errorMessage: string) {
         super(errorMessage);
     }
 
-    public setError(errorHolder: T): void {
-        errorHolder.setFirstNameValidationError(this.errorMessage);
+    public setError(errorHolder: T): T {
+        return errorHolder.setFirstNameValidationError(this.errorMessage);
     }
 }
 
-type setLastNameValidationError = {setLastNameValidationError: (error: string) => void};  
-export class LastNameValidationError<T extends setLastNameValidationError> extends ValidationError<T> {
+type setLastNameValidationError<T> = {setLastNameValidationError: (error: string) => T};  
+export class LastNameValidationError<T extends setLastNameValidationError<T>> extends ValidationError<T> {
     constructor(errorMessage: string) {
         super(errorMessage);
     }
 
-    public setError(errorHolder: T): void {
-        errorHolder.setLastNameValidationError(this.errorMessage);
+    public setError(errorHolder: T): T {
+        return errorHolder.setLastNameValidationError(this.errorMessage);
     }
 }
 

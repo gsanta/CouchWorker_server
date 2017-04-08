@@ -9,5 +9,5 @@ export abstract class ValidationError<T> {
         return this.errorMessage;
     }
     
-    public abstract setError(errorHolder: T): void;
+    public abstract setError(errorHolder: T): T;
 }

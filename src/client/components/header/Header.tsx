@@ -43,6 +43,26 @@ function LoginLink(props: HeaderProps) {
     );
 }
 
+function SignupLink(props: HeaderProps) {
+    if (props.user) {
+        return null;
+    }
+
+    return (
+        <Nav pullRight>
+            <LinkContainer to="/register">
+                <NavItem 
+                    className='cw-menu-button cw-signup-button'
+                    eventKey={1}
+                    href="#"
+                >
+                    Sign up
+                </NavItem>
+            </LinkContainer>
+        </Nav>
+    );
+}
+
 function LogoutLink(props: HeaderProps) {
     if (!props.user) {
         return null;
@@ -87,6 +107,7 @@ export function Header(props: HeaderProps) {
         <header className="cw-header">
             <Navbar inverse collapseOnSelect>
                 <Navbar.Collapse>
+                    <SignupLink {...props}/>
                     <LoginLink {...props}/>
                     <LogoutLink {...props}/>
                     <ProfileLink {...props}/>

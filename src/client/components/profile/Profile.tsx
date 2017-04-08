@@ -5,30 +5,32 @@ import { FormControl } from 'react-bootstrap';
 import { HelpBlock } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import { ProfileBirthDate } from './ProfileBirthDate';
-import { validateProfile } from './validateProfile';
+import { validateFirstName, validateProfile, validateLastName } from './validateProfile';
 import { ProfileValidationModel } from './ProfileValidationModel';
 import { StringInput } from '../form/StringInput';
 import { UserModel } from '../../../shared/model/user/UserModel';
+import { validateEmail } from '../../../shared/validation/validateEmail';
 
 export class Profile extends React.Component<RegistrationProps, RegistrationState> {
 
     constructor(props: RegistrationProps) {
         super();
 
+        const user = props.user || new UserModel(); 
         this.state = {
-            user: props.user,
-            validation: validateProfile(props.user)
+            user,
+            validation: new ProfileValidationModel()
         }
     }
 
     public componentWillReceiveProps(newProps: RegistrationProps) {
         this.setState({
-            user: newProps.user
+            user: newProps.user || new UserModel()
         });
     }
 
     public render() {
-        let validation = validateProfile(this.state.user);
+        // let validation = validateProfile(this.state.user);
         return (
             <form>
                 <StringInput
@@ -37,7 +39,7 @@ export class Profile extends React.Component<RegistrationProps, RegistrationStat
                     controlId='cw-form-profile-first-name'
                     placeHolder='Enter first name'
                     controlLabel='First name'
-                    error={validation.getFirstNameValidationError()}
+                    error={this.state.validation.getFirstNameValidationError()}
                 />
                 <StringInput
                     value={this.state.user.getLastName()}
@@ -45,7 +47,7 @@ export class Profile extends React.Component<RegistrationProps, RegistrationStat
                     controlId='cw-form-profile-last-name'
                     placeHolder='Enter last name'
                     controlLabel='Last name'
-                    error={validation.getLastNameValidationError()}
+                    error={this.state.validation.getLastNameValidationError()}
                 />
                 <StringInput
                     value={this.state.user.getEmail()}
@@ -53,7 +55,7 @@ export class Profile extends React.Component<RegistrationProps, RegistrationStat
                     controlId='cw-form-profile-email'
                     placeHolder='Enter email'
                     controlLabel='Email'
-                    error={validation.getEmailErrorMessage()}
+                    error={this.state.validation.getEmailErrorMessage()}
                 />
                 <StringInput
                     value={this.state.user.getProfession()}
@@ -61,7 +63,7 @@ export class Profile extends React.Component<RegistrationProps, RegistrationStat
                     controlId='cw-form-profile-profession'
                     placeHolder='Enter profession'
                     controlLabel='Profession'
-                    error={validation.getProfessionValidationError()}
+                    error={this.state.validation.getProfessionValidationError()}
                 />
                 <StringInput
                     value={this.state.user.getAddress().getCountry()}
@@ -69,7 +71,7 @@ export class Profile extends React.Component<RegistrationProps, RegistrationStat
                     controlId='cw-form-profile-country'
                     placeHolder='Enter country'
                     controlLabel='Country'
-                    error={validation.getCountryValidationError()}
+                    error={this.state.validation.getCountryValidationError()}
                 />
                 <StringInput
                     value={this.state.user.getAddress().getCity()}
@@ -77,19 +79,19 @@ export class Profile extends React.Component<RegistrationProps, RegistrationStat
                     controlId='cw-form-profile-city'
                     placeHolder='Enter city'
                     controlLabel='City'
-                    error={validation.getCityValidationError()}
+                    error={this.state.validation.getCityValidationError()}
                 />
                 <ProfileBirthDate 
                     date={this.state.user.getBirthDate()}
                     onChange={this.onBirthDateChange.bind(this)}
-                    error={validation.getBirthDateValidationError()}
+                    error={this.state.validation.getBirthDateValidationError()}
                 />
                 <Button
                     bsStyle="primary"
                     onClick={() => {
                         this.props.onSubmit(this.state.user)
                     }}
-                    disabled={validation.hasError()}
+                    disabled={this.state.validation.hasError()}
                 >
                     Update profile
                 </Button>
@@ -108,48 +110,66 @@ export class Profile extends React.Component<RegistrationProps, RegistrationStat
     }
 
     private onFirstNameChange(event: React.ChangeEvent<any>) {
+        const user = this.state.user.setFirstName(event.target.value);
+        let validation: ProfileValidationModel = this.state.validation.setFirstNameValidationError(null);
+        validateFirstName(user).ifPresent(error => {
+            validation = error.setError(this.state.validation)
+        });
         this.setState({
-            user: this.state.user.setFirstName(event.target.value) 
+            user,
+            validation 
         });
     }
 
     private onLastNameChange(event: React.ChangeEvent<any>) {
+        const user = this.state.user.setLastName(event.target.value);
+        let validation: ProfileValidationModel = this.state.validation.setLastNameValidationError(null);
+        validateLastName(user).ifPresent(error => validation = error.setError(this.state.validation));                
         this.setState({
-            user: this.state.user.setLastName(event.target.value) 
+            user,
+            validation
         });        
     }
 
     private onProfessionChange(event: React.ChangeEvent<any>) {
+        const user = this.state.user.setProfession(event.target.value);
         this.setState({
-            user: this.state.user.setProfession(event.target.value) 
+            user 
         });        
     }
 
     private onCountryChange(event: React.ChangeEvent<any>) {
+        const user = this.state.user.setAddress(
+            this.state.user.getAddress().setCountry(event.target.valuee)
+        );
         this.setState({
-            user: this.state.user.setAddress(
-                this.state.user.getAddress().setCountry(event.target.valuee)
-            )
+            user
         });
     }
 
     private onCityChange(event: React.ChangeEvent<any>) {
+        const user = this.state.user.setAddress(
+            this.state.user.getAddress().setCity(event.target.value)
+        );
         this.setState({
-            user: this.state.user.setAddress(
-                this.state.user.getAddress().setCity(event.target.value)
-            )
+            user
         });
     }
 
     private onEmailChange(event: React.ChangeEvent<any>) {
+        const user = this.state.user.setEmail(event.target.value);
+        let validation: ProfileValidationModel = this.state.validation.setEmailErrorMessage(null);
+        validateEmail<ProfileValidationModel>(user).ifPresent(error => validation = error.setError(this.state.validation));
         this.setState({
-            user: this.state.user.setEmail(event.target.value)
+            user,
+            validation
         });
     }
 
     private onBirthDateChange(isoString: string) {
+        const user = this.state.user.setBirthDate(new Date(Date.parse(isoString)));
         this.setState({
-            user: this.state.user.setBirthDate(new Date(Date.parse(isoString)))
+            user
         });
     }
 }
