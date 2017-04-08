@@ -51,7 +51,6 @@ export class UserRepository {
             email: userModel.getEmail(),            
             birthDate: userModel.getBirthDate(),            
             profession: userModel.getProfession(),
-            id: userModel.getUuid(),
             country: userModel.getAddress().getCountry(),
             city: userModel.getAddress().getCity(),
             street: userModel.getAddress().getStreet(),

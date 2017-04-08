@@ -70,14 +70,16 @@ function LogoutLink(props: HeaderProps) {
 
     return (
         <Nav pullRight>
-            <NavItem 
-                className='cw-menu-button  cw-logout-button'
-                eventKey={1}
-                onClick={() => props.logout()}
-                href="#"
-            >
-                Log out
-            </NavItem>
+            <LinkContainer to="/">            
+                <NavItem 
+                    className='cw-menu-button  cw-logout-button'
+                    eventKey={1}
+                    onClick={() => props.logout()}
+                    href="#"
+                >
+                    Log out
+                </NavItem>
+            </LinkContainer>
         </Nav>
     );
 }
@@ -107,8 +109,8 @@ export function Header(props: HeaderProps) {
         <header className="cw-header">
             <Navbar inverse collapseOnSelect>
                 <Navbar.Collapse>
-                    <SignupLink {...props}/>
                     <LoginLink {...props}/>
+                    <SignupLink {...props}/>
                     <LogoutLink {...props}/>
                     <ProfileLink {...props}/>
                     <HostsLink {...props}/>

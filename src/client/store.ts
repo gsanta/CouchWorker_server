@@ -5,8 +5,8 @@ import * as assign from 'object-assign';
 import { List } from 'immutable';
 import { RootModel } from './RootModel';
 import { hosts } from './hosts/hostsReducers';
-import { profile } from './profile/profileReducers';
 import thunk from 'redux-thunk';
+import { profile } from './components/profile/profileReducers';
 
 const rootReducer = combineReducers({
     hosts,

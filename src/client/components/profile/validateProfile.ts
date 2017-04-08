@@ -54,7 +54,7 @@ export function validateProfile(
     ]
 ) {
     return validators.reduce((validationModel, validator) => {
-        validator(user).ifPresent((error) => error.setError(validationModel));
+        validator(user).ifPresent((error) => validationModel = error.setError(validationModel));
         return validationModel;
     }, new ProfileValidationModel())
 }

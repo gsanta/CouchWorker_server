@@ -30,7 +30,6 @@ export class Profile extends React.Component<RegistrationProps, RegistrationStat
     }
 
     public render() {
-        // let validation = validateProfile(this.state.user);
         return (
             <form>
                 <StringInput
@@ -89,9 +88,8 @@ export class Profile extends React.Component<RegistrationProps, RegistrationStat
                 <Button
                     bsStyle="primary"
                     onClick={() => {
-                        this.props.onSubmit(this.state.user)
+                        this.onSubmit()
                     }}
-                    disabled={this.state.validation.hasError()}
                 >
                     Update profile
                 </Button>
@@ -107,6 +105,17 @@ export class Profile extends React.Component<RegistrationProps, RegistrationStat
                 </Button>
             </form>
         );
+    }
+
+    private onSubmit() {
+        let validation = validateProfile(this.state.user);
+        if (!validation.hasError()) {
+            this.props.onSubmit(this.state.user);
+        }
+
+        this.setState({
+            validation
+        });
     }
 
     private onFirstNameChange(event: React.ChangeEvent<any>) {

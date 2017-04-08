@@ -1,24 +1,28 @@
 import { RootModel } from '../../RootModel';
 import { connect } from 'react-redux';
 import { Profile } from './Profile';
-import { setProfile } from '../../profile/profileActions';
 import { UserModel } from '../../../shared/model/user/UserModel';
+import { signup } from './profileActions';
 
 const mapStateToProps = (state: RootModel) => {
-  return {
-    user: state.user
-  }
+    return {
+        user: state.user
+    }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onSubmit: (user: UserModel) => {
-      dispatch(setProfile(user))
+const mapDispatchToProps = (dispatch, props: any) => {
+    return {
+        onSubmit: (model: UserModel) => {
+            dispatch(signup(model))
+            .then((data) => {
+                props.history.push('/');
+            });
+        }
     }
-  }
 }
+
 
 export const ProfileWrapper = connect(
-  mapStateToProps,
-  mapDispatchToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(Profile)

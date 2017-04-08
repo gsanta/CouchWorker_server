@@ -18,7 +18,6 @@ describe('UserRepository', () => {
             birthDate: new Date(1990, 3, 1),
             email: 'santagergely90@gmail.com',
             profession: 'Software Developer',
-            id: '1234',
             country: 'Hungary',
             city: 'Budapest',
             street: 'Haller utca',
@@ -102,7 +101,6 @@ describe('UserRepository', () => {
                 birthDate: new Date(1990, 3, 1),
                 email: 'santagergely90@gmail.com updated',
                 profession: 'Software Developer updated',
-                id: '12345',
                 country: 'Hungary2',
                 city: 'Budapest2'
             };
@@ -189,7 +187,6 @@ describe('UserRepository', () => {
                 age: 27,
                 profession: 'Software Developer2',
                 email: 'santagergely90@gmail.com2',
-                id: '12345',
                 address: {
                     country: 'Hungary2',
                     city: 'Budapest2'
@@ -254,7 +251,6 @@ describe('UserRepository', () => {
                 age: 27,
                 profession: 'Software Developer2',
                 email: 'santagergely90@gmail.com2',
-                id: '12345',
                 address: {
                     country: 'Hungary2',
                     city: 'Budapest2'

@@ -27,7 +27,6 @@ describe('<ProfileStringInput/>', () => {
 
     describe('if error is provided', () => {
         it('should display the error message', () => {
-            console.log(window.document);
             const wrapper = mount(
                 <StringInput
                     value={'Santa'}

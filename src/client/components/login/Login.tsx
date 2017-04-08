@@ -19,6 +19,7 @@ export class Login extends React.Component<LoginProps, LoginState> {
     }
 
     public render() {
+        console.log('eeeeeee', this.state.validation.getEmailErrorMessage())
         return (
             <div>
                 <div>Login page</div>
@@ -42,10 +43,7 @@ export class Login extends React.Component<LoginProps, LoginState> {
                     />
                     <Button
                         bsStyle="primary"
-                        onClick={() => {
-                            this.props.onSubmit(this.state.model)
-                        }}
-                        disabled={this.state.validation.hasError()}
+                        onClick={() => this.onSubmit()}
                     >
                         Login
                     </Button>
@@ -62,6 +60,17 @@ export class Login extends React.Component<LoginProps, LoginState> {
                 </form>
             </div>
         );
+    }
+
+    private onSubmit() {
+        const validation = validateLogin(this.state.model);
+        if (!validation.hasError()) {
+            this.props.onSubmit(this.state.model);
+        }
+
+        this.setState({
+            validation
+        });
     }
 
     private onEmailChange(event: React.ChangeEvent<any>) {

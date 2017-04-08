@@ -13,7 +13,7 @@ export function validateLogin(
     ]
 ) {
     return validators.reduce((validationModel, validator) => {
-        validator(model).ifPresent((error) => error.setError(validationModel));
+        validator(model).ifPresent((error) => validationModel = error.setError(validationModel));
         return validationModel;
     }, new LoginValidationModel());
 }

@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { App } from './App';
 import { Dispatch } from 'redux';
 import { RootModel } from '../../RootModel';
-import { setProfile } from '../../profile/profileActions';
+import { logout } from '../profile/profileActions';
 
 
 function mapStateToProps(state: RootModel) {
@@ -13,7 +13,7 @@ function mapStateToProps(state: RootModel) {
 
 function mapDispatchToProps(dispatch: Dispatch<any>) {
     return {
-        logout: () => dispatch(setProfile(null))
+        logout: () => dispatch(logout())
     }
 }
 

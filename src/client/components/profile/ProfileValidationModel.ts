@@ -101,6 +101,6 @@ export class ProfileValidationModel {
         copy.cityValidationError = this.cityValidationError;
         copy.professionValidationError = this.professionValidationError;
 
-        return this;
+        return copy;
     }
 }
