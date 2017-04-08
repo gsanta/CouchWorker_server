@@ -13,7 +13,7 @@ const mapDispatchToProps = (dispatch, props: any) => {
     onSubmit: (model: LoginModel) => {
         dispatch(login(model))
         .then((data) => {
-            props.history.push('/register');
+            props.history.push('/');
         });
     }
   }

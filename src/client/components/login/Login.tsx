@@ -46,7 +46,7 @@ export class Login extends React.Component<LoginProps, LoginState> {
                         }}
                         disabled={validation.hasError()}
                     >
-                        Update profile
+                        Login
                     </Button>
                     {' '}
                     <Button

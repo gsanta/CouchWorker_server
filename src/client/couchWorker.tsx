@@ -9,12 +9,13 @@ import { List } from 'immutable';
 import { AddressModel } from '../domain/user/AddressModel';
 import { RatingModel } from '../domain/user/RatingModel';
 import { PersonalInfoModel } from '../domain/user/PersonalInfoModel';
-import { Router, Route, browserHistory, IndexRedirect } from 'react-router';
+import { Router, Route, hashHistory, IndexRedirect } from 'react-router';
 import { UserModel } from '../domain/user/UserModel';
 import { ProfileWrapper } from './components/profile/ProfileWrapper';
 import { App } from './App';
 import { LoginWrapper } from './components/login/LoginWrapper';
 import { HostDetailWrapper } from './components/HostDetail/HostDetailWrapper';
+import { AppWrapper } from './AppWrapper';
 
 require('bootstrap/dist/css/bootstrap.css');
 require('./couchWorker.scss');
@@ -63,7 +64,7 @@ let initialState: RootModel = {
     //         }
     //     )        
     // ]),
-    user: new UserModel()
+    user: null
     // new UserModel({
     //     firstName: 'New',
     //     lastName: 'User',
@@ -80,8 +81,8 @@ let store = configureStore(initialState);
 
 render(
     <Provider store={store}>
-        <Router history={browserHistory}>
-            <Route path='/' component={App}>
+        <Router history={hashHistory}>
+            <Route path='/' component={AppWrapper}>
                 <IndexRedirect to="/hosts" />
                 <Route path='/hosts(/:page)' component={HostsWrapper} />                
                 <Route path='/host(/:id)' component={HostDetailWrapper} />                

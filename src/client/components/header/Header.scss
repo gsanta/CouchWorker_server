@@ -29,6 +29,22 @@
         }
     }
 
+    .navbar-nav li.cw-logout-button, navbar-nav li.cw-logout-button.active {
+        background: #0099CC;
+
+        a, a:focus, a:hover {
+            background: #0099CC;
+        }
+    }
+
+    .navbar-nav li.cw-profile-button, navbar-nav li.cw-profile-button.active {
+        background: red;
+
+        a, a:focus, a:hover {
+            background: red;
+        }
+    }
+
     .navbar-nav li.cw-hosts-button, navbar-nav li.cw-hosts-button.active {
         background: #FFBA00;
 
