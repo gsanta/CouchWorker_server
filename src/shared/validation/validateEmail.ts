@@ -1,5 +1,5 @@
 import * as validator from 'validator';
-import { Optional } from './Optional';
+import { Optional } from '../Optional';
 import { ValidationError } from './ValidationError';
 
 type setEmailError = {setEmailErrorMessage: (error: string) => void};

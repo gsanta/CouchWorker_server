@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { HostModel } from '../HostModel';
 import { List } from 'immutable';
 import { Host } from './Host';
 import { Row } from 'react-bootstrap';
 import { Col } from 'react-bootstrap';
 import { Pagination } from 'react-bootstrap';
+import { HostModel } from '../../../shared/model/host/HostModel';
 require('./Hosts.scss');
 
 export interface HostsProps {

@@ -1,5 +1,5 @@
-import {UserModel} from "../UserModel";
 import * as joi from 'joi';
+import { UserModel } from '../../../../shared/model/user/UserModel';
 
 const alphaNumSpaceDashUscore = /^[a-z\d\-_\s]+$/i;
 const userRegistrationSchema = joi.object().keys({
@@ -28,7 +28,6 @@ export class UserValidator {
             birthDate: new Date(Date.now()),
             email: data.email,
             profession: data.profession,
-            id: undefined,
             country: data.country,
             city: data.city,
             street: data.street,

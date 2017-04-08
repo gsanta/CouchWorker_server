@@ -1,9 +1,8 @@
-import { HostModel } from '../HostModel';
 import { List } from 'immutable';
 import { hosts } from './hostsReducers';
-import { PersonalInfoModel } from '../../domain/user/PersonalInfoModel';
 import { FETCH_HOSTS } from './hostsActions';
 import { ASYNC_STATES } from '../utils/AsyncStates';
+import { HostModel } from '../../shared/model/host/HostModel';
 
 
 describe('hostsReducers', () => {

@@ -1,9 +1,9 @@
-import { UserModel } from '../../../domain/user/UserModel';
 import { ProfileValidationModel } from './ProfileValidationModel';
-import { ValidationError } from '../form/validation/ValidationError';
-import { Optional } from '../form/validation/Optional';
-import { validateEmail } from '../form/validation/validateEmail';
-import { ValidatorFunc } from '../form/validation/ValidatorFunc';
+import { UserModel } from '../../../shared/model/user/UserModel';
+import { ValidationError } from '../../../shared/validation/ValidationError';
+import { Optional } from '../../../shared/Optional';
+import { ValidatorFunc } from '../../../shared/validation/ValidatorFunc';
+import { validateEmail } from '../../../shared/validation/validateEmail';
 
 type setFirstNameValidationError = {setFirstNameValidationError: (error: string) => void};  
 export class FirstNameValidationError<T extends setFirstNameValidationError> extends ValidationError<T> {

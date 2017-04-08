@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 import { LinkContainer } from 'react-router-bootstrap';
 import * as React from 'react';
 import './Header.scss';
-import { UserModel } from '../../../domain/user/UserModel';
+import { UserModel } from '../../../shared/model/user/UserModel';
 
 function HostsLink(props: HeaderProps) {
     return (

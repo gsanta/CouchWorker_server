@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { UserModel } from '../../../domain/user/UserModel';
 import { FormGroup } from 'react-bootstrap';
 import { ControlLabel } from 'react-bootstrap';
 import { FormControl } from 'react-bootstrap';
@@ -9,6 +8,7 @@ import { ProfileBirthDate } from './ProfileBirthDate';
 import { validateProfile } from './validateProfile';
 import { ProfileValidationModel } from './ProfileValidationModel';
 import { StringInput } from '../form/StringInput';
+import { UserModel } from '../../../shared/model/user/UserModel';
 
 export class Profile extends React.Component<RegistrationProps, RegistrationState> {
 

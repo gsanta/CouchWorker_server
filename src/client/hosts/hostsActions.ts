@@ -1,7 +1,7 @@
 import { List } from 'immutable';
-import { HostModel } from '../HostModel';
 import { ASYNC_STATES } from '../utils/AsyncStates';
 import { Dispatch } from 'redux';
+import { HostModel } from '../../shared/model/host/HostModel';
 
 export const FETCH_HOSTS = 'FETCH_HOSTS';
 

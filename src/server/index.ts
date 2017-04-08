@@ -5,10 +5,10 @@ import * as bodyParser from 'body-parser';
 import { Database } from './repository/Database';
 import { UserValidator } from './domain/user/validation/UserValidator';
 import { UserBusiness } from './domain/user/UserBusiness';
-import { UserModel } from './domain/user/UserModel';
 import * as jwt from 'jsonwebtoken';
 import * as passport from 'passport';
 import * as passportJWT from 'passport-jwt';
+import { UserModel } from '../shared/model/user/UserModel';
 
 var app = express();
 

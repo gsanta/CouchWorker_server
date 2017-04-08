@@ -1,8 +1,8 @@
 import { Dispatch } from 'redux';
-import { LoginModel } from './LoginModel';
 // import 'whatwg-fetch';
-import { UserModel } from '../../../domain/user/UserModel';
 import { ASYNC_STATES } from '../../utils/AsyncStates';
+import { UserModel } from '../../../shared/model/user/UserModel';
+import { LoginModel } from '../../../shared/model/login/LoginModel';
 
 export const LOGIN = 'LOGIN';
 
@@ -23,8 +23,7 @@ export function receiveLogin(json: any) {
             email: json.email,
             profession: json.profession,
             country: json.country,
-            city: json.city,
-            id: null
+            city: json.city
         })
     };
 }

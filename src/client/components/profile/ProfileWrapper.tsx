@@ -1,9 +1,8 @@
 import { RootModel } from '../../RootModel';
 import { connect } from 'react-redux';
-import { Hosts } from '../Hosts';
 import { Profile } from './Profile';
-import { UserModel } from '../../../domain/user/UserModel';
 import { setProfile } from '../../profile/profileActions';
+import { UserModel } from '../../../shared/model/user/UserModel';
 
 const mapStateToProps = (state: RootModel) => {
   return {

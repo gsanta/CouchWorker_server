@@ -1,8 +1,9 @@
-import { LoginModel } from './LoginModel';
-import { ValidatorFunc } from '../form/validation/ValidatorFunc';
-import { LoginValidationModel } from './LoginValidationModel';
-import { validateEmail } from '../form/validation/validateEmail';
-import { validatePassword } from '../form/validation/validatePassword';
+import { LoginModel } from '../../../shared/model/login/LoginModel';
+import { ValidatorFunc } from '../../../shared/validation/ValidatorFunc';
+import { validateEmail } from '../../../shared/validation/validateEmail';
+import { validatePassword } from '../../../shared/validation/validatePassword';
+import { LoginValidationModel } from '../../../shared/model/login/LoginValidationModel';
+
 
 export function validateLogin(
     model: LoginModel,

@@ -1,8 +1,8 @@
-import { RootModel } from './RootModel';
 import { connect } from 'react-redux';
 import { App } from './App';
 import { Dispatch } from 'redux';
-import { setProfile } from './profile/profileActions';
+import { RootModel } from '../../RootModel';
+import { setProfile } from '../../profile/profileActions';
 
 
 function mapStateToProps(state: RootModel) {

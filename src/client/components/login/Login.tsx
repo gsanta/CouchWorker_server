@@ -1,9 +1,8 @@
-
 import * as React from 'react';
-import { LoginModel } from './LoginModel';
 import { StringInput } from '../form/StringInput';
 import { Button } from 'react-bootstrap';
 import { validateLogin } from './validateLogin';
+import { LoginModel } from '../../../shared/model/login/LoginModel';
 
 export class Login extends React.Component<LoginProps, LoginState> {
     

@@ -1,7 +1,7 @@
 import { RepositoryBase } from '../../../repository/RepositoryBase';
 import { MongooseUserDocument } from './MongooseUserDocument';
-import { UserModel } from '../UserModel';
 import { QueryMetaData } from '../../../repository/QueryMetaData';
+import { UserModel } from '../../../../shared/model/user/UserModel';
 
 export class UserRepository {
     private repoBase: RepositoryBase<MongooseUserDocument>;

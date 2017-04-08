@@ -1,8 +1,8 @@
 import { RootModel } from '../../RootModel';
-import { LoginModel } from './LoginModel';
 import { login } from './loginActions';
 import { Login } from './Login';
 import { connect } from 'react-redux';
+import { LoginModel } from '../../../shared/model/login/LoginModel';
 
 const mapStateToProps = (state: RootModel) => {
   return {};

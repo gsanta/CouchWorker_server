@@ -1,10 +1,9 @@
-import { RootModel } from '../RootModel';
 import { connect } from 'react-redux';
 import { Hosts } from './Hosts';
 import * as React from 'react';
-import { fetchHosts, receiveHosts } from '../hosts/hostsActions';
 import { List } from 'immutable';
-import { HostModel } from '../HostModel';
+import { RootModel } from '../../RootModel';
+import { fetchHosts } from '../../hosts/hostsActions';
 
 const mapStateToProps = (state: RootModel, props: any) => {
     return {

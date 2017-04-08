@@ -1,6 +1,6 @@
-import { LoginModel } from '../../login/LoginModel';
 import { validateEmail } from './validateEmail';
-import { LoginValidationModel } from '../../login/LoginValidationModel';
+import { LoginModel } from '../model/login/LoginModel';
+import { LoginValidationModel } from '../model/login/LoginValidationModel';
 
 describe('validateEmail', () => {
     describe('if email is valid', () => {

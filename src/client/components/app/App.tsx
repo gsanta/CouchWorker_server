@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { UserModel } from '../domain/user/UserModel';
-import { Header } from './components/header/Header';
+import { Header } from '../header/Header';
+import { UserModel } from '../../../shared/model/user/UserModel';
 
 export function App(props: AppProps) {
     return (

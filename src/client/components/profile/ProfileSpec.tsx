@@ -1,9 +1,9 @@
 import { mount, shallow } from 'enzyme';
-import { UserModel } from '../../../domain/user/UserModel';
 import { Profile } from './Profile';
 import * as React from 'react';
 import { Button } from 'react-bootstrap';
 import { StringInput } from '../form/StringInput';
+import { UserModel } from '../../../shared/model/user/UserModel';
 
 describe('<Profile/>', () => {
     describe('if the valid state of \'Profile\' changes', () => {
@@ -16,7 +16,6 @@ describe('<Profile/>', () => {
                 profession: 'Drummer',
                 country: 'Hungary',
                 city: 'Budapest',
-                id: null
             });
 
             const wrapper = shallow(

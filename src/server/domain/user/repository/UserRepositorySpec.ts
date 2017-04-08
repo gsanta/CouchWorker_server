@@ -1,9 +1,9 @@
 import {UserRepository} from './UserRepository';
 import * as proxyquire from 'proxyquire';
 import * as sinon from 'sinon';
-import { UserModel } from '../UserModel';
 import { MongooseUserDocument } from './MongooseUserDocument';
 import { Promise } from 'es6-promise';
+import { UserModel } from '../../../../shared/model/user/UserModel';
 
 describe('UserRepository', () => {
     let userModel: UserModel;

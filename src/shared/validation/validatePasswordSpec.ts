@@ -1,5 +1,5 @@
-import { LoginModel } from '../../login/LoginModel';
 import { validatePassword } from './validatePassword';
+import { LoginModel } from '../model/login/LoginModel';
 
 describe('validatePassword', () => {
     describe('if password is valid', () => {

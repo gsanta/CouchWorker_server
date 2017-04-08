@@ -1,6 +1,5 @@
-import { AddressModel, AddressDocument } from '../domain/user/AddressModel';
-import { RatingModel } from '../domain/user/RatingModel';
-import { PersonalInfoModel } from '../domain/user/PersonalInfoModel';
+import { AddressModel, AddressDocument } from '../AddressModel';
+import { RatingModel } from '../RatingModel';
 
 export interface HostDocument extends AddressDocument {
     firstName: string;

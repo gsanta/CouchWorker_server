@@ -1,13 +1,12 @@
-import { HostModel } from '../HostModel';
 import { Panel, Col, Row } from 'react-bootstrap';
 import { Table } from 'react-bootstrap';
 import { Image } from 'react-bootstrap';
 import * as React from 'react';
-import { StarRatingWrapper } from './StarRatingWrapper';
-import { AgeFormatter } from './AgeFormatter';
 import { Link } from 'react-router';
-
-const thumbnail = require('../assets/thumbnail.png');
+import { HostModel } from '../../../shared/model/host/HostModel';
+import { AgeFormatter } from '../form/AgeFormatter';
+import { StarRatingWrapper } from '../form/StarRatingWrapper';
+const thumbnail = require('../../assets/thumbnail.png');
 require('./Host.scss')
 
 export interface HostProps {

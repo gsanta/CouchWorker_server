@@ -1,5 +1,5 @@
-import { UserModel } from '../../../domain/user/UserModel';
 import { validateFirstName, validateLastName } from './validateProfile';
+import { UserModel } from '../../../shared/model/user/UserModel';
 
 describe('validateProfile', () => {
     describe('validateFirstName', () => {

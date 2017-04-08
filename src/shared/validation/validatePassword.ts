@@ -1,5 +1,5 @@
-import { Optional } from './Optional';
 import { ValidationError } from './ValidationError';
+import { Optional } from '../Optional';
 
 type setPasswordError = {setPasswordErrorMessage: (error: string) => void};
 type getPassword = {getPassword: () => string};

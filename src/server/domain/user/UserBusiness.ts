@@ -1,8 +1,8 @@
 
-import {UserModel} from "./UserModel";
 import * as Promise from 'promise';
 import { UserRepository } from './repository/UserRepository';
 import { QueryMetaData } from '../../repository/QueryMetaData';
+import { UserModel } from '../../../shared/model/user/UserModel';
 
 export class UserBusiness {
     private userRepository: UserRepository;

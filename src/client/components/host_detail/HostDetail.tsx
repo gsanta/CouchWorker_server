@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { HostModel } from '../../HostModel';
 import { Panel, Image } from 'react-bootstrap';
-import { AgeFormatter } from '../AgeFormatter';
-import { StarRatingWrapper } from '../StarRatingWrapper';
 import './HostDetail.scss';
+import { HostModel } from '../../../shared/model/host/HostModel';
+import { AgeFormatter } from '../form/AgeFormatter';
+import { StarRatingWrapper } from '../form/StarRatingWrapper';
 const thumbnail = require('../../assets/thumbnail.png');
 
 export function HostDetail(props: HostDetailProps) {

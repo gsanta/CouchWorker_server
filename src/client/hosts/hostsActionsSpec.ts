@@ -1,10 +1,7 @@
 import { ASYNC_STATES } from '../utils/AsyncStates';
 import { receiveHosts, FETCH_HOSTS } from './hostsActions';
-import { HostModel } from '../HostModel';
 import { List } from 'immutable';
-import { AddressModel } from '../../domain/user/AddressModel';
-import { RatingModel } from '../../domain/user/RatingModel';
-import { PersonalInfoModel } from '../../domain/user/PersonalInfoModel';
+import { HostModel } from '../../shared/model/host/HostModel';
 
 describe('hostsActions', () => {
     describe('receiveHosts', () => {

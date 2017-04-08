@@ -1,6 +1,5 @@
 import { UserDocument } from './UserDocument';
-import { AddressModel } from './AddressModel';
-import { PersonalInfoModel } from './PersonalInfoModel';
+import { AddressModel } from '../AddressModel';
 
 export class UserModel {
     private uuid: string;
@@ -14,7 +13,6 @@ export class UserModel {
     constructor(userDocument?: UserDocument) {
         if (userDocument) {
             this.profession = userDocument.profession;
-            this.uuid = userDocument.id;
             this.firstName = userDocument.firstName,
             this.lastName = userDocument.lastName,
             this.birthDate = userDocument.birthDate,
