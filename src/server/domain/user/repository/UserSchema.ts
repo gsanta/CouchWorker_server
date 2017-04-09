@@ -16,17 +16,21 @@ export class UserSchema {
 
     public getSchema(): Mongoose.Schema {
         return new this.mInstance.Schema({
-            name: {
+            firstName: {
                 type: String,
                 required: true
             },
-            age: {
-                type: Number,
+            lastName: {
+                type: String,
+                required: true
+            },
+            email: {
+                type: String,
                 required: true
             },
             profession: {
                 type: String,
-                required: true
+                required: false
             }
         });
     }

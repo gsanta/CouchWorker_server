@@ -98,54 +98,47 @@ router.post('/api/login', async (ctx) => {
     };
 });
 
-// app.post('/api/login', function (req, res) {
-//     res.send({
-//         firstName: 'New',
-//         lastName: 'User',
-//         birthDate: new Date(1980, 11, 28),
-//         email: 'new_user@gmail.com',
-//         profession: 'Drummer',
-//         country: 'Hungary',
-//         city: 'Budapest',
-//         id: null
-//     });
-// });
+router.post('/addUser', async (ctx) => {
+    try {
+        const userModel = validator.validateRegistration(ctx.request.body);
+        const data = await userBusiness.create(userModel)
+        ctx.body = data;
+    } catch (e) {
+        ctx.body = "Error: " + e 
+    }
+    
+});
 
-// app.post('/addUser', function (req, res) {
-//     const userModel = validator.validateRegistration(req.body);
-//     userBusiness.create(userModel)
-//         .then((data: any) => {
-//             res.send(data)
-//         })
-//         .catch((error: any) => {
-//             res.send("Error: " + error);
-//         });
-// });
+router.post('/findUser', async (ctx) => {
+    try {
+        const email = validator.validateEmail(ctx.request.body);
+        ctx.body = await userBusiness.findByEmail(email)
+    } catch (e) {
+        ctx.body = e;
+    }
+});
 
-// app.post('/findUser', function (req, res) {
-//     const email = validator.validateEmail(req.body);
-//     userBusiness.findByEmail(email)
-//         .then((data: any) => {
-//             res.send(data)
-//         })
-//         .catch((error: any) => {
-//             res.send("Error: " + error);
-//         });
-// });
+router.post('/updateUser', async (ctx) => {
+    try {
+        let newUserModel = validator.validateRegistration(ctx.request.body);
+        const oldUserModel = await userBusiness.findByEmail(newUserModel.getEmail());
+        newUserModel = newUserModel.setUuid(oldUserModel.getUuid());
+        const body = await userBusiness.update(newUserModel);
+        ctx.body = body;
+        // ctx.body = await userBusiness.update(userModel);
+            // .then((data: any) => {
+            //     res.send(data)
+            // })
+            // .catch((error: any) => {
+            //     res.send("Error: " + error);
+            // });
+    } catch (e) {
+        ctx.body = e;
+    }
+});
 
-// app.post('/updateUser', function (req, res) {
-//     const email = validator.validateRegistration(req.body);
-//     userBusiness.update(email)
-//         .then((data: any) => {
-//             res.send(data)
-//         })
-//         .catch((error: any) => {
-//             res.send("Error: " + error);
-//         });
-// });
-
-// app.post('/deleteUser', function (req, res) {
-//     const email = validator.validateEmail(req.body);
+// router.post('/deleteUser', function (ctx) {
+//     const email = validator.validateEmail(ctx.request.body);
 //     userBusiness.findByEmail(email)
 //         .then((user: UserModel) => {
 //             return userBusiness.delete(user)
@@ -189,6 +182,8 @@ router.post('/api/login', async (ctx) => {
 // app.get("/secret", passport.authenticate('jwt', { session: false }), function(req, res){
 //     res.json("Success! You can not see this without a token");
 // });
+
+app.use(router.routes());
 
 var server = app.listen(8081, function () {
 

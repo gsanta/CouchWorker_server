@@ -10,7 +10,7 @@ export class UserModel {
     private profession: string;
     private address: AddressModel;
 
-    constructor(userDocument?: UserDocument) {
+    constructor(userDocument?: UserDocument, id?: string) {
         if (userDocument) {
             this.profession = userDocument.profession;
             this.firstName = userDocument.firstName,
@@ -23,6 +23,7 @@ export class UserModel {
                 street: userDocument.street,
                 house: userDocument.house
             });
+            this.uuid = id;
         } else {
             this.address = new AddressModel()
         }

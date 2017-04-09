@@ -16,11 +16,11 @@ const userEmailSchema = joi.object().keys({
 
 export class UserValidator {
     public validateRegistration(data: any): UserModel {
-        const result = joi.validate(data, userRegistrationSchema);
+        // const result = joi.validate(data, userRegistrationSchema);
 
-        if (result.error) {
-            throw new Error(result.error.toString());
-        }
+        // if (result.error) {
+        //     throw new Error(result.error.toString());
+        // }
 
         return new UserModel({
             firstName: data.firstName,

@@ -54,11 +54,12 @@ export class UserRepository {
             country: userModel.getAddress().getCountry(),
             city: userModel.getAddress().getCity(),
             street: userModel.getAddress().getStreet(),
-            house: userModel.getAddress().getHouse()
+            house: userModel.getAddress().getHouse(),
+            id: userModel.getUuid()
         }
     }
 
     private toUserModel(userDocument: MongooseUserDocument): UserModel {
-        return new UserModel(userDocument);
+        return new UserModel(userDocument, userDocument.id);
     }
 }
