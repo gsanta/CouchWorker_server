@@ -9,11 +9,8 @@
         "jsx": "react"
     },
     "include": [
-        "src/**/*"
-    ],
-    "exclude": [
-        "node_modules/typescript/lib/lib.d.ts",
-        "node_modules",
-        "!node_modules/@types"
+        "src/**/*",
+        "node_modules/koa-body-parsers",
+        "node_modules/typescript/lib/lib.d.ts"        
     ]
 }

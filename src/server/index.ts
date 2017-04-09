@@ -1,7 +1,8 @@
 import {RepositoryFactory} from "./repository/RepositoryFactory";
 import * as express from 'express';
-import * as fs from 'fs';
-import * as bodyParser from 'body-parser';
+// import * as fs from 'fs';
+import * as fs from 'mz/fs';
+import * as bodyParser from 'koa-bodyparser';
 import { Database } from './repository/Database';
 import { UserValidator } from './domain/user/validation/UserValidator';
 import { UserBusiness } from './domain/user/UserBusiness';
@@ -9,8 +10,11 @@ import * as jwt from 'jsonwebtoken';
 import * as passport from 'passport';
 import * as passportJWT from 'passport-jwt';
 import { UserModel } from '../shared/model/user/UserModel';
-
-var app = express();
+import * as Koa from 'koa';
+import * as Router from 'koa-router';
+// import {Promise} from 'es6-promise';
+const app = new Koa();
+const router = new Router();
 
 const ExtractJwt = passportJWT.ExtractJwt;
 const JwtStrategy = passportJWT.Strategy;
@@ -51,15 +55,13 @@ var strategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
 
 passport.use(strategy);
 
-app.use(passport.initialize());
-app.use(bodyParser.urlencoded({
-  extended: true
-}));
+// app.use(passport.initialize());
+app.use(bodyParser());
+// app.use(bodyParser.json());
 
 var MongoClient = require('mongodb').MongoClient;
 var url = 'mongodb://localhost:27017/myproject';
 
-app.use(bodyParser.json());
 
 // MongoClient.connect(url, function(err: any, db: any) {
 //   console.log("Connected successfully to server");
@@ -68,18 +70,23 @@ app.use(bodyParser.json());
 const database = new Database("mongodb://localhost/couchworker");
 const repositoryFactory = new RepositoryFactory(database.getInstance(), database.getConnection());
 
-app.get('/listUsers', function (req: express.Request, res: express.Response) {
-   fs.readFile( __dirname + "/../" + "users.json", 'utf8', function (err, data) {
-       res.end( data );
-   });
+
+router.get('/listUsers', function (req: express.Request, res: express.Response) {
+    try {
+        const file = fs.readFile( __dirname + "/../" + "users.json", 'utf8');
+        res.end(file); 
+    } catch (e) {
+        res.end('Error reading file.');
+        console.error(e);
+    }
 });
 
 const validator = new UserValidator();
 const userRepository = repositoryFactory.getUserRepository();
 const userBusiness = new UserBusiness(userRepository);
 
-app.post('/api/login', function (req, res) {
-    res.send({
+router.post('/api/login', async (ctx) => {  
+    ctx.body = {
         firstName: 'New',
         lastName: 'User',
         birthDate: new Date(1980, 11, 28),
@@ -88,55 +95,68 @@ app.post('/api/login', function (req, res) {
         country: 'Hungary',
         city: 'Budapest',
         id: null
-    });
+    };
 });
 
-app.post('/addUser', function (req, res) {
-    const userModel = validator.validateRegistration(req.body);
-    userBusiness.create(userModel)
-        .then((data: any) => {
-            res.send(data)
-        })
-        .catch((error: any) => {
-            res.send("Error: " + error);
-        });
-});
+// app.post('/api/login', function (req, res) {
+//     res.send({
+//         firstName: 'New',
+//         lastName: 'User',
+//         birthDate: new Date(1980, 11, 28),
+//         email: 'new_user@gmail.com',
+//         profession: 'Drummer',
+//         country: 'Hungary',
+//         city: 'Budapest',
+//         id: null
+//     });
+// });
 
-app.post('/findUser', function (req, res) {
-    const email = validator.validateEmail(req.body);
-    userBusiness.findByEmail(email)
-        .then((data: any) => {
-            res.send(data)
-        })
-        .catch((error: any) => {
-            res.send("Error: " + error);
-        });
-});
+// app.post('/addUser', function (req, res) {
+//     const userModel = validator.validateRegistration(req.body);
+//     userBusiness.create(userModel)
+//         .then((data: any) => {
+//             res.send(data)
+//         })
+//         .catch((error: any) => {
+//             res.send("Error: " + error);
+//         });
+// });
 
-app.post('/updateUser', function (req, res) {
-    const email = validator.validateRegistration(req.body);
-    userBusiness.update(email)
-        .then((data: any) => {
-            res.send(data)
-        })
-        .catch((error: any) => {
-            res.send("Error: " + error);
-        });
-});
+// app.post('/findUser', function (req, res) {
+//     const email = validator.validateEmail(req.body);
+//     userBusiness.findByEmail(email)
+//         .then((data: any) => {
+//             res.send(data)
+//         })
+//         .catch((error: any) => {
+//             res.send("Error: " + error);
+//         });
+// });
 
-app.post('/deleteUser', function (req, res) {
-    const email = validator.validateEmail(req.body);
-    userBusiness.findByEmail(email)
-        .then((user: UserModel) => {
-            return userBusiness.delete(user)
-        })
-        .then((data: any) => {
-            res.send(data)
-        })
-        .catch((error: any) => {
-            res.send("Error: " + error);
-        });
-});
+// app.post('/updateUser', function (req, res) {
+//     const email = validator.validateRegistration(req.body);
+//     userBusiness.update(email)
+//         .then((data: any) => {
+//             res.send(data)
+//         })
+//         .catch((error: any) => {
+//             res.send("Error: " + error);
+//         });
+// });
+
+// app.post('/deleteUser', function (req, res) {
+//     const email = validator.validateEmail(req.body);
+//     userBusiness.findByEmail(email)
+//         .then((user: UserModel) => {
+//             return userBusiness.delete(user)
+//         })
+//         .then((data: any) => {
+//             res.send(data)
+//         })
+//         .catch((error: any) => {
+//             res.send("Error: " + error);
+//         });
+// });
 
 // app.post("/login", function(req, res) {
 //     if(req.body.name && req.body.password){
@@ -166,9 +186,9 @@ app.post('/deleteUser', function (req, res) {
 //     }
 // });
 
-app.get("/secret", passport.authenticate('jwt', { session: false }), function(req, res){
-    res.json("Success! You can not see this without a token");
-});
+// app.get("/secret", passport.authenticate('jwt', { session: false }), function(req, res){
+//     res.json("Success! You can not see this without a token");
+// });
 
 var server = app.listen(8081, function () {
 
