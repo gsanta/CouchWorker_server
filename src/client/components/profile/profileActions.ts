@@ -1,6 +1,7 @@
 import { UserModel } from '../../../shared/model/user/UserModel';
 import { Dispatch } from 'redux';
 import { ASYNC_STATES } from '../../utils/AsyncStates';
+import { AddressModel } from '../../../shared/model/AddressModel';
 
 export const SIGNUP = 'SIGNUP';
 export const LOGOUT = 'LOGOUT';
@@ -24,11 +25,16 @@ export function receiveSignup(json: any) {
         user: new UserModel({
             firstName: json.firstName,
             lastName: json.lastName,
+            userName: json.userName,
             birthDate: new Date(1980, 11, 28),
             email: json.email,
             profession: json.profession,
-            country: json.country,
-            city: json.city
+            addresses: [
+                new AddressModel({
+                    country: json.country,
+                    city: json.city
+                })
+            ]
         })
     };
 }
@@ -44,8 +50,7 @@ export function signup(profile: UserModel) {
             birthDate: null,
             email: profile.getEmail(),
             profession: profile.getProfession(),
-            country: profile.getAddress().getCountry(),
-            city: profile.getAddress().getCity()
+            addresses: profile.getAddresses()
         };
 
         return fetch('./api/profile', {

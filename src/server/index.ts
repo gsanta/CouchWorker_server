@@ -9,7 +9,7 @@ import { UserBusiness } from './domain/user/UserBusiness';
 import * as jwt from 'jsonwebtoken';
 import * as passport from 'passport';
 import * as passportJWT from 'passport-jwt';
-import { UserModel } from '../shared/model/user/UserModel';
+import { UserModel, jsonToUserModelParams } from '../shared/model/user/UserModel';
 import * as Koa from 'koa';
 import * as Router from 'koa-router';
 // import {Promise} from 'es6-promise';
@@ -100,7 +100,7 @@ router.post('/api/login', async (ctx) => {
 
 router.post('/addUser', async (ctx) => {
     try {
-        const userModel = validator.validateRegistration(ctx.request.body);
+        const userModel = jsonToUserModelParams(ctx.request.body);
         const data = await userBusiness.create(userModel)
         ctx.body = data;
     } catch (e) {
@@ -118,6 +118,11 @@ router.post('/findUser', async (ctx) => {
     }
 });
 
+router.get('/findHosts/', async ctx => {
+    console.log(ctx.query);
+    ctx.body = ctx.query;
+});
+
 router.post('/updateUser', async (ctx) => {
     try {
         let newUserModel = validator.validateRegistration(ctx.request.body);
@@ -125,31 +130,25 @@ router.post('/updateUser', async (ctx) => {
         newUserModel = newUserModel.setUuid(oldUserModel.getUuid());
         const body = await userBusiness.update(newUserModel);
         ctx.body = body;
-        // ctx.body = await userBusiness.update(userModel);
-            // .then((data: any) => {
-            //     res.send(data)
-            // })
-            // .catch((error: any) => {
-            //     res.send("Error: " + error);
-            // });
     } catch (e) {
         ctx.body = e;
     }
 });
 
-// router.post('/deleteUser', function (ctx) {
-//     const email = validator.validateEmail(ctx.request.body);
-//     userBusiness.findByEmail(email)
-//         .then((user: UserModel) => {
-//             return userBusiness.delete(user)
-//         })
-//         .then((data: any) => {
-//             res.send(data)
-//         })
-//         .catch((error: any) => {
-//             res.send("Error: " + error);
-//         });
-// });
+router.post('/deleteUser', async (ctx) => {
+    try {
+        const email = validator.validateEmail(ctx.request.body);
+        const user = await userBusiness.findByEmail(email);
+        await userBusiness.delete(user);
+    } catch (e) {
+        ctx.body = e;
+    }
+});
+
+router.post('/:userName/addAddress', async (ctx) => {
+    const user = await userBusiness.findByUserName(ctx.params.userName);
+    console.log(user);
+});
 
 // app.post("/login", function(req, res) {
 //     if(req.body.name && req.body.password){

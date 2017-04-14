@@ -8,6 +8,8 @@ export interface PersonalInfoDocument {
     email: string;
 }
 
-export interface UserDocument extends AddressDocument, PersonalInfoDocument {
+export interface UserDocument extends PersonalInfoDocument {
     profession: string;
+    uniqueIndex: number;
+    addresses: AddressDocument[]
 }

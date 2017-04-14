@@ -1,31 +1,53 @@
 import { UserDocument } from './UserDocument';
 import { AddressModel } from '../AddressModel';
 
+export interface UserModelParams {
+    firstName: string;
+    lastName: string;
+    userName: string;
+    birthDate: Date;
+    email: string;
+    profession: string;
+    addresses: AddressModel[];
+}
+
+export function jsonToUserModelParams(json: any): UserModel {
+    const userParams = {
+        firstName: json.firstName,
+        lastName: json.lastName,
+        email: json.email,       
+        userName: json.userName,     
+        birthDate: json.birthDate,            
+        profession: json.profession,
+        addresses: json.addresses.map(address => this.toAddressModel(address)),
+        id: json.id
+    }
+
+    return new UserModel(userParams);
+}
+
 export class UserModel {
     private uuid: string;
     private firstName: string;
     private lastName: string;
+    private userName: string;
     private birthDate: Date;
     private email: string;
     private profession: string;
-    private address: AddressModel;
+    private addresses: AddressModel[];
 
-    constructor(userDocument?: UserDocument, id?: string) {
-        if (userDocument) {
-            this.profession = userDocument.profession;
-            this.firstName = userDocument.firstName,
-            this.lastName = userDocument.lastName,
-            this.birthDate = userDocument.birthDate,
-            this.email = userDocument.email                        
-            this.address = new AddressModel({
-                country: userDocument.country,
-                city: userDocument.city,
-                street: userDocument.street,
-                house: userDocument.house
-            });
+    constructor(params?: UserModelParams, id?: string) {
+        if (params) {
+            this.profession = params.profession;
+            this.firstName = params.firstName,
+            this.lastName = params.lastName,
+            this.userName = params.userName,
+            this.birthDate = params.birthDate,
+            this.email = params.email                        
+            this.addresses = params.addresses
             this.uuid = id;
         } else {
-            this.address = new AddressModel()
+            this.addresses = []
         }
     }
 
@@ -71,6 +93,16 @@ export class UserModel {
         return copy;
     }
 
+    public getUserName(): string {
+        return this.userName;    
+    }
+
+    public setUserName(userName: string) {
+        let copy = this.copy();
+        copy.userName = userName;
+        return copy;
+    }
+
     public getBirthDate() {
         return this.birthDate;
     }
@@ -91,13 +123,13 @@ export class UserModel {
         return copy;
     }
 
-    public getAddress(): AddressModel {
-        return this.address;
+    public getAddresses(): AddressModel[] {
+        return this.addresses;
     }
 
-    public setAddress(address: AddressModel): UserModel {
+    public setAddresses(addresses: AddressModel[]): UserModel {
         let clone = this.copy();
-        clone.address = address;
+        clone.addresses = addresses;
 
         return clone;
     }
@@ -110,7 +142,7 @@ export class UserModel {
         copy.lastName = this.lastName;
         copy.birthDate = this.birthDate;
         copy.email = this.email;
-        copy.address = this.address;
+        copy.addresses = this.addresses;
 
         return copy;
     }

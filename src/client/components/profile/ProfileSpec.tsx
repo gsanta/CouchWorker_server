@@ -4,6 +4,7 @@ import * as React from 'react';
 import { Button } from 'react-bootstrap';
 import { StringInput } from '../form/StringInput';
 import { UserModel } from '../../../shared/model/user/UserModel';
+import { AddressModel } from '../../../shared/model/AddressModel';
 
 describe('<Profile/>', () => {
     describe('if the valid state of \'Profile\' changes', () => {
@@ -11,11 +12,14 @@ describe('<Profile/>', () => {
             let user = new UserModel({
                 firstName: 'New',
                 lastName: 'User',
+                userName: 'New.User',
                 birthDate: new Date(1980, 11, 28),
                 email: 'new_user@gmail.com',
                 profession: 'Drummer',
-                country: 'Hungary',
-                city: 'Budapest',
+                addresses: [new AddressModel({
+                    country: 'Hungary',
+                    city: 'Budapest',
+                })]
             });
 
             const wrapper = shallow(

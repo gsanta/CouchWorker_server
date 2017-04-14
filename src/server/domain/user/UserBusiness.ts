@@ -27,6 +27,10 @@ export class UserBusiness {
         return this.userRepository.findByEmail(email);
     }
 
+    public findByUserName(userName: string): Promise<UserModel> {
+        return this.userRepository.findByUserName(userName);
+    }
+
     public findBy(item: UserModel, queryMetaData: QueryMetaData): Promise<UserModel[]> {
         return this.userRepository.findBy(item, queryMetaData);
     }

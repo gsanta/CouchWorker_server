@@ -94,6 +94,22 @@ export class RepositoryBase<T extends DatabaseId> {
         });
     }
 
+    public findByUserName(userName: string): Promise<T> {
+        const userNameParts = userName.split('.');
+        const firstName = userNameParts[0];
+        const lastName = userNameParts[1];
+        const uniqueIndex = userNameParts.length === 3 ? userNameParts[2] : 0;
+        return new Promise((resolve, reject) => {
+            this.model.findOne({firstName, lastName, uniqueIndex}, (error: any, result: T) => {
+                if (error) {
+                    reject(error);
+                }
+
+                resolve(result);
+            });
+        });
+    }
+
     public findById (_id: string): Promise<T> {
         return new Promise((resolve, reject) => {
             this.model.findById( _id, (error: any, result: T) => {

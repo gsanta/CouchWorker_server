@@ -3,6 +3,7 @@ import { Dispatch } from 'redux';
 import { ASYNC_STATES } from '../../utils/AsyncStates';
 import { UserModel } from '../../../shared/model/user/UserModel';
 import { LoginModel } from '../../../shared/model/login/LoginModel';
+import { AddressModel } from '../../../shared/model/AddressModel';
 
 export const LOGIN = 'LOGIN';
 
@@ -19,11 +20,16 @@ export function receiveLogin(json: any) {
         user: new UserModel({
             firstName: json.firstName,
             lastName: json.lastName,
+            userName: json.userName,
             birthDate: new Date(1980, 11, 28),
             email: json.email,
             profession: json.profession,
-            country: json.country,
-            city: json.city
+            addresses: [
+                new AddressModel({
+                    country: json.country,
+                    city: json.city
+                })
+            ]
         })
     };
 }

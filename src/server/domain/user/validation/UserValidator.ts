@@ -22,16 +22,23 @@ export class UserValidator {
         //     throw new Error(result.error.toString());
         // }
 
+        const addresses = data.addresses.map(address => {
+            return {
+                country: address.country,
+                city: address.city,
+                street: address.street,
+                house: address.house
+            };
+        });
+
         return new UserModel({
             firstName: data.firstName,
             lastName: data.lastName,
+            userName: data.useName,
             birthDate: new Date(Date.now()),
             email: data.email,
             profession: data.profession,
-            country: data.country,
-            city: data.city,
-            street: data.street,
-            house: data.house
+            addresses: addresses
         });
     }
 

@@ -1,4 +1,5 @@
 import { MongooseUserDocument } from './MongooseUserDocument';
+import { AddressSchema } from './AddressSchema';
 import Mongoose = require("mongoose");
 
 export class UserSchema {
@@ -15,6 +16,7 @@ export class UserSchema {
     }
 
     public getSchema(): Mongoose.Schema {
+        const addressSchema = new AddressSchema(this.mInstance, this.mConnection);
         return new this.mInstance.Schema({
             firstName: {
                 type: String,
@@ -24,6 +26,10 @@ export class UserSchema {
                 type: String,
                 required: true
             },
+            uniqueIndex: {
+                type: Number,
+                required: true
+            },
             email: {
                 type: String,
                 required: true
@@ -31,7 +37,8 @@ export class UserSchema {
             profession: {
                 type: String,
                 required: false
-            }
+            },
+            addresses: [addressSchema.getSchema()]
         });
     }
 }

@@ -3,25 +3,32 @@ import * as proxyquire from 'proxyquire';
 import * as sinon from 'sinon';
 import { MongooseUserDocument } from './MongooseUserDocument';
 import { Promise } from 'es6-promise';
-import { UserModel } from '../../../../shared/model/user/UserModel';
+import { UserModel, UserModelParams } from '../../../../shared/model/user/UserModel';
+import { AddressModel } from '../../../../shared/model/AddressModel';
 
 describe('UserRepository', () => {
     let userModel: UserModel;
-    let userDocument: MongooseUserDocument;
+    let userDocument: UserModelParams;
     let repositoryBase: any;
     let queryMetaData: any = sinon.spy();
 
     beforeEach(() => {
-        userDocument = <MongooseUserDocument> {
+        userDocument = {
             firstName: 'Santa',
             lastName: 'Gergely',
+            userName: 'Santa.Gergely',
             birthDate: new Date(1990, 3, 1),
             email: 'santagergely90@gmail.com',
             profession: 'Software Developer',
-            country: 'Hungary',
-            city: 'Budapest',
-            street: 'Haller utca',
-            house: '15/a'
+            addresses: [
+                new AddressModel({
+                    country: 'Hungary',
+                    city: 'Budapest',
+                    street: 'Haller utca',
+                    house: '15/a'
+                })
+            ]
+
         };
 
         userModel = new UserModel(userDocument);
@@ -95,19 +102,24 @@ describe('UserRepository', () => {
         });
 
         it('should return with the updated Promise<UserModel> if no error occures', (done) => {
-            let updatedUserDocument = {
+            const updatedUserDocument = {
                 firstName: 'Santa',
                 lastName: 'Gergely David',
+                userName: 'Santa.Gergely',
                 birthDate: new Date(1990, 3, 1),
                 email: 'santagergely90@gmail.com updated',
                 profession: 'Software Developer updated',
-                country: 'Hungary2',
-                city: 'Budapest2'
+                addresses: [
+                    new AddressModel({
+                        country: 'Hungary2',
+                        city: 'Budapest2'
+                    })
+                ]
             };
 
-            let updatedUserModel = new UserModel(updatedUserDocument);
+            const updatedUserModel = new UserModel(updatedUserDocument);
 
-            let userRepository = new UserRepository(repositoryBase);
+            const userRepository = new UserRepository(repositoryBase);
             repositoryBase.update.returns(new Promise((resolve, reject) => {
                 resolve(updatedUserDocument);
             }));

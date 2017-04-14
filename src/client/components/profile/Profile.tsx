@@ -65,7 +65,7 @@ export class Profile extends React.Component<RegistrationProps, RegistrationStat
                     error={this.state.validation.getProfessionValidationError()}
                 />
                 <StringInput
-                    value={this.state.user.getAddress().getCountry()}
+                    value={this.state.user.getAddresses()[0].getCountry()}
                     onChange={this.onCountryChange.bind(this)}
                     controlId='cw-form-profile-country'
                     placeHolder='Enter country'
@@ -73,7 +73,7 @@ export class Profile extends React.Component<RegistrationProps, RegistrationStat
                     error={this.state.validation.getCountryValidationError()}
                 />
                 <StringInput
-                    value={this.state.user.getAddress().getCity()}
+                    value={this.state.user.getAddresses()[0].getCity()}
                     onChange={this.onCityChange.bind(this)}
                     controlId='cw-form-profile-city'
                     placeHolder='Enter city'
@@ -148,8 +148,8 @@ export class Profile extends React.Component<RegistrationProps, RegistrationStat
     }
 
     private onCountryChange(event: React.ChangeEvent<any>) {
-        const user = this.state.user.setAddress(
-            this.state.user.getAddress().setCountry(event.target.valuee)
+        const user = this.state.user.setAddresses(
+            [this.state.user.getAddresses()[0].setCountry(event.target.value)]
         );
         this.setState({
             user
@@ -157,8 +157,8 @@ export class Profile extends React.Component<RegistrationProps, RegistrationStat
     }
 
     private onCityChange(event: React.ChangeEvent<any>) {
-        const user = this.state.user.setAddress(
-            this.state.user.getAddress().setCity(event.target.value)
+        const user = this.state.user.setAddresses(
+            [this.state.user.getAddresses()[0].setCity(event.target.value)]
         );
         this.setState({
             user
