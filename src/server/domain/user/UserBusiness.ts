@@ -3,6 +3,7 @@ import * as Promise from 'promise';
 import { UserRepository } from './repository/UserRepository';
 import { QueryMetaData } from '../../repository/QueryMetaData';
 import { UserModel } from '../../../shared/model/user/UserModel';
+import { AddressModel } from '../../../shared/model/AddressModel';
 
 export class UserBusiness {
     private userRepository: UserRepository;
@@ -14,7 +15,7 @@ export class UserBusiness {
     public create(item: UserModel): Promise<any> {
         return this.userRepository.create(item);
     }
-
+    
     public delete (item: UserModel): Promise<any> {
         return this.userRepository.delete(item)
     }

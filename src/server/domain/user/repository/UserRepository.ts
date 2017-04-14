@@ -59,7 +59,7 @@ export class UserRepository {
             uniqueIndex: 0,     
             birthDate: userModel.getBirthDate(),            
             profession: userModel.getProfession(),
-            addresses: userModel.getAddresses().map(address => this.toAddressDocument(address)),
+            addresses: userModel.getAddresses().map(address => this.toAddressDocument(address)).toArray(),
             id: userModel.getUuid()
         }
     }
@@ -74,6 +74,7 @@ export class UserRepository {
     }
 
     public toUserModel(userDocument: MongooseUserDocument): UserModel {
+        const addresses = userDocument.addresses ? userDocument.addresses.map(address => this.toAddressModel(address)) : null;
         const userParams = {
             firstName: userDocument.firstName,
             lastName: userDocument.lastName,
@@ -81,7 +82,7 @@ export class UserRepository {
             userName: `${userDocument.firstName}.${userDocument.lastName}.${userDocument.uniqueIndex}`,     
             birthDate: userDocument.birthDate,            
             profession: userDocument.profession,
-            addresses: userDocument.addresses.map(address => this.toAddressModel(address)),
+            addresses: addresses,
             id: userDocument.id
         }
 

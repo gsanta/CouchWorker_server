@@ -1,5 +1,6 @@
 import { UserDocument } from './UserDocument';
 import { AddressModel } from '../AddressModel';
+import { List } from 'immutable';
 
 export interface UserModelParams {
     firstName: string;
@@ -12,6 +13,8 @@ export interface UserModelParams {
 }
 
 export function jsonToUserModelParams(json: any): UserModel {
+    const addresses = json.addresses ? json.addresses.map(address => this.toAddressModel(address)) : null;
+
     const userParams = {
         firstName: json.firstName,
         lastName: json.lastName,
@@ -19,7 +22,7 @@ export function jsonToUserModelParams(json: any): UserModel {
         userName: json.userName,     
         birthDate: json.birthDate,            
         profession: json.profession,
-        addresses: json.addresses.map(address => this.toAddressModel(address)),
+        addresses: addresses,
         id: json.id
     }
 
@@ -34,7 +37,7 @@ export class UserModel {
     private birthDate: Date;
     private email: string;
     private profession: string;
-    private addresses: AddressModel[];
+    private addresses: List<AddressModel>;
 
     constructor(params?: UserModelParams, id?: string) {
         if (params) {
@@ -44,10 +47,10 @@ export class UserModel {
             this.userName = params.userName,
             this.birthDate = params.birthDate,
             this.email = params.email                        
-            this.addresses = params.addresses
+            this.addresses = params.addresses ? List<AddressModel>(params.addresses) : List<AddressModel>();
             this.uuid = id;
         } else {
-            this.addresses = []
+            this.addresses = List<AddressModel>();
         }
     }
 
@@ -123,13 +126,20 @@ export class UserModel {
         return copy;
     }
 
-    public getAddresses(): AddressModel[] {
+    public getAddresses(): List<AddressModel> {
         return this.addresses;
+    }
+
+    public addAddress(address: AddressModel): UserModel {
+        const copy = this.copy();
+        copy.addresses = copy.addresses.push(address);
+
+        return copy;
     }
 
     public setAddresses(addresses: AddressModel[]): UserModel {
         let clone = this.copy();
-        clone.addresses = addresses;
+        clone.addresses = List(addresses);
 
         return clone;
     }

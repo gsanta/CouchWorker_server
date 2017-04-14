@@ -6,6 +6,17 @@ export interface AddressDocument {
     house?: string;
 }
 
+export function jsonToAddressModel(json: any): AddressModel {
+    const addressDocument: AddressDocument = {
+        country: json.country,
+        city: json.city,
+        street: json.street,
+        house: json.house
+    };
+
+    return new AddressModel(addressDocument);
+}
+
 export class AddressModel {
     private country: string;
     private city: string;

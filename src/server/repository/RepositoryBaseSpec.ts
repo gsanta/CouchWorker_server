@@ -137,7 +137,7 @@ describe('RepositoryBase', () => {
                 })
                 .catch((err: any) => done.fail(err));
 
-            schemaModel.update.callArgWith(1, null, result);
+            schemaModel.update.callArgWith(2, null, result);
         });
 
         it('should reject the promise with error data if there is an error', (done) => {
@@ -153,7 +153,7 @@ describe('RepositoryBase', () => {
                     done();
                 });
 
-            schemaModel.update.callArgWith(1, error, null);
+            schemaModel.update.callArgWith(2, error, null);
         });
     });
 

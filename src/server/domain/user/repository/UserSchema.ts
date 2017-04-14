@@ -38,7 +38,26 @@ export class UserSchema {
                 type: String,
                 required: false
             },
-            addresses: [addressSchema.getSchema()]
+            addresses: [
+            {
+                country: {
+                    type: String,
+                    required: true
+                },
+                city: {
+                    type: String,
+                    required: true
+                },
+                street: {
+                    type: String,
+                    required: false
+                },
+                house: {
+                    type: String,
+                    required: false
+                }
+            }
+            ]
         });
     }
 }

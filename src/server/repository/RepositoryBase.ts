@@ -28,7 +28,8 @@ export class RepositoryBase<T extends DatabaseId> {
 
     public update(item: T): Promise<T> {
         return new Promise((resolve, reject) => {
-            this.model.update({_id: this.toObjectId(item.id)}, (error: any, result: T) => {
+            debugger;
+            this.model.update({_id: this.toObjectId(item.id)}, item, (error: any, result: T) => {
                 if (error) {
                     reject(error);
                 }

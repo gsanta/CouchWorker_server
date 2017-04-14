@@ -12,6 +12,7 @@ import { UserModel, jsonToUserModelParams } from '../shared/model/user/UserModel
 import * as Koa from 'koa';
 import * as Router from 'koa-router';
 // import {Promise} from 'es6-promise';
+import { jsonToAddressModel } from '../shared/model/AddressModel';
 const app = new Koa();
 const router = new Router();
 
@@ -102,7 +103,7 @@ router.post('/addUser', async (ctx) => {
         const data = await userBusiness.create(userModel)
         ctx.body = data;
     } catch (e) {
-        ctx.body = "Error: " + e 
+        ctx.body = "Error: " + e
     }
     
 });
@@ -144,7 +145,10 @@ router.post('/deleteUser', async (ctx) => {
 });
 
 router.post('/:userName/addAddress', async (ctx) => {
-    const user = await userBusiness.findByUserName(ctx.params.userName);
+    let user = await userBusiness.findByUserName(ctx.params.userName);
+    const address = jsonToAddressModel(ctx.request.body);
+    user = user.addAddress(address);
+    user = await userBusiness.update(user);
     console.log(user);
 });
 
