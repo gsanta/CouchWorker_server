@@ -5,18 +5,20 @@ import { MongooseUserDocument } from './MongooseUserDocument';
 import { Promise } from 'es6-promise';
 import { UserModel, UserModelParams } from '../../../../shared/model/user/UserModel';
 import { AddressModel } from '../../../../shared/model/AddressModel';
+import { UserDocument } from '../../../../shared/model/user/UserDocument';
 
 describe('UserRepository', () => {
     let userModel: UserModel;
-    let userDocument: UserModelParams;
+    let userModelParams: UserModelParams;
+    let userDocument: MongooseUserDocument;
     let repositoryBase: any;
     let queryMetaData: any = sinon.spy();
 
     beforeEach(() => {
-        userDocument = {
+        userModelParams = {
             firstName: 'Santa',
             lastName: 'Gergely',
-            userName: 'Santa.Gergely',
+            userName: 'Santa.Gergely.0',
             birthDate: new Date(1990, 3, 1),
             email: 'santagergely90@gmail.com',
             profession: 'Software Developer',
@@ -28,10 +30,27 @@ describe('UserRepository', () => {
                     house: '15/a'
                 })
             ]
-
         };
 
-        userModel = new UserModel(userDocument);
+        userDocument = {
+            firstName: 'Santa',
+            lastName: 'Gergely',
+            uniqueIndex: 0,
+            birthDate: new Date(1990, 3, 1),
+            email: 'santagergely90@gmail.com',
+            profession: 'Software Developer',
+            addresses: [
+                {
+                    country: 'Hungary',
+                    city: 'Budapest',
+                    street: 'Haller utca',
+                    house: '15/a'
+                }
+            ],
+            id: undefined
+        };
+
+        userModel = new UserModel(userModelParams);
 
         repositoryBase = {
             create: sinon.stub(),
@@ -50,7 +69,7 @@ describe('UserRepository', () => {
         it('should call the create method of RepositoryBase with the correct parameters', () => {
             let userRepository = new UserRepository(repositoryBase);
             repositoryBase.create.returns({
-                then: (callback: any) => callback(userDocument)
+                then: (callback: any) => callback(userModelParams)
             });
 
             userRepository.create(userModel);
@@ -102,10 +121,10 @@ describe('UserRepository', () => {
         });
 
         it('should return with the updated Promise<UserModel> if no error occures', (done) => {
-            const updatedUserDocument = {
+            const updatedUserParams = {
                 firstName: 'Santa',
                 lastName: 'Gergely David',
-                userName: 'Santa.Gergely',
+                userName: 'Santa.Gergely David.0',
                 birthDate: new Date(1990, 3, 1),
                 email: 'santagergely90@gmail.com updated',
                 profession: 'Software Developer updated',
@@ -117,7 +136,20 @@ describe('UserRepository', () => {
                 ]
             };
 
-            const updatedUserModel = new UserModel(updatedUserDocument);
+            const updatedUserDocument = {
+                firstName: 'Santa',
+                lastName: 'Gergely David',
+                uniqueIndex: 0,
+                birthDate: new Date(1990, 3, 1),
+                email: 'santagergely90@gmail.com updated',
+                profession: 'Software Developer updated',
+                addresses: [{
+                    country: 'Hungary2',
+                    city: 'Budapest2'
+                }]
+            };
+
+            const updatedUserModel = new UserModel(updatedUserParams);
 
             const userRepository = new UserRepository(repositoryBase);
             repositoryBase.update.returns(new Promise((resolve, reject) => {
@@ -151,7 +183,7 @@ describe('UserRepository', () => {
         it('should call the delete method of RepositoryBase with the correct parameters', () => {
             let userRepository = new UserRepository(repositoryBase);
             repositoryBase.delete.returns({
-                then: (callback: any) => callback(userDocument)
+                then: (callback: any) => callback(userModelParams)
             });
 
             userRepository.delete(userModel);
@@ -190,22 +222,38 @@ describe('UserRepository', () => {
     });
 
     describe('findAll', () => {
-        let userDocument2: any;
+        let userDocument2: UserDocument;
+        let userModelParams2: UserModelParams;
         let userModel2: any;
 
         beforeEach(() => {
             userDocument2 = {
-                name: 'Santa Gergely2',
-                age: 27,
+                firstName: 'Santa',
+                lastName: 'Gergely2',
+                uniqueIndex: 1,
+                birthDate: null,
                 profession: 'Software Developer2',
                 email: 'santagergely90@gmail.com2',
-                address: {
+                addresses: [{
                     country: 'Hungary2',
                     city: 'Budapest2'
-                }
+                }]
             };
 
-            userModel2 = new UserModel(userDocument2);
+            userModelParams2 = {
+                firstName: 'Santa',
+                lastName: 'Gergely2',
+                userName: 'Santa.Gergely2.1',
+                birthDate: null,
+                profession: 'Software Developer2',
+                email: 'santagergely90@gmail.com2',
+                addresses: [new AddressModel({
+                    country: 'Hungary2',
+                    city: 'Budapest2'
+                })]
+            }
+
+            userModel2 = new UserModel(userModelParams2);
         });
 
         it('should call the findAll method of RepositoryBase with the correct parameters', () => {
@@ -254,22 +302,38 @@ describe('UserRepository', () => {
     });
 
     describe('findBy', () => {
-        let userDocument2: any;
+        let userDocument2: UserDocument;
+        let userModelParams2: UserModelParams;
         let userModel2: any;
 
         beforeEach(() => {
             userDocument2 = {
-                name: 'Santa Gergely2',
-                age: 27,
+                firstName: 'Santa',
+                lastName: 'Gergely2',
+                uniqueIndex: 1,
+                birthDate: null,
                 profession: 'Software Developer2',
                 email: 'santagergely90@gmail.com2',
-                address: {
+                addresses: [{
                     country: 'Hungary2',
                     city: 'Budapest2'
-                }
+                }]
             };
 
-            userModel2 = new UserModel(userDocument2);
+            userModelParams2 = {
+                firstName: 'Santa',
+                lastName: 'Gergely2',
+                userName: 'Santa.Gergely2.1',
+                birthDate: null,
+                profession: 'Software Developer2',
+                email: 'santagergely90@gmail.com2',
+                addresses: [new AddressModel({
+                    country: 'Hungary2',
+                    city: 'Budapest2'
+                })]
+            }
+
+            userModel2 = new UserModel(userModelParams2);
         });
 
         it('should call the findBy method of RepositoryBase with the correct parameters', () => {
@@ -327,7 +391,7 @@ describe('UserRepository', () => {
             let userRepository = new UserRepository(repositoryBase);
 
             repositoryBase.findByEmail.returns({
-                then: (callback: any) => callback(userDocument)
+                then: (callback: any) => callback(userModelParams)
             });
 
             userRepository.findByEmail(email);

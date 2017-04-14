@@ -4,7 +4,6 @@ import * as express from 'express';
 import * as fs from 'mz/fs';
 import * as bodyParser from 'koa-bodyparser';
 import { Database } from './repository/Database';
-import { UserValidator } from './domain/user/validation/UserValidator';
 import { UserBusiness } from './domain/user/UserBusiness';
 import * as jwt from 'jsonwebtoken';
 import * as passport from 'passport';
@@ -81,7 +80,6 @@ router.get('/listUsers', function (req: express.Request, res: express.Response) 
     }
 });
 
-const validator = new UserValidator();
 const userRepository = repositoryFactory.getUserRepository();
 const userBusiness = new UserBusiness(userRepository);
 
@@ -111,7 +109,7 @@ router.post('/addUser', async (ctx) => {
 
 router.post('/findUser', async (ctx) => {
     try {
-        const email = validator.validateEmail(ctx.request.body);
+        const email = ctx.request.body;
         ctx.body = await userBusiness.findByEmail(email)
     } catch (e) {
         ctx.body = e;
@@ -125,7 +123,7 @@ router.get('/findHosts/', async ctx => {
 
 router.post('/updateUser', async (ctx) => {
     try {
-        let newUserModel = validator.validateRegistration(ctx.request.body);
+        let newUserModel = jsonToUserModelParams(ctx.request.body);
         const oldUserModel = await userBusiness.findByEmail(newUserModel.getEmail());
         newUserModel = newUserModel.setUuid(oldUserModel.getUuid());
         const body = await userBusiness.update(newUserModel);
@@ -137,7 +135,7 @@ router.post('/updateUser', async (ctx) => {
 
 router.post('/deleteUser', async (ctx) => {
     try {
-        const email = validator.validateEmail(ctx.request.body);
+        const email = ctx.request.body;
         const user = await userBusiness.findByEmail(email);
         await userBusiness.delete(user);
     } catch (e) {
