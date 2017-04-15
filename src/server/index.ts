@@ -85,7 +85,12 @@ router.post('/upload', async (ctx, next) => {
     if (!ctx.request.is('multipart/*')) return await next();
     
     const {files, fields} = await asyncBusboy(ctx.req);
-    const fstream = fs.createWriteStream(__dirname + '/img/' + files[0].filename);
+
+    if (!fs.existsSync(__dirname + '/../img/')){
+        fs.mkdirSync(__dirname + '/../img/');
+    }
+
+    const fstream = fs.createWriteStream(__dirname + '/../img/' + files[0].filename);
     files[0].pipe(fstream);
     fstream.on('close', function () {
         ctx.body = "Upload Finished of " + files[0].filename;
