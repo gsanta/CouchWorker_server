@@ -3,7 +3,7 @@ import { UserRepository } from '../domain/user/repository/UserRepository';
 import { MongooseUserDocument } from '../domain/user/repository/MongooseUserDocument';
 import { UserSchema } from '../domain/user/repository/UserSchema';
 import Mongoose = require("mongoose");
-
+import * as uuid from 'uuid/v4';
 export class RepositoryFactory {
     private userRepository: UserRepository;
 
@@ -11,7 +11,8 @@ export class RepositoryFactory {
         this.userRepository = new UserRepository(
             new RepositoryBase<MongooseUserDocument>(
                 new UserSchema(mongooseInstance, mongooseConnection).getModel()
-            )
+            ),
+            uuid
         );
     }
 

@@ -64,7 +64,7 @@ describe('UserRepository', () => {
 
     describe('create', () => {
         it('should call the create method of RepositoryBase with the correct parameters', () => {
-            let userRepository = new UserRepository(repositoryBase);
+            let userRepository = new UserRepository(repositoryBase, () => null);
             repositoryBase.create.returns(new Promise((resolve, reject) => {
                 resolve(userDocument);
             }));
@@ -76,7 +76,7 @@ describe('UserRepository', () => {
         });
 
         it('should return with a Promise<UserModel> if no error occurs', (done) => {
-            let userRepository = new UserRepository(repositoryBase);
+            let userRepository = new UserRepository(repositoryBase, () => null);
             repositoryBase.create.returns(new Promise((resolve, reject) => {
                 resolve(userDocument);
             }));
@@ -90,7 +90,7 @@ describe('UserRepository', () => {
         });
 
         it('should return with a rejected Promise if an error occurs', (done) => {
-            let userRepository = new UserRepository(repositoryBase);
+            let userRepository = new UserRepository(repositoryBase, () => null);
             repositoryBase.create.returns(new Promise((resolve, reject) => {
                 reject('Error happened');
             }));
@@ -106,7 +106,7 @@ describe('UserRepository', () => {
 
     describe('update', () => {
         it('should call the update method of RepositoryBase with the correct parameters', () => {
-            let userRepository = new UserRepository(repositoryBase);
+            let userRepository = new UserRepository(repositoryBase, () => null);
             repositoryBase.update.returns(new Promise((resolve, reject) => {
                 resolve(userDocument);
             }));
@@ -117,7 +117,7 @@ describe('UserRepository', () => {
         });
 
         it('should return with the updated Promise<UserModel> if no error occures', (done) => {
-            const userRepository = new UserRepository(repositoryBase);
+            const userRepository = new UserRepository(repositoryBase, () => null);
             repositoryBase.update.returns(new Promise((resolve, reject) => {
                 resolve(userDocument2);
             }));
@@ -131,7 +131,7 @@ describe('UserRepository', () => {
         });
 
         it('should return with a rejectet Promise if an error occures', (done) => {
-            let userRepository = new UserRepository(repositoryBase);
+            let userRepository = new UserRepository(repositoryBase, () => null);
             repositoryBase.update.returns(new Promise((resolve, reject) => {
                 reject('Error happened');
             }));
@@ -147,7 +147,7 @@ describe('UserRepository', () => {
 
     describe('delete', () => {
         it('should call the delete method of RepositoryBase with the correct parameters', () => {
-            let userRepository = new UserRepository(repositoryBase);
+            let userRepository = new UserRepository(repositoryBase, () => null);
             repositoryBase.delete.returns(new Promise((resolve, reject) => {
                 resolve(userDocument);
             }));
@@ -159,7 +159,7 @@ describe('UserRepository', () => {
         });
 
         it('should return with a Promise<UserModel> with the deleted user if no error occures', (done) => {
-            let userRepository = new UserRepository(repositoryBase);
+            let userRepository = new UserRepository(repositoryBase, () => null);
             repositoryBase.delete.returns(new Promise((resolve, reject) => {
                 resolve();
             }));
@@ -173,7 +173,7 @@ describe('UserRepository', () => {
         });
 
         it('should return with a rejectet Promise if an error occures', (done) => {
-            let userRepository = new UserRepository(repositoryBase);
+            let userRepository = new UserRepository(repositoryBase, () => null);
             repositoryBase.delete.returns(new Promise((resolve, reject) => {
                 reject('Error happened');
             }));
@@ -189,7 +189,7 @@ describe('UserRepository', () => {
 
     describe('findAll', () => {
         it('should call the findAll method of RepositoryBase with the correct parameters', () => {
-            let userRepository = new UserRepository(repositoryBase);
+            let userRepository = new UserRepository(repositoryBase, () => null);
 
             repositoryBase.findAll.returns({
                 then: (callback: any) => callback([userDocument, userDocument2])
@@ -202,7 +202,7 @@ describe('UserRepository', () => {
         });
 
         it('should return with a Promise<UserModel[]> if no error occures', (done) => {
-            let userRepository = new UserRepository(repositoryBase);
+            let userRepository = new UserRepository(repositoryBase, () => null);
             repositoryBase.findAll
                 .returns(new Promise((resolve, reject) => {
                     resolve([userDocument, userDocument2]);
@@ -219,7 +219,7 @@ describe('UserRepository', () => {
         });
 
         it('should return with a rejectet Promise if an error occures', (done) => {
-            let userRepository = new UserRepository(repositoryBase);
+            let userRepository = new UserRepository(repositoryBase, () => null);
             repositoryBase.findAll.returns(new Promise((resolve, reject) => {
                 reject('Error happened');
             }));
@@ -235,7 +235,7 @@ describe('UserRepository', () => {
 
     describe('findBy', () => {
         it('should call the findBy method of RepositoryBase with the correct parameters', () => {
-            let userRepository = new UserRepository(repositoryBase);
+            let userRepository = new UserRepository(repositoryBase, () => null);
 
             repositoryBase.findBy.withArgs(userDocument).returns({
                 then: (callback: any) => callback([userDocument, userDocument2])
@@ -248,7 +248,7 @@ describe('UserRepository', () => {
         });
 
         it('should return with a Promise<UserModel[]> if no error occures', (done) => {
-            let userRepository = new UserRepository(repositoryBase);
+            let userRepository = new UserRepository(repositoryBase, () => null);
             repositoryBase.findBy
                 .withArgs(userDocument)
                 .returns(new Promise((resolve, reject) => {
@@ -266,7 +266,7 @@ describe('UserRepository', () => {
         });
 
         it('should return with a rejectet Promise if an error occures', (done) => {
-            let userRepository = new UserRepository(repositoryBase);
+            let userRepository = new UserRepository(repositoryBase, () => null);
             repositoryBase.findBy
                 .withArgs(userDocument)
                 .returns(new Promise((resolve, reject) => {
@@ -286,7 +286,7 @@ describe('UserRepository', () => {
         let email = 'abcd';
 
         it('should call the findByEmail method of RepositoryBase with the correct parameters', () => {
-            let userRepository = new UserRepository(repositoryBase);
+            let userRepository = new UserRepository(repositoryBase, () => null);
 
             repositoryBase.findByEmail.returns({
                 then: (callback: any) => callback(userDocument)
@@ -299,7 +299,7 @@ describe('UserRepository', () => {
         });
 
         it('should return with a Promise<UserModel> if no error occures', (done) => {
-            let userRepository = new UserRepository(repositoryBase);
+            let userRepository = new UserRepository(repositoryBase, () => null);
             repositoryBase.findByEmail
                 .withArgs(email)
                 .returns(new Promise((resolve, reject) => {
@@ -315,7 +315,7 @@ describe('UserRepository', () => {
         });
 
         it('should return with a rejectet Promise if an error occures', (done) => {
-            let userRepository = new UserRepository(repositoryBase);
+            let userRepository = new UserRepository(repositoryBase, () => null);
             repositoryBase.findByEmail.returns(new Promise((resolve, reject) => {
                 reject('Error happened');
             }));

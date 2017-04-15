@@ -4,15 +4,19 @@ import { QueryMetaData } from '../../../repository/QueryMetaData';
 import { UserModel } from '../../../../shared/model/user/UserModel';
 import { AddressModel, AddressDocument } from '../../../../shared/model/AddressModel';
 import { UserDocument } from '../../../../shared/model/user/UserDocument';
+import * as uuid from 'uuid/v4';
 
 export class UserRepository {
     private repoBase: RepositoryBase<UserDocument>;
+    private createUniqueId: () => string;
 
-    constructor (repoBase: RepositoryBase<UserDocument>) {
+    constructor (repoBase: RepositoryBase<UserDocument>, createUniqueId: () => string) {
         this.repoBase = repoBase;
+        this.createUniqueId = createUniqueId;
     }
 
     public create (user: UserModel): Promise<UserModel> {
+        user = user.setUuid(this.createUniqueId());        
         const userDocument = this.toUserDocument(user);
         return this.repoBase.create(userDocument)
             .then(userDocument => UserRepository.toUserModel(userDocument));
