@@ -15,13 +15,13 @@ export class UserRepository {
     public create (user: UserModel): Promise<UserModel> {
         const userDocument = this.toUserDocument(user);
         return this.repoBase.create(userDocument)
-            .then(userDocument => this.toUserModel(userDocument));
+            .then(userDocument => UserRepository.toUserModel(userDocument));
     }
 
     public update(user: UserModel): Promise<UserModel> {
         const userDocument = this.toUserDocument(user);
         return this.repoBase.update(userDocument)
-            .then(userDocument => this.toUserModel(userDocument));
+            .then(userDocument => UserRepository.toUserModel(userDocument));
     }
 
     public delete(user: UserModel): Promise<UserModel> {
@@ -33,22 +33,22 @@ export class UserRepository {
     public findBy(user: UserModel, queryMetaData: QueryMetaData): Promise<UserModel[]> {
         const userDocument = this.toUserDocument(user);
         return this.repoBase.findBy(userDocument, queryMetaData)
-            .then(docs => docs.map(doc => this.toUserModel(doc)));
+            .then(docs => docs.map(doc => UserRepository.toUserModel(doc)));
     }
 
     public findAll(queryMetaData: QueryMetaData): Promise<UserModel[]> {
         return this.repoBase.findAll(queryMetaData)
-            .then(docs => docs.map(doc => this.toUserModel(doc)));
+            .then(docs => docs.map(doc => UserRepository.toUserModel(doc)));
     }
 
     public findByEmail(email: string): Promise<UserModel> {
         return this.repoBase.findByEmail(email)
-            .then(userDocument => this.toUserModel(userDocument));
+            .then(userDocument => UserRepository.toUserModel(userDocument));
     }
 
     public findByUserName(userName: string): Promise<UserModel> {
         return this.repoBase.findByUserName(userName)
-            .then(userDocument => this.toUserModel(userDocument));
+            .then(userDocument => UserRepository.toUserModel(userDocument));
     }
 
     private toUserDocument(userModel: UserModel): UserDocument {
@@ -59,12 +59,12 @@ export class UserRepository {
             uniqueIndex: 0,     
             birthDate: userModel.getBirthDate(),            
             profession: userModel.getProfession(),
-            addresses: userModel.getAddresses().map(address => this.toAddressDocument(address)).toArray(),
+            addresses: userModel.getAddresses().map(address => UserRepository.toAddressDocument(address)).toArray(),
             uuid: userModel.getUuid()
         }
     }
 
-    private toAddressDocument(addressModel: AddressModel): AddressDocument {
+    private static toAddressDocument(addressModel: AddressModel): AddressDocument {
         return {
             country: addressModel.getCountry(),
             city: addressModel.getCity(),
@@ -73,7 +73,7 @@ export class UserRepository {
         }
     }
 
-    public toUserModel(userDocument: UserDocument): UserModel {
+    public static toUserModel(userDocument: UserDocument): UserModel {
         const addresses = userDocument.addresses ? userDocument.addresses.map(address => this.toAddressModel(address)) : null;
         const userParams = {
             firstName: userDocument.firstName,
@@ -83,13 +83,13 @@ export class UserRepository {
             birthDate: userDocument.birthDate,            
             profession: userDocument.profession,
             addresses: addresses,
-            id: userDocument.uuid
+            uuid: userDocument.uuid
         }
 
-        return new UserModel(userParams, userDocument.uuid);
+        return new UserModel(userParams);
     }
 
-    private toAddressModel(addressDocument: AddressDocument): AddressModel {
+    private static toAddressModel(addressDocument: AddressDocument): AddressModel {
         return new AddressModel(addressDocument);
     }
 }

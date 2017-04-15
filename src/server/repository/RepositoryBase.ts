@@ -29,7 +29,6 @@ export class RepositoryBase<T extends {uuid: string}> {
 
     public update(item: T): Promise<T> {
         return new Promise((resolve, reject) => {
-            debugger;
             this.model.update({uuid: item.uuid}, item, (error: any, result: T) => {
                 if (error) {
                     reject(error);

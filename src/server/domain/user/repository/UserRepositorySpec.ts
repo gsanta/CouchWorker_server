@@ -9,29 +9,13 @@ import { UserDocument } from '../../../../shared/model/user/UserDocument';
 
 describe('UserRepository', () => {
     let userModel: UserModel;
-    let userModelParams: UserModelParams;
-    let userDocument: MongooseUserDocument;
+    let userDocument: UserDocument;
+    let userModel2: UserModel;
+    let userDocument2: UserDocument;
     let repositoryBase: any;
     let queryMetaData: any = sinon.spy();
 
     beforeEach(() => {
-        userModelParams = {
-            firstName: 'Santa',
-            lastName: 'Gergely',
-            userName: 'Santa.Gergely.0',
-            birthDate: new Date(1990, 3, 1),
-            email: 'santagergely90@gmail.com',
-            profession: 'Software Developer',
-            addresses: [
-                new AddressModel({
-                    country: 'Hungary',
-                    city: 'Budapest',
-                    street: 'Haller utca',
-                    house: '15/a'
-                })
-            ]
-        };
-
         userDocument = {
             firstName: 'Santa',
             lastName: 'Gergely',
@@ -48,10 +32,24 @@ describe('UserRepository', () => {
                     house: '15/a'
                 }
             ],
-            id: undefined
         };
 
-        userModel = new UserModel(userModelParams);
+        userDocument2 = {
+                firstName: 'Santa',
+                lastName: 'Gergely David',
+                uniqueIndex: 0,
+                birthDate: new Date(1990, 3, 1),
+                email: 'santagergely90@gmail.com updated',
+                profession: 'Software Developer updated',
+                uuid: null,
+                addresses: [{
+                    country: 'Hungary2',
+                    city: 'Budapest2'
+                }]
+            };
+
+        userModel = UserRepository.toUserModel(userDocument);
+        userModel2 = UserRepository.toUserModel(userDocument2);
 
         repositoryBase = {
             create: sinon.stub(),
@@ -61,17 +59,15 @@ describe('UserRepository', () => {
             findAll: sinon.stub(),
             findBy: sinon.stub()
         };
-
-
     });
 
 
     describe('create', () => {
         it('should call the create method of RepositoryBase with the correct parameters', () => {
             let userRepository = new UserRepository(repositoryBase);
-            repositoryBase.create.returns({
-                then: (callback: any) => callback(userModelParams)
-            });
+            repositoryBase.create.returns(new Promise((resolve, reject) => {
+                resolve(userDocument);
+            }));
 
             userRepository.create(userModel);
 
@@ -79,7 +75,7 @@ describe('UserRepository', () => {
             expect(repositoryBase.create.getCall(0).args[0]).toEqual(userDocument);
         });
 
-        it('should return with a Promise<UserModel> if no error occures', (done) => {
+        it('should return with a Promise<UserModel> if no error occurs', (done) => {
             let userRepository = new UserRepository(repositoryBase);
             repositoryBase.create.returns(new Promise((resolve, reject) => {
                 resolve(userDocument);
@@ -93,7 +89,7 @@ describe('UserRepository', () => {
             .catch(() => done.fail('This Promise should have been resolved'));
         });
 
-        it('should return with a rejectet Promise if an error occures', (done) => {
+        it('should return with a rejected Promise if an error occurs', (done) => {
             let userRepository = new UserRepository(repositoryBase);
             repositoryBase.create.returns(new Promise((resolve, reject) => {
                 reject('Error happened');
@@ -111,10 +107,9 @@ describe('UserRepository', () => {
     describe('update', () => {
         it('should call the update method of RepositoryBase with the correct parameters', () => {
             let userRepository = new UserRepository(repositoryBase);
-            repositoryBase.update.returns({
-                then: (callback: any) => callback(userDocument)
-            });
-
+            repositoryBase.update.returns(new Promise((resolve, reject) => {
+                resolve(userDocument);
+            }));
             userRepository.update(userModel);
 
             expect(repositoryBase.update.callCount).toBe(1);
@@ -122,44 +117,14 @@ describe('UserRepository', () => {
         });
 
         it('should return with the updated Promise<UserModel> if no error occures', (done) => {
-            const updatedUserParams = {
-                firstName: 'Santa',
-                lastName: 'Gergely David',
-                userName: 'Santa.Gergely David.0',
-                birthDate: new Date(1990, 3, 1),
-                email: 'santagergely90@gmail.com updated',
-                profession: 'Software Developer updated',
-                addresses: [
-                    new AddressModel({
-                        country: 'Hungary2',
-                        city: 'Budapest2'
-                    })
-                ]
-            };
-
-            const updatedUserDocument = {
-                firstName: 'Santa',
-                lastName: 'Gergely David',
-                uniqueIndex: 0,
-                birthDate: new Date(1990, 3, 1),
-                email: 'santagergely90@gmail.com updated',
-                profession: 'Software Developer updated',
-                addresses: [{
-                    country: 'Hungary2',
-                    city: 'Budapest2'
-                }]
-            };
-
-            const updatedUserModel = new UserModel(updatedUserParams);
-
             const userRepository = new UserRepository(repositoryBase);
             repositoryBase.update.returns(new Promise((resolve, reject) => {
-                resolve(updatedUserDocument);
+                resolve(userDocument2);
             }));
 
             userRepository.update(userModel)
             .then((model) => {
-                expect(model).toEqual(updatedUserModel);
+                expect(model).toEqual(userModel2);
                 done();
             })
             .catch(() => done.fail('This Promise should have been resolved'));
@@ -183,9 +148,9 @@ describe('UserRepository', () => {
     describe('delete', () => {
         it('should call the delete method of RepositoryBase with the correct parameters', () => {
             let userRepository = new UserRepository(repositoryBase);
-            repositoryBase.delete.returns({
-                then: (callback: any) => callback(userModelParams)
-            });
+            repositoryBase.delete.returns(new Promise((resolve, reject) => {
+                resolve(userDocument);
+            }));
 
             userRepository.delete(userModel);
 
@@ -223,41 +188,6 @@ describe('UserRepository', () => {
     });
 
     describe('findAll', () => {
-        let userDocument2: UserDocument;
-        let userModelParams2: UserModelParams;
-        let userModel2: any;
-
-        beforeEach(() => {
-            userDocument2 = {
-                firstName: 'Santa',
-                lastName: 'Gergely2',
-                uniqueIndex: 1,
-                birthDate: null,
-                profession: 'Software Developer2',
-                uuid: null,
-                email: 'santagergely90@gmail.com2',
-                addresses: [{
-                    country: 'Hungary2',
-                    city: 'Budapest2'
-                }]
-            };
-
-            userModelParams2 = {
-                firstName: 'Santa',
-                lastName: 'Gergely2',
-                userName: 'Santa.Gergely2.1',
-                birthDate: null,
-                profession: 'Software Developer2',
-                email: 'santagergely90@gmail.com2',
-                addresses: [new AddressModel({
-                    country: 'Hungary2',
-                    city: 'Budapest2'
-                })]
-            }
-
-            userModel2 = new UserModel(userModelParams2);
-        });
-
         it('should call the findAll method of RepositoryBase with the correct parameters', () => {
             let userRepository = new UserRepository(repositoryBase);
 
@@ -304,41 +234,6 @@ describe('UserRepository', () => {
     });
 
     describe('findBy', () => {
-        let userDocument2: UserDocument;
-        let userModelParams2: UserModelParams;
-        let userModel2: any;
-
-        beforeEach(() => {
-            userDocument2 = {
-                firstName: 'Santa',
-                lastName: 'Gergely2',
-                uuid: null,
-                uniqueIndex: 1,
-                birthDate: null,
-                profession: 'Software Developer2',
-                email: 'santagergely90@gmail.com2',
-                addresses: [{
-                    country: 'Hungary2',
-                    city: 'Budapest2'
-                }]
-            };
-
-            userModelParams2 = {
-                firstName: 'Santa',
-                lastName: 'Gergely2',
-                userName: 'Santa.Gergely2.1',
-                birthDate: null,
-                profession: 'Software Developer2',
-                email: 'santagergely90@gmail.com2',
-                addresses: [new AddressModel({
-                    country: 'Hungary2',
-                    city: 'Budapest2'
-                })]
-            }
-
-            userModel2 = new UserModel(userModelParams2);
-        });
-
         it('should call the findBy method of RepositoryBase with the correct parameters', () => {
             let userRepository = new UserRepository(repositoryBase);
 
@@ -394,7 +289,7 @@ describe('UserRepository', () => {
             let userRepository = new UserRepository(repositoryBase);
 
             repositoryBase.findByEmail.returns({
-                then: (callback: any) => callback(userModelParams)
+                then: (callback: any) => callback(userDocument)
             });
 
             userRepository.findByEmail(email);

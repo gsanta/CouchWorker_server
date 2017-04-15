@@ -10,6 +10,7 @@ export interface UserModelParams {
     email: string;
     profession: string;
     addresses: AddressModel[];
+    uuid: string;
 }
 
 export function jsonToUserModelParams(json: any): UserModel {
@@ -23,7 +24,7 @@ export function jsonToUserModelParams(json: any): UserModel {
         birthDate: json.birthDate,            
         profession: json.profession,
         addresses: addresses,
-        id: json.id
+        uuid: json.id
     }
 
     return new UserModel(userParams);
@@ -39,7 +40,7 @@ export class UserModel {
     private profession: string;
     private addresses: List<AddressModel>;
 
-    constructor(params?: UserModelParams, id?: string) {
+    constructor(params?: UserModelParams) {
         if (params) {
             this.profession = params.profession;
             this.firstName = params.firstName,
@@ -48,7 +49,7 @@ export class UserModel {
             this.birthDate = params.birthDate,
             this.email = params.email                        
             this.addresses = params.addresses ? List<AddressModel>(params.addresses) : List<AddressModel>();
-            this.uuid = id;
+            this.uuid = params.uuid;
         } else {
             this.addresses = List<AddressModel>();
         }

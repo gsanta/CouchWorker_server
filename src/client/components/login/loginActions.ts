@@ -24,6 +24,7 @@ export function receiveLogin(json: any) {
             birthDate: new Date(1980, 11, 28),
             email: json.email,
             profession: json.profession,
+            uuid: 'abcd',
             addresses: [
                 new AddressModel({
                     country: json.country,

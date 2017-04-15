@@ -28,6 +28,7 @@ export function receiveSignup(json: any) {
             userName: json.userName,
             birthDate: new Date(1980, 11, 28),
             email: json.email,
+            uuid: '1234',
             profession: json.profession,
             addresses: [
                 new AddressModel({

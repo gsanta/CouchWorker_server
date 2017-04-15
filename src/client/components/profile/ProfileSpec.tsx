@@ -16,6 +16,7 @@ describe('<Profile/>', () => {
                 birthDate: new Date(1980, 11, 28),
                 email: 'new_user@gmail.com',
                 profession: 'Drummer',
+                uuid: '1234',
                 addresses: [new AddressModel({
                     country: 'Hungary',
                     city: 'Budapest',

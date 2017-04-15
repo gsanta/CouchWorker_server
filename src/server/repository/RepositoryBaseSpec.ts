@@ -29,7 +29,9 @@ describe('RepositoryBase', () => {
     let result: any;
 
     beforeEach(() => {
-        item = sinon.spy();
+        item = {
+            uuid: '1234'
+        }
         error = sinon.spy();
         result = sinon.spy();
         
@@ -106,29 +108,13 @@ describe('RepositoryBase', () => {
     });
 
     describe('update', () => {
-        beforeEach(() => {
-            item = {
-                id: 1234
-            }
-        });
-
         it('should call the update method of model with the correct parameters', () => {
-            item = {
-                id: 1234
-            }
-
             let repositoryBase = new RepositoryBase(schemaModel);
             repositoryBase.update(item);
-            expect(schemaModel.update.getCall(0).args[0]).toEqual({
-                _id: 1234
-            });
+            expect(schemaModel.update.getCall(0).args[0]).toEqual(item);
         });
 
         it('should resolve the promise with the correct data if there is no error', (done) => {
-            item = {
-                id: 1234
-            }
-
             let repositoryBase = new RepositoryBase(schemaModel);
             repositoryBase.update(item)
                 .then((data: any) => {
@@ -141,10 +127,6 @@ describe('RepositoryBase', () => {
         });
 
         it('should reject the promise with error data if there is an error', (done) => {
-            item = {
-                id: 1234
-            }
-
             let repositoryBase = new RepositoryBase(schemaModel);
             repositoryBase.update(item)
                 .then(() => done.fail('should reject the promise'))
@@ -158,29 +140,13 @@ describe('RepositoryBase', () => {
     });
 
     describe('delete', () => {
-        beforeEach(() => {
-            item = {
-                id: 1234
-            }
-        });
-
         it('should call the remove method of model with the correct parameters', () => {
-            item = {
-                id: 1234
-            }
-
             let repositoryBase = new RepositoryBase(schemaModel);
             repositoryBase.delete(item);
-            expect(schemaModel.remove.getCall(0).args[0]).toEqual({
-                _id: 1234
-            });
+            expect(schemaModel.remove.getCall(0).args[0]).toEqual(item);
         });
 
         it('should resolve the promise with the correct data if there is no error', (done) => {
-            item = {
-                id: 1234
-            }
-
             let repositoryBase = new RepositoryBase(schemaModel);
             repositoryBase.delete(item)
                 .then(() => {
@@ -192,10 +158,6 @@ describe('RepositoryBase', () => {
         });
 
         it('should reject the promise with error data if there is an error', (done) => {
-            item = {
-                id: 1234
-            }
-
             let repositoryBase = new RepositoryBase(schemaModel);
             repositoryBase.delete(item)
                 .then(() => done.fail('should reject the promise'))
@@ -302,10 +264,6 @@ describe('RepositoryBase', () => {
         });
 
         it('should reject the promise with error data if there is an error', (done) => {
-            item = {
-                id: 1234
-            }
-
             let repositoryBase = new RepositoryBase(schemaModel);
             repositoryBase.findByEmail(email)
                 .then(() => done.fail('should reject the promise'))
