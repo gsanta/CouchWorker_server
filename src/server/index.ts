@@ -11,6 +11,8 @@ import * as passportJWT from 'passport-jwt';
 import { UserModel, jsonToUserModelParams } from '../shared/model/user/UserModel';
 import * as Koa from 'koa';
 import * as Router from 'koa-router';
+import koaBody = require('koa-body');
+import * as asyncBusboy from 'async-busboy';
 // import {Promise} from 'es6-promise';
 import { jsonToAddressModel } from '../shared/model/AddressModel';
 const app = new Koa();
@@ -70,6 +72,25 @@ var url = 'mongodb://localhost:27017/myproject';
 const database = new Database("mongodb://localhost/couchworker");
 const repositoryFactory = new RepositoryFactory(database.getInstance(), database.getConnection());
 
+// const multipart = koaBody({multipart:true});
+
+// app.use(async function(ctx, next) {
+//     if (!ctx.request.is('multipart/*')) return await next();
+    
+//     const {files, fields} = await asyncBusboy(ctx.req);
+//     1
+// });
+
+router.post('/upload', async (ctx, next) => {
+    if (!ctx.request.is('multipart/*')) return await next();
+    
+    const {files, fields} = await asyncBusboy(ctx.req);
+    const fstream = fs.createWriteStream(__dirname + '/img/' + files[0].filename);
+    files[0].pipe(fstream);
+    fstream.on('close', function () {
+        ctx.body = "Upload Finished of " + files[0].filename;
+    });
+});
 
 router.get('/listUsers', function (req: express.Request, res: express.Response) {
     try {

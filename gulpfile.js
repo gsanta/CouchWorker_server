@@ -1,12 +1,17 @@
-let gulp = require('gulp'),
-    testModule = require('./build/test'),
-    buildModule = require('./build/build');
+const gulp = require('gulp');
+const testModule = require('./build/test');
+const buildClientModule = require('./build/build_client');
+const buildServerModule = require('./build/build_server');
+const buildModule = require('./build/build');
 
-let config = {
+const config = {
     configDir: './build',
-    distDir: './dist',
+    clientDistDir: './client',
+    serverDistDir: './server',
     contentBase: './test/harness'
 }
 
 testModule(gulp, config);
+buildClientModule(gulp, config);
+buildServerModule(gulp, config);
 buildModule(gulp, config);
