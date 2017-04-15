@@ -39,6 +39,7 @@ describe('UserRepository', () => {
             birthDate: new Date(1990, 3, 1),
             email: 'santagergely90@gmail.com',
             profession: 'Software Developer',
+            uuid: null,
             addresses: [
                 {
                     country: 'Hungary',
@@ -233,6 +234,7 @@ describe('UserRepository', () => {
                 uniqueIndex: 1,
                 birthDate: null,
                 profession: 'Software Developer2',
+                uuid: null,
                 email: 'santagergely90@gmail.com2',
                 addresses: [{
                     country: 'Hungary2',
@@ -310,6 +312,7 @@ describe('UserRepository', () => {
             userDocument2 = {
                 firstName: 'Santa',
                 lastName: 'Gergely2',
+                uuid: null,
                 uniqueIndex: 1,
                 birthDate: null,
                 profession: 'Software Developer2',

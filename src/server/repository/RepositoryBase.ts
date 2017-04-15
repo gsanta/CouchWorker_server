@@ -1,16 +1,17 @@
 import { QueryMetaData } from './QueryMetaData';
 import mongoose = require("mongoose");
-import { Promise } from 'es6-promise';
+import * as Mongoose from 'mongoose';
+
 
 export interface DatabaseId {
     id: string;
 }
 
-export class RepositoryBase<T extends DatabaseId> {
+export class RepositoryBase<T extends {uuid: string}> {
 
-    protected model: mongoose.Model<mongoose.Document>;
+    protected model: Mongoose.Model<mongoose.Document>;
 
-    constructor (schemaModel: mongoose.Model<mongoose.Document>) {
+    constructor (schemaModel: Mongoose.Model<mongoose.Document>) {
         this.model = schemaModel;
     }
 
@@ -29,7 +30,7 @@ export class RepositoryBase<T extends DatabaseId> {
     public update(item: T): Promise<T> {
         return new Promise((resolve, reject) => {
             debugger;
-            this.model.update({_id: this.toObjectId(item.id)}, item, (error: any, result: T) => {
+            this.model.update({uuid: item.uuid}, item, (error: any, result: T) => {
                 if (error) {
                     reject(error);
                 }
@@ -41,12 +42,12 @@ export class RepositoryBase<T extends DatabaseId> {
 
     public delete(item: T): Promise<T> {
         return new Promise((resolve, reject) => {
-            this.model.remove({_id: this.toObjectId(item.id)}, (error: any) => {
+            this.model.remove({uuid: item.uuid}, (error: any) => {
                 if (error) {
                     reject(error);
                 }
 
-                resolve();
+                resolve(null);
             });
         });
     }
@@ -123,7 +124,7 @@ export class RepositoryBase<T extends DatabaseId> {
         });
     }
 
-    private toObjectId (_id: string) : mongoose.Types.ObjectId {
+    private toObjectId (_id: string) : Mongoose.Types.ObjectId {
         return mongoose.Types.ObjectId.createFromHexString(_id)
     }
 }

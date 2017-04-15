@@ -38,25 +38,29 @@ export class UserSchema {
                 type: String,
                 required: false
             },
+            uuid: {
+                type: String,
+                required: true
+            },
             addresses: [
-            {
-                country: {
-                    type: String,
-                    required: true
-                },
-                city: {
-                    type: String,
-                    required: true
-                },
-                street: {
-                    type: String,
-                    required: false
-                },
-                house: {
-                    type: String,
-                    required: false
+                {
+                    country: {
+                        type: String,
+                        required: true
+                    },
+                    city: {
+                        type: String,
+                        required: true
+                    },
+                    street: {
+                        type: String,
+                        required: false
+                    },
+                    house: {
+                        type: String,
+                        required: false
+                    }
                 }
-            }
             ]
         });
     }

@@ -6,9 +6,9 @@ import { AddressModel, AddressDocument } from '../../../../shared/model/AddressM
 import { UserDocument } from '../../../../shared/model/user/UserDocument';
 
 export class UserRepository {
-    private repoBase: RepositoryBase<MongooseUserDocument>;
+    private repoBase: RepositoryBase<UserDocument>;
 
-    constructor (repoBase: RepositoryBase<MongooseUserDocument>) {
+    constructor (repoBase: RepositoryBase<UserDocument>) {
         this.repoBase = repoBase;
     }
 
@@ -51,8 +51,8 @@ export class UserRepository {
             .then(userDocument => this.toUserModel(userDocument));
     }
 
-    private toUserDocument(userModel: UserModel): MongooseUserDocument {
-        return <MongooseUserDocument> {
+    private toUserDocument(userModel: UserModel): UserDocument {
+        return <UserDocument> {
             firstName: userModel.getFirstName(),
             lastName: userModel.getLastName(),
             email: userModel.getEmail(),       
@@ -60,7 +60,7 @@ export class UserRepository {
             birthDate: userModel.getBirthDate(),            
             profession: userModel.getProfession(),
             addresses: userModel.getAddresses().map(address => this.toAddressDocument(address)).toArray(),
-            id: userModel.getUuid()
+            uuid: userModel.getUuid()
         }
     }
 
@@ -73,7 +73,7 @@ export class UserRepository {
         }
     }
 
-    public toUserModel(userDocument: MongooseUserDocument): UserModel {
+    public toUserModel(userDocument: UserDocument): UserModel {
         const addresses = userDocument.addresses ? userDocument.addresses.map(address => this.toAddressModel(address)) : null;
         const userParams = {
             firstName: userDocument.firstName,
@@ -83,10 +83,10 @@ export class UserRepository {
             birthDate: userDocument.birthDate,            
             profession: userDocument.profession,
             addresses: addresses,
-            id: userDocument.id
+            id: userDocument.uuid
         }
 
-        return new UserModel(userParams, userDocument.id);
+        return new UserModel(userParams, userDocument.uuid);
     }
 
     private toAddressModel(addressDocument: AddressDocument): AddressModel {

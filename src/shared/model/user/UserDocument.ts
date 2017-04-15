@@ -1,15 +1,13 @@
 import { AddressDocument } from '../AddressModel';
-import mongoose = require("mongoose");
+import * as Mongoose from 'mongoose';
 
-export interface PersonalInfoDocument {
+export interface UserDocument extends Mongoose.Document {
     firstName: string;
     lastName: string;
     birthDate: Date;
     email: string;
-}
-
-export interface UserDocument extends PersonalInfoDocument {
     profession: string;
     uniqueIndex: number;
+    uuid: string;
     addresses: AddressDocument[]
 }

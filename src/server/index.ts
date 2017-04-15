@@ -72,15 +72,6 @@ var url = 'mongodb://localhost:27017/myproject';
 const database = new Database("mongodb://localhost/couchworker");
 const repositoryFactory = new RepositoryFactory(database.getInstance(), database.getConnection());
 
-// const multipart = koaBody({multipart:true});
-
-// app.use(async function(ctx, next) {
-//     if (!ctx.request.is('multipart/*')) return await next();
-    
-//     const {files, fields} = await asyncBusboy(ctx.req);
-//     1
-// });
-
 router.post('/upload', async (ctx, next) => {
     if (!ctx.request.is('multipart/*')) return await next();
     

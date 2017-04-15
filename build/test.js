@@ -5,7 +5,8 @@ var jasmine = require('gulp-jasmine'),
 module.exports = function(gulp, config) {
     gulp.task('unit-test', ['ts-build'], function () {
         return es.concat(
-                gulp.src(config.distDir + '/**/*Spec.js'),
+                gulp.src(config.clientDistDir + '/**/*Spec.js'),
+                gulp.src(config.serverDistDir + '/**/*Spec.js'),
                 gulp.src(config.configDir + '/**/jsdomSetup.js')
             )
             .pipe(jasmine({
