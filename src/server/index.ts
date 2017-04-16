@@ -20,9 +20,7 @@ import { ImageBusiness } from './domain/user/ImageBusiness';
 const app = new Koa();
 const router = new Router();
 
-
 const baseDir = process.argv[2];
-debugger;
 const ExtractJwt = passportJWT.ExtractJwt;
 const JwtStrategy = passportJWT.Strategy;
 const jwtOptions = {
@@ -113,7 +111,7 @@ const imageBusiness = new ImageBusiness();
 
 profileApi(router, baseDir, userBusiness, imageBusiness);
 
-router.post('/api/login', async (ctx) => {  
+router.post('/api/login', async (ctx) => {
     ctx.body = {
         firstName: 'New',
         lastName: 'User',

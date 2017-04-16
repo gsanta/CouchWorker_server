@@ -9,7 +9,6 @@ import { ImageModel } from '../../../shared/model/image/ImageModel';
 
 export class UserBusiness {
     private userRepository: UserRepository;
-
     constructor(userRepository: UserRepository) {
         this.userRepository = userRepository;
     }
@@ -17,9 +16,15 @@ export class UserBusiness {
     public create(item: UserModel): Promise<any> {
         return this.userRepository.create(item);
     }
+
+    public addAddress(user: UserModel, address: AddressModel) {
+        user = user.addAddress(address);
+
+        return this.userRepository.update(user);
+    }
     
     public delete (item: UserModel): Promise<any> {
-        return this.userRepository.delete(item)
+        return this.userRepository.delete(item);
     }
 
     public update (item: UserModel): Promise<any> {

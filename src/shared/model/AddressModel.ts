@@ -1,20 +1,13 @@
+import { List } from 'immutable';
+import { UrlModel, UrlDocument } from './UrlModel';
 
 export interface AddressDocument {
     country: string;
     city: string;
     street?: string;
     house?: string;
-}
-
-export function jsonToAddressModel(json: any): AddressModel {
-    const addressDocument: AddressDocument = {
-        country: json.country,
-        city: json.city,
-        street: json.street,
-        house: json.house
-    };
-
-    return new AddressModel(addressDocument);
+    uuid: string;
+    images?: UrlDocument[]
 }
 
 export class AddressModel {
@@ -22,6 +15,9 @@ export class AddressModel {
     private city: string;
     private street: string;
     private house: string;
+    private uuid: string;
+
+    private images: List<UrlModel> = List<UrlModel>();
 
     constructor(addressDocument?: AddressDocument) {
         if (addressDocument) {
@@ -29,6 +25,9 @@ export class AddressModel {
             this.city = addressDocument.city;
             this.street = addressDocument.street;
             this.house = addressDocument.house;
+            this.uuid = addressDocument.uuid;
+            this.images = addressDocument.images ? 
+                List<UrlModel>(addressDocument.images.map(urlDocument => new UrlModel(urlDocument))) : List<UrlModel>();
         }
     }
 
@@ -70,6 +69,28 @@ export class AddressModel {
         let copy = this.copy();
         copy.house = house;
         return copy;
+    }
+
+    public getUuid(): string {
+        return this.uuid;
+    }
+
+    public setUuid(uuid: string): AddressModel {
+        let clone = this.copy();
+        clone.uuid = uuid;
+
+        return clone;
+    }
+
+    public setImages(images: List<UrlModel>) {
+        let clone = this.copy();
+        clone.images = images;
+
+        return clone;
+    }
+
+    public getImages(): List<UrlModel> {
+        return this.images;
     }
 
     private copy(): AddressModel {

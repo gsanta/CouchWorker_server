@@ -4,7 +4,6 @@ import { QueryMetaData } from '../../../repository/QueryMetaData';
 import { UserModel } from '../../../../shared/model/user/UserModel';
 import { AddressModel, AddressDocument } from '../../../../shared/model/AddressModel';
 import { UserDocument } from '../../../../shared/model/user/UserDocument';
-import * as uuid from 'uuid/v4';
 
 export class UserRepository {
     private repoBase: RepositoryBase<UserDocument>;

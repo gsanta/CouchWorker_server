@@ -3,16 +3,15 @@ import { UserModel } from '../user/UserModel';
 export class ImageModel {
     private image: any;
     private destination: string;
+    private baseDir: string;
+    private relativePath: string;
     private fileName: string;
 
-    private user: UserModel;
-
-    private baseDir: string;
-
-    constructor(image: any, baseDir: string, user: UserModel) {
+    constructor(image: any, baseDir: string, relativePath: string, fileName: string) {
         this.image = image;
-        this.user = user;
         this.baseDir = baseDir;
+        this.relativePath = relativePath;
+        this.fileName = fileName;
     }
 
     public getImage(): any {
@@ -20,15 +19,11 @@ export class ImageModel {
     }
 
     public getDestination(): string {
-        if (!this.user.getUuid()) {
-            throw new Error('User uuid not defined');
-        }
-
-        return this.baseDir + '/img/' + this.user.getUuid() + '/profile';
+        return this.baseDir + this.relativePath;
     }
 
     public getFileName(): string {
         const extension = this.image.mime.split('/')[1];
-        return `profile.${extension}`;
+        return `${this.fileName}.${extension}`;
     }
 }

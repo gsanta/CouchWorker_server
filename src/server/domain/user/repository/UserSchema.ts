@@ -59,7 +59,19 @@ export class UserSchema {
                     house: {
                         type: String,
                         required: false
-                    }
+                    },
+                    images: [
+                        {
+                            fileName: {
+                                type: String,
+                                required: true
+                            },
+                            extension: {
+                                type: String,
+                                required: true
+                            }
+                        }
+                    ]
                 }
             ]
         });
