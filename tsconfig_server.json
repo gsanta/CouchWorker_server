@@ -5,12 +5,13 @@
         "removeComments": true,
         "preserveConstEnums": true,
         "sourceMap": true,
-        "outDir": "server"
+        "outDir": "server",
+        "target": "es6"
     },
     "include": [
         "src/server/**/*",
         "src/shared/**/*",
         "node_modules/koa-body-parsers",
-        "node_modules/typescript/lib/lib.d.ts"        
+        "node_modules/typescript/lib/lib.es6.d.ts"        
     ]
 }

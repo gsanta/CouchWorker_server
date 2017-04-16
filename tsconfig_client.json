@@ -11,7 +11,6 @@
     "include": [
         "src/client/**/*",
         "src/shared/**/*",
-        "src/server/**/*",
         "node_modules/koa-body-parsers",
         "node_modules/typescript/lib/lib.d.ts"        
     ]

@@ -13,23 +13,6 @@ export interface UserModelParams {
     uuid: string;
 }
 
-export function jsonToUserModelParams(json: any): UserModel {
-    const addresses = json.addresses ? json.addresses.map(address => this.toAddressModel(address)) : null;
-
-    const userParams = {
-        firstName: json.firstName,
-        lastName: json.lastName,
-        email: json.email,       
-        userName: json.userName,     
-        birthDate: json.birthDate,            
-        profession: json.profession,
-        addresses: addresses,
-        uuid: json.id
-    }
-
-    return new UserModel(userParams);
-}
-
 export class UserModel {
     private uuid: string;
     private firstName: string;

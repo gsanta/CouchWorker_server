@@ -56,7 +56,7 @@ module.exports = function(gulp, config) {
         });
     });
 
-    var tsProject = ts.createProject('./tsconfig.json');
+    var tsProject = ts.createProject('./tsconfig_client.json');
  
     gulp.task('ts-build:client', function() {
         let compileSucceeded = true;

@@ -8,16 +8,21 @@ import { UserBusiness } from './domain/user/UserBusiness';
 import * as jwt from 'jsonwebtoken';
 import * as passport from 'passport';
 import * as passportJWT from 'passport-jwt';
-import { UserModel, jsonToUserModelParams } from '../shared/model/user/UserModel';
+import { UserModel } from '../shared/model/user/UserModel';
 import * as Koa from 'koa';
 import * as Router from 'koa-router';
 import koaBody = require('koa-body');
 import * as asyncBusboy from 'async-busboy';
 // import {Promise} from 'es6-promise';
 import { jsonToAddressModel } from '../shared/model/AddressModel';
+import { profileApi, jsonToUserModel } from './rest/profile/profileApi';
+import { ImageBusiness } from './domain/user/ImageBusiness';
 const app = new Koa();
 const router = new Router();
 
+
+const baseDir = process.argv[2];
+debugger;
 const ExtractJwt = passportJWT.ExtractJwt;
 const JwtStrategy = passportJWT.Strategy;
 const jwtOptions = {
@@ -72,12 +77,11 @@ var url = 'mongodb://localhost:27017/myproject';
 const database = new Database("mongodb://localhost/couchworker");
 const repositoryFactory = new RepositoryFactory(database.getInstance(), database.getConnection());
 
-router.post('/upload', async (ctx, next) => {
+router.post('/api//:userName/upload', async (ctx, next) => {
     if (!ctx.request.is('multipart/*')) return await next();
     
     const {files, fields} = await asyncBusboy(ctx.req);
     const user = await userBusiness.findByEmail(fields.email);
-    debugger;
     if (!fs.existsSync(__dirname + '/../img/')){
         fs.mkdirSync(__dirname + '/../img/');
     }
@@ -105,6 +109,9 @@ router.get('/listUsers', function (req: express.Request, res: express.Response) 
 
 const userRepository = repositoryFactory.getUserRepository();
 const userBusiness = new UserBusiness(userRepository);
+const imageBusiness = new ImageBusiness();
+
+profileApi(router, baseDir, userBusiness, imageBusiness);
 
 router.post('/api/login', async (ctx) => {  
     ctx.body = {
@@ -121,7 +128,7 @@ router.post('/api/login', async (ctx) => {
 
 router.post('/addUser', async (ctx) => {
     try {
-        const userModel = jsonToUserModelParams(ctx.request.body);
+        const userModel = jsonToUserModel(ctx.request.body);
         const data = await userBusiness.create(userModel)
         ctx.body = data;
     } catch (e) {
@@ -146,7 +153,7 @@ router.get('/findHosts/', async ctx => {
 
 router.post('/updateUser', async (ctx) => {
     try {
-        let newUserModel = jsonToUserModelParams(ctx.request.body);
+        let newUserModel = jsonToUserModel(ctx.request.body);
         const oldUserModel = await userBusiness.findByEmail(newUserModel.getEmail());
         newUserModel = newUserModel.setUuid(oldUserModel.getUuid());
         const body = await userBusiness.update(newUserModel);
