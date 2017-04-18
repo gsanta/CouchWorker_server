@@ -1,6 +1,18 @@
 import { List } from 'immutable';
 import { UrlModel, UrlDocument } from './UrlModel';
 
+export function jsonToAddressModel(json: any): AddressModel {
+    const addressDocument: AddressDocument = {        
+        country: json.country,
+        city: json.city,
+        street: json.street,
+        house: json.house,
+        uuid: json.uuid
+    };
+
+   return new AddressModel(addressDocument);
+}
+
 export interface AddressDocument {
     country: string;
     city: string;

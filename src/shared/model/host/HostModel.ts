@@ -28,7 +28,8 @@ export class HostModel {
             country: hostDocument.country,
             city: hostDocument.city,
             street: hostDocument.street,
-            house: hostDocument.house
+            house: hostDocument.house,
+            uuid: hostDocument.uuid
         });
         this.rating = new RatingModel(hostDocument.rating);
         this.id = hostDocument.id;

@@ -28,7 +28,8 @@ export function receiveLogin(json: any) {
             addresses: [
                 new AddressModel({
                     country: json.country,
-                    city: json.city
+                    city: json.city,
+                    uuid: null
                 })
             ]
         })

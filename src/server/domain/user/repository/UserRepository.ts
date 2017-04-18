@@ -72,7 +72,8 @@ export class UserRepository {
             country: addressModel.getCountry(),
             city: addressModel.getCity(),
             street: addressModel.getStreet(),
-            house: addressModel.getHouse()
+            house: addressModel.getHouse(),
+            uuid: addressModel.getUuid()
         }
     }
 

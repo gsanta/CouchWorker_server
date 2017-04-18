@@ -44,7 +44,8 @@ function parseHosts(json: any): List<HostModel> {
             rating: host.rating,
             country: host.country,
             city: host.city,
-            id: host.id
+            id: host.id,
+            uuid: null
         });
     });
 

@@ -16,7 +16,8 @@ describe('hostsActions', () => {
                         country: 'Hungary',
                         city: 'Budapest',
                         rating: 5,
-                        id: null
+                        id: null,
+                        uuid: null
                     }
                 ),
                 new HostModel(
@@ -28,7 +29,8 @@ describe('hostsActions', () => {
                         country: 'London',
                         city: 'UK',
                         rating: 3.4, 
-                        id: null
+                        id: null,
+                        uuid: null                        
                     }
                 ),
                 new HostModel(
@@ -40,7 +42,8 @@ describe('hostsActions', () => {
                         country: 'Hungary',
                         city: 'Budapest',
                         rating: 4.2,
-                        id: null 
+                        id: null,
+                        uuid: null                        
                     }
                 )         
             ]);

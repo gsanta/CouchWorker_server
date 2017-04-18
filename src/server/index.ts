@@ -15,8 +15,6 @@ import koaBody = require('koa-body');
 import * as asyncBusboy from 'async-busboy';
 // import {Promise} from 'es6-promise';
 import { jsonToAddressModel } from '../shared/model/AddressModel';
-import { profileApi, jsonToUserModel } from './rest/profile/profileApi';
-import { ImageBusiness } from './domain/user/ImageBusiness';
 const app = new Koa();
 const router = new Router();
 
@@ -107,9 +105,9 @@ router.get('/listUsers', function (req: express.Request, res: express.Response) 
 
 const userRepository = repositoryFactory.getUserRepository();
 const userBusiness = new UserBusiness(userRepository);
-const imageBusiness = new ImageBusiness();
+// const imageBusiness = new ImageBusiness();
 
-profileApi(router, baseDir, userBusiness, imageBusiness);
+// profileApi(router, baseDir, userBusiness, imageBusiness);
 
 router.post('/api/login', async (ctx) => {
     ctx.body = {
@@ -126,7 +124,7 @@ router.post('/api/login', async (ctx) => {
 
 router.post('/addUser', async (ctx) => {
     try {
-        const userModel = jsonToUserModel(ctx.request.body);
+        const userModel = null//jsonToUserModel(ctx.request.body);
         const data = await userBusiness.create(userModel)
         ctx.body = data;
     } catch (e) {
@@ -151,7 +149,7 @@ router.get('/findHosts/', async ctx => {
 
 router.post('/updateUser', async (ctx) => {
     try {
-        let newUserModel = jsonToUserModel(ctx.request.body);
+        let newUserModel = null// jsonToUserModel(ctx.request.body);
         const oldUserModel = await userBusiness.findByEmail(newUserModel.getEmail());
         newUserModel = newUserModel.setUuid(oldUserModel.getUuid());
         const body = await userBusiness.update(newUserModel);

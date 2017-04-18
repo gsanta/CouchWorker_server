@@ -10,6 +10,9 @@ import { ProfileValidationModel } from './ProfileValidationModel';
 import { StringInput } from '../form/StringInput';
 import { UserModel } from '../../../shared/model/user/UserModel';
 import { validateEmail } from '../../../shared/validation/validateEmail';
+import './Profile.scss';
+import { Address } from './address/Address';
+import { AddressModel } from '../../../shared/model/AddressModel';
 
 export class Profile extends React.Component<RegistrationProps, RegistrationState> {
 
@@ -30,8 +33,23 @@ export class Profile extends React.Component<RegistrationProps, RegistrationStat
     }
 
     public render() {
+        let addressProps = [
+            new AddressModel({
+                    country: 'Hungary',
+                    city: 'Budapest',
+                    street: 'Baross utca',
+                    house: '132',
+                    uuid: null
+                }
+            )
+        ];
+        let addresses = [];
+        for (var i = 0; i < 1; i++) {
+            addresses.push(<Address address={addressProps[i]}/>)
+        }
         return (
             <form>
+                <h2>About</h2>
                 <StringInput
                     value={this.state.user.getFirstName()}
                     onChange={this.onFirstNameChange.bind(this)}
@@ -64,27 +82,16 @@ export class Profile extends React.Component<RegistrationProps, RegistrationStat
                     controlLabel='Profession'
                     error={this.state.validation.getProfessionValidationError()}
                 />
-                <StringInput
-                    value={this.state.user.getAddresses()[0].getCountry()}
-                    onChange={this.onCountryChange.bind(this)}
-                    controlId='cw-form-profile-country'
-                    placeHolder='Enter country'
-                    controlLabel='Country'
-                    error={this.state.validation.getCountryValidationError()}
-                />
-                <StringInput
-                    value={this.state.user.getAddresses()[0].getCity()}
-                    onChange={this.onCityChange.bind(this)}
-                    controlId='cw-form-profile-city'
-                    placeHolder='Enter city'
-                    controlLabel='City'
-                    error={this.state.validation.getCityValidationError()}
-                />
                 <ProfileBirthDate 
                     date={this.state.user.getBirthDate()}
                     onChange={this.onBirthDateChange.bind(this)}
                     error={this.state.validation.getBirthDateValidationError()}
                 />
+
+                <section className="cw-address-section">
+                    <div className="cw-address-section-header"><h2>Address(es)</h2></div>
+                    {addresses}
+                </section>
                 <Button
                     bsStyle="primary"
                     onClick={() => {

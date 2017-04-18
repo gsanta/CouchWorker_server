@@ -29,7 +29,8 @@ describe('UserRepository', () => {
                     country: 'Hungary',
                     city: 'Budapest',
                     street: 'Haller utca',
-                    house: '15/a'
+                    house: '15/a',
+                    uuid: null
                 }
             ],
         };
@@ -44,7 +45,8 @@ describe('UserRepository', () => {
                 uuid: null,
                 addresses: [{
                     country: 'Hungary2',
-                    city: 'Budapest2'
+                    city: 'Budapest2',
+                    uuid: null
                 }]
             };
 

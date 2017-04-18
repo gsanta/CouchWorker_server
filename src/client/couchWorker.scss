@@ -13,3 +13,7 @@ body {
     // https://github.com/twbs/bootstrap/issues/6686
     width: calc(100% - 30px);
 }
+
+h2 {
+    font-size: $h2FontSize;
+}

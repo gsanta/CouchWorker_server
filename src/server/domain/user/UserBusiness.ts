@@ -1,10 +1,8 @@
-
 import * as Promise from 'promise';
 import { UserRepository } from './repository/UserRepository';
 import { QueryMetaData } from '../../repository/QueryMetaData';
 import { UserModel } from '../../../shared/model/user/UserModel';
 import { AddressModel } from '../../../shared/model/AddressModel';
-import { ImageBusiness } from './ImageBusiness';
 import { ImageModel } from '../../../shared/model/image/ImageModel';
 
 export class UserBusiness {

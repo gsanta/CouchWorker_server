@@ -20,6 +20,7 @@ describe('<Profile/>', () => {
                 addresses: [new AddressModel({
                     country: 'Hungary',
                     city: 'Budapest',
+                    uuid: null
                 })]
             });
 
