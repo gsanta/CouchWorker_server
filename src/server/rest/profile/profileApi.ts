@@ -31,7 +31,8 @@ export function jsonToAddressModel(json: any): AddressModel {
         country: json.country,
         city: json.city,
         street: json.street,
-        house: json.house
+        house: json.house,
+        uuid: json.uuid
     };
 
     return new AddressModel(addressDocument);
@@ -59,7 +60,7 @@ export function profileApi(router: Router, baseDir: string, userBusiness: UserBu
         }        
     });
 
-    router.post('api/:userName/addAddress', async (ctx, next) => {a
+    router.post('/api/:userName/addAddress', async (ctx, next) => {
         try {
 
             if (!ctx.request.is('multipart/*')) return await next();
@@ -92,6 +93,19 @@ export function profileApi(router: Router, baseDir: string, userBusiness: UserBu
             console.log(user);
         } catch (e) {
             ctx.body = "Error: " + e
+        }
+    });
+
+    router.post('/api/:userName/updateUser', async (ctx) => {
+        try {
+            
+            let newUserModel =  jsonToUserModel(ctx.request.body);
+            const oldUserModel = await userBusiness.findByUserName(ctx.params.userName);
+            newUserModel = newUserModel.setUuid(oldUserModel.getUuid());
+            const body = await userBusiness.update(newUserModel);
+            ctx.body = body;
+        } catch (e) {
+            ctx.body = e;
         }
     });
 }
