@@ -60,43 +60,38 @@ export function profileApi(router: Router, baseDir: string, userBusiness: UserBu
         }        
     });
 
-    router.post('/api/:userName/addAddress', async (ctx, next) => {
-        try {
+    router.post('/api/addAddress/:userName', async (ctx, next) => {
+        if (!ctx.request.is('multipart/*')) return await next();
+        
+        let user = await userBusiness.findByUserName(ctx.params.userName);
+        
+        const {files, fields} = await asyncBusboy(ctx.req);            
 
-            if (!ctx.request.is('multipart/*')) return await next();
-            
-            let user = await userBusiness.findByUserName(ctx.params.userName);
-            
-            const {files, fields} = await asyncBusboy(ctx.req);            
+        let address = jsonToAddressModel(fields);
+        address = address.setUuid(uuid());
 
-            let address = jsonToAddressModel(fields);
-            address = address.setUuid(uuid());
-
-            let urlModels = [];
-            for (let file of files) {
-                const fileName = uuid();
-                const extension = file.mime.split('/')[1];
-                const urlModel = new UrlModel({
-                    fileName,
-                    extension
-                });
-                urlModels.push(urlModel);
-                const image = new ImageModel(file, baseDir, `img/${user.getUuid()}/addresses/${address.getUuid()}/`, fileName);
-                await imageBusiness.create(image);
-            }
-
-            address = address.setImages(List(urlModels));
-
-            user = await userBusiness.addAddress(user, address)
-            user = user.addAddress(address);
-            user = await userBusiness.update(user);
-            console.log(user);
-        } catch (e) {
-            ctx.body = "Error: " + e
+        let urlModels = [];
+        for (let file of files) {
+            const fileName = uuid();
+            const extension = file.mime.split('/')[1];
+            const urlModel = new UrlModel({
+                fileName,
+                extension
+            });
+            urlModels.push(urlModel);
+            const image = new ImageModel(file, baseDir, `img/${user.getUuid()}/addresses/${address.getUuid()}/`, fileName);
+            await imageBusiness.create(image);
         }
+
+        address = address.setImages(List(urlModels));
+
+        user = await userBusiness.addAddress(user, address)
+        user = user.addAddress(address);
+        user = await userBusiness.update(user);
+        console.log(user);
     });
 
-    router.post('/api/:userName/updateUser', async (ctx) => {
+    router.post('/api/updateUser/:userName', async (ctx) => {
         try {
             
             let newUserModel =  jsonToUserModel(ctx.request.body);
@@ -104,6 +99,23 @@ export function profileApi(router: Router, baseDir: string, userBusiness: UserBu
             newUserModel = newUserModel.setUuid(oldUserModel.getUuid());
             const body = await userBusiness.update(newUserModel);
             ctx.body = body;
+        } catch (e) {
+            ctx.body = e;
+        }
+    });
+
+    router.post('/api/deleteUser/:userName', async (ctx) => {
+        try {
+            const user = await userBusiness.findByUserName(ctx.params.userName);
+            await userBusiness.delete(user);
+        } catch (e) {
+            ctx.body = e;
+        }
+    });
+
+    router.get('/api/findUser/:userName', async (ctx) => {
+        try {
+            ctx.body = await userBusiness.findByUserName(ctx.params.userName);
         } catch (e) {
             ctx.body = e;
         }

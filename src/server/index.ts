@@ -62,38 +62,12 @@ passport.use(strategy);
 
 // app.use(passport.initialize());
 app.use(bodyParser());
-// app.use(bodyParser.json());
 
 var MongoClient = require('mongodb').MongoClient;
 var url = 'mongodb://localhost:27017/myproject';
 
-
-// MongoClient.connect(url, function(err: any, db: any) {
-//   console.log("Connected successfully to server");
-// });
-
 const database = new Database("mongodb://localhost/couchworker");
 const repositoryFactory = new RepositoryFactory(database.getInstance(), database.getConnection());
-
-router.post('/api//:userName/upload', async (ctx, next) => {
-    if (!ctx.request.is('multipart/*')) return await next();
-    
-    const {files, fields} = await asyncBusboy(ctx.req);
-    const user = await userBusiness.findByEmail(fields.email);
-    if (!fs.existsSync(__dirname + '/../img/')){
-        fs.mkdirSync(__dirname + '/../img/');
-    }
-
-    if (!fs.existsSync(__dirname + '/../img/' + user.getUuid())){
-        fs.mkdirSync(__dirname + '/../img/' + user.getUuid());
-    }
-
-    const fstream = fs.createWriteStream(__dirname + '/../img/' + user.getUuid() + '/' + files[0].filename);
-    files[0].pipe(fstream);
-    fstream.on('close', function () {
-        ctx.body = "Upload Finished of " + files[0].filename;
-    });
-});
 
 router.get('/listUsers', function (req: express.Request, res: express.Response) {
     try {
@@ -124,47 +98,9 @@ router.post('/api/login', async (ctx) => {
     };
 });
 
-router.post('/addUser', async (ctx) => {
-    try {
-        const userModel = jsonToUserModel(ctx.request.body);
-        const data = await userBusiness.create(userModel)
-        ctx.body = data;
-    } catch (e) {
-        ctx.body = "Error: " + e
-    }
-    
-});
-
-router.post('/findUser', async (ctx) => {
-    try {
-        const email = ctx.request.body;
-        ctx.body = await userBusiness.findByEmail(email)
-    } catch (e) {
-        ctx.body = e;
-    }
-});
-
 router.get('/findHosts/', async ctx => {
     console.log(ctx.query);
     ctx.body = ctx.query;
-});
-
-router.post('/deleteUser', async (ctx) => {
-    try {
-        const email = ctx.request.body;
-        const user = await userBusiness.findByEmail(email);
-        await userBusiness.delete(user);
-    } catch (e) {
-        ctx.body = e;
-    }
-});
-
-router.post('/:userName/addAddress', async (ctx) => {
-    let user = await userBusiness.findByUserName(ctx.params.userName);
-    const address = jsonToAddressModel(ctx.request.body);
-    user = user.addAddress(address);
-    user = await userBusiness.update(user);
-    console.log(user);
 });
 
 // app.post("/login", function(req, res) {
@@ -198,6 +134,16 @@ router.post('/:userName/addAddress', async (ctx) => {
 // app.get("/secret", passport.authenticate('jwt', { session: false }), function(req, res){
 //     res.json("Success! You can not see this without a token");
 // });
+
+app.use(async (ctx, next) => {
+    try {
+        await next();
+    } catch (err) {
+        ctx.status = err.status || 500;
+        ctx.body = err.message;
+        ctx.app.emit('error', err, ctx);
+    }
+});
 
 app.use(router.routes());
 
