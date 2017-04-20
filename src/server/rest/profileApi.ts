@@ -1,12 +1,12 @@
 import * as Router from 'koa-router';
-import { UserBusiness } from '../../domain/user/UserBusiness';
-import { UserModel } from '../../../shared/model/user/UserModel';
+import { UserBusiness } from '../domain/user/UserBusiness';
+import { UserModel } from '../../shared/model/user/UserModel';
 import * as asyncBusboy from 'async-busboy';
-import { ImageModel } from '../../../shared/model/image/ImageModel';
-import { ImageBusiness } from '../../domain/user/ImageBusiness';
-import { AddressModel, AddressDocument } from '../../../shared/model/AddressModel';
+import { ImageModel } from '../../shared/model/image/ImageModel';
+import { ImageBusiness } from '../domain/user/ImageBusiness';
+import { AddressModel, AddressDocument } from '../../shared/model/AddressModel';
 import * as uuid from 'uuid/v4';
-import { UrlModel } from '../../../shared/model/UrlModel';
+import { UrlModel } from '../../shared/model/UrlModel';
 import { List } from 'immutable';
 
 export function jsonToUserModel(json: any): UserModel {
@@ -42,22 +42,16 @@ export function jsonToAddressModel(json: any): AddressModel {
 export function profileApi(router: Router, baseDir: string, userBusiness: UserBusiness, imageBusiness: ImageBusiness) {
 
     router.post('/api/register', async (ctx, next) => {
-        try {
+        if (!ctx.request.is('multipart/*')) return await next();
 
-            if (!ctx.request.is('multipart/*')) return await next();
-    
-            const {files, fields} = await asyncBusboy(ctx.req);
-            let user = jsonToUserModel(fields);
-            user = await userBusiness.create(user);
-            
-            if (files.length) {
-                const image = new ImageModel(files[0], baseDir, `img/${user.getUuid()}/profile/`, 'profile');
-                await imageBusiness.create(image);
-            }
-            ctx.body = 'abcd';
-        } catch (e) {
-            ctx.body = "Error: " + e
-        }        
+        const {files, fields} = await asyncBusboy(ctx.req);
+        let user = jsonToUserModel(fields);
+        user = await userBusiness.create(user);
+        
+        if (files.length) {
+            const image = new ImageModel(files[0], baseDir, `img/${user.getUuid()}/profile/`, 'profile');
+            await imageBusiness.create(image);
+        }
     });
 
     router.post('/api/addAddress/:userName', async (ctx, next) => {
@@ -92,32 +86,19 @@ export function profileApi(router: Router, baseDir: string, userBusiness: UserBu
     });
 
     router.post('/api/updateUser/:userName', async (ctx) => {
-        try {
-            
-            let newUserModel =  jsonToUserModel(ctx.request.body);
-            const oldUserModel = await userBusiness.findByUserName(ctx.params.userName);
-            newUserModel = newUserModel.setUuid(oldUserModel.getUuid());
-            const body = await userBusiness.update(newUserModel);
-            ctx.body = body;
-        } catch (e) {
-            ctx.body = e;
-        }
+        let newUserModel =  jsonToUserModel(ctx.request.body);
+        const oldUserModel = await userBusiness.findByUserName(ctx.params.userName);
+        newUserModel = newUserModel.setUuid(oldUserModel.getUuid());
+        const body = await userBusiness.update(newUserModel);
+        ctx.body = body;
     });
 
     router.post('/api/deleteUser/:userName', async (ctx) => {
-        try {
-            const user = await userBusiness.findByUserName(ctx.params.userName);
-            await userBusiness.delete(user);
-        } catch (e) {
-            ctx.body = e;
-        }
+        const user = await userBusiness.findByUserName(ctx.params.userName);
+        await userBusiness.delete(user);
     });
 
     router.get('/api/findUser/:userName', async (ctx) => {
-        try {
-            ctx.body = await userBusiness.findByUserName(ctx.params.userName);
-        } catch (e) {
-            ctx.body = e;
-        }
+        ctx.body = await userBusiness.findByUserName(ctx.params.userName);
     });
 }

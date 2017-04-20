@@ -15,8 +15,9 @@ import koaBody = require('koa-body');
 import * as asyncBusboy from 'async-busboy';
 // import {Promise} from 'es6-promise';
 import { jsonToAddressModel } from '../shared/model/AddressModel';
-import { profileApi, jsonToUserModel } from './rest/profile/profileApi';
+import { profileApi, jsonToUserModel } from './rest/profileApi';
 import { ImageBusiness } from './domain/user/ImageBusiness';
+import { hostApi } from './rest/hostApi';
 const app = new Koa();
 const router = new Router();
 
@@ -84,6 +85,7 @@ const userBusiness = new UserBusiness(userRepository);
 const imageBusiness = new ImageBusiness();
 
 profileApi(router, baseDir, userBusiness, imageBusiness);
+hostApi(router);
 
 router.post('/api/login', async (ctx) => {
     ctx.body = {
@@ -96,11 +98,6 @@ router.post('/api/login', async (ctx) => {
         city: 'Budapest',
         id: null
     };
-});
-
-router.get('/findHosts/', async ctx => {
-    console.log(ctx.query);
-    ctx.body = ctx.query;
 });
 
 // app.post("/login", function(req, res) {
