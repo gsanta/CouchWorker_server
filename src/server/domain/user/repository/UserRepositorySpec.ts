@@ -13,7 +13,7 @@ describe('UserRepository', () => {
     let userModel2: UserModel;
     let userDocument2: UserDocument;
     let repositoryBase: any;
-    let queryMetaData: any = sinon.spy();
+    let pagination: any = sinon.spy();
 
     beforeEach(() => {
         userDocument = {
@@ -197,10 +197,10 @@ describe('UserRepository', () => {
                 then: (callback: any) => callback([userDocument, userDocument2])
             });
 
-            userRepository.findAll(queryMetaData);
+            userRepository.findAll(pagination);
 
             expect(repositoryBase.findAll.callCount).toBe(1);
-            expect(repositoryBase.findAll.calledWith(queryMetaData)).toBe(true);
+            expect(repositoryBase.findAll.calledWith(pagination)).toBe(true);
         });
 
         it('should return with a Promise<UserModel[]> if no error occures', (done) => {
@@ -210,7 +210,7 @@ describe('UserRepository', () => {
                     resolve([userDocument, userDocument2]);
                 }));
 
-            userRepository.findAll(queryMetaData)
+            userRepository.findAll(pagination)
             .then((models) => {
                 expect(models.length).toEqual(2);
                 expect(models[0]).toEqual(userModel);
@@ -226,7 +226,7 @@ describe('UserRepository', () => {
                 reject('Error happened');
             }));
 
-            userRepository.findAll(queryMetaData)
+            userRepository.findAll(pagination)
             .then(() => done.fail('This Promise should have been rejected'))
             .catch((error: any) => {
                 expect(error).toEqual('Error happened');
@@ -243,10 +243,10 @@ describe('UserRepository', () => {
                 then: (callback: any) => callback([userDocument, userDocument2])
             });
 
-            userRepository.findBy(userModel, queryMetaData);
+            userRepository.findBy(userModel, pagination);
 
             expect(repositoryBase.findBy.callCount).toBe(1);
-            expect(repositoryBase.findBy.calledWith(userDocument, queryMetaData)).toBe(true);
+            expect(repositoryBase.findBy.calledWith(userDocument, pagination)).toBe(true);
         });
 
         it('should return with a Promise<UserModel[]> if no error occures', (done) => {
@@ -257,7 +257,7 @@ describe('UserRepository', () => {
                     resolve([userDocument, userDocument2]);
                 }));
 
-            userRepository.findBy(userModel, queryMetaData)
+            userRepository.findBy(userModel, pagination)
             .then((models) => {
                 expect(models.length).toEqual(2);
                 expect(models[0]).toEqual(userModel);
@@ -275,7 +275,7 @@ describe('UserRepository', () => {
                     reject('Error happened');
                 }));
 
-            userRepository.findBy(userModel, queryMetaData)
+            userRepository.findBy(userModel, pagination)
             .then(() => done.fail('This Promise should have been rejected'))
             .catch((error: any) => {
                 expect(error).toEqual('Error happened');

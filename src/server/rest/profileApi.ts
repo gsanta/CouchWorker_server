@@ -9,6 +9,7 @@ import * as uuid from 'uuid/v4';
 import { UrlModel } from '../../shared/model/UrlModel';
 import { List } from 'immutable';
 import { RatingModel } from '../../shared/model/RatingModel';
+import { PaginationModel } from '../repository/PaginationModel';
 
 export function jsonToUserModel(json: any): UserModel {
     const addresses = json.addresses ? json.addresses.map(address => this.toAddressModel(address)) : null;
@@ -104,9 +105,10 @@ export function profileApi(router: Router, baseDir: string, userBusiness: UserBu
         ctx.body = await userBusiness.findByUserName(ctx.params.userName);
     });
 
-    router.get('/api/findUsers/', async ctx => {
+    router.get('/api/findUsers/:page', async ctx => {
         const keywords = ctx.query.keywords.split(' ');
-        const users = await userBusiness.findByText(ctx.query.keywords);
-        ctx.body = ctx.query;
+        const page = parseInt(ctx.params.page, 10) - 1;
+        const users = await userBusiness.findByText(ctx.query.keywords, new PaginationModel(page));
+        ctx.body = users;
     });
 }

@@ -1,4 +1,4 @@
-import { QueryMetaData } from './QueryMetaData';
+import { PaginationModel } from './PaginationModel';
 import mongoose = require("mongoose");
 import * as Mongoose from 'mongoose';
 
@@ -51,12 +51,12 @@ export class RepositoryBase<T extends {uuid: string}> {
         });
     }
 
-    public findAll(queryMetaData: QueryMetaData): Promise<T[]> {
+    public findAll(pagination: PaginationModel): Promise<T[]> {
         return new Promise((resolve, reject) => {
             this.model
                 .find({})
-                .skip(queryMetaData.page * queryMetaData.limit)
-                .limit(queryMetaData.limit)
+                .skip(pagination.getPage() * pagination.getLimit())
+                .limit(pagination.getLimit())
                 .exec((error: any, result: T[]) => {
                     if (error) {
                         reject(error);
@@ -67,12 +67,12 @@ export class RepositoryBase<T extends {uuid: string}> {
         });
     }
 
-    public findBy(item: T, queryMetaData: QueryMetaData): Promise<T[]> {
+    public findBy(item: T, pagination: PaginationModel): Promise<T[]> {
         return new Promise((resolve, reject) => {
             this.model
                 .find(item)
-                .skip(queryMetaData.page * queryMetaData.limit)
-                .limit(queryMetaData.limit)
+                .skip(pagination.getPage() * pagination.getLimit())
+                .limit(pagination.getLimit())
                 .exec((error: any, result: T[]) => {
                     if (error) {
                         reject(error);
@@ -95,9 +95,11 @@ export class RepositoryBase<T extends {uuid: string}> {
         });
     }
 
-    public findByText(searchString: string): Promise<T[]> {
+    public findByText(searchString: string, pagination: PaginationModel): Promise<T[]> {
         return new Promise((resolve, reject) => {
             this.model.find({$text: {$search: searchString}})
+                .skip(pagination.getPage() * pagination.getLimit())
+                .limit(pagination.getLimit())
                 .exec(function(err, result) {
                     if (err) {
                         reject(err);

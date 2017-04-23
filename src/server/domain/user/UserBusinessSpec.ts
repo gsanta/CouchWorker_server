@@ -57,13 +57,13 @@ describe('UserBusiness', () => {
                 findAll: sinon.spy()
             };
 
-            let queryMetaData: any = sinon.spy();
+            let pagination: any = sinon.spy();
 
             let userBusiness = new UserBusiness(userRepository);
 
-            userBusiness.findAll(queryMetaData);
+            userBusiness.findAll(pagination);
             expect(userRepository.findAll.callCount).toBe(1);
-            expect(userRepository.findAll.calledWith(queryMetaData)).toBe(true);
+            expect(userRepository.findAll.calledWith(pagination)).toBe(true);
         });
     });
 
@@ -73,13 +73,13 @@ describe('UserBusiness', () => {
                 findBy: sinon.spy()
             };
             let item: any = sinon.spy();
-            let queryMetaData: any = sinon.spy();            
+            let pagination: any = sinon.spy();            
 
             let userBusiness = new UserBusiness(userRepository);
 
-            userBusiness.findBy(item, queryMetaData);
+            userBusiness.findBy(item, pagination);
             expect(userRepository.findBy.callCount).toBe(1);
-            expect(userRepository.findBy.calledWith(item, queryMetaData)).toBe(true);
+            expect(userRepository.findBy.calledWith(item, pagination)).toBe(true);
         });
     });
 

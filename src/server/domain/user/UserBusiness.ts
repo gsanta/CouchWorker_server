@@ -1,6 +1,6 @@
 import * as Promise from 'promise';
 import { UserRepository } from './repository/UserRepository';
-import { QueryMetaData } from '../../repository/QueryMetaData';
+import { PaginationModel } from '../../repository/PaginationModel';
 import { UserModel } from '../../../shared/model/user/UserModel';
 import { AddressModel } from '../../../shared/model/AddressModel';
 import { ImageModel } from '../../../shared/model/image/ImageModel';
@@ -37,15 +37,15 @@ export class UserBusiness {
         return this.userRepository.findByUserName(userName);
     }
 
-    public findBy(item: UserModel, queryMetaData: QueryMetaData): Promise<UserModel[]> {
-        return this.userRepository.findBy(item, queryMetaData);
+    public findBy(item: UserModel, pagination: PaginationModel): Promise<UserModel[]> {
+        return this.userRepository.findBy(item, pagination);
     }
 
-    public findAll (queryMetaData: QueryMetaData): Promise<UserModel[]> {
-        return this.userRepository.findAll(queryMetaData);
+    public findAll (pagination: PaginationModel): Promise<UserModel[]> {
+        return this.userRepository.findAll(pagination);
     }
 
-    public findByText(searchText: string): Promise<UserModel[]> {
-        return this.userRepository.findByText(searchText);
+    public findByText(searchText: string, pagination: PaginationModel): Promise<UserModel[]> {
+        return this.userRepository.findByText(searchText, pagination);
     }
 }

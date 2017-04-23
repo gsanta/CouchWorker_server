@@ -1,6 +1,6 @@
 import { RepositoryBase } from '../../../repository/RepositoryBase';
 import { MongooseUserDocument } from './MongooseUserDocument';
-import { QueryMetaData } from '../../../repository/QueryMetaData';
+import { PaginationModel } from '../../../repository/PaginationModel';
 import { UserModel, UserModelParams } from '../../../../shared/model/user/UserModel';
 import { AddressModel, AddressDocument } from '../../../../shared/model/AddressModel';
 import { UserDocument } from '../../../../shared/model/user/UserDocument';
@@ -34,14 +34,14 @@ export class UserRepository {
             .then(() => user);
     }
     
-    public findBy(user: UserModel, queryMetaData: QueryMetaData): Promise<UserModel[]> {
+    public findBy(user: UserModel, pagination: PaginationModel): Promise<UserModel[]> {
         const userDocument = this.toUserDocument(user);
-        return this.repoBase.findBy(userDocument, queryMetaData)
+        return this.repoBase.findBy(userDocument, pagination)
             .then(docs => docs.map(doc => UserRepository.toUserModel(doc)));
     }
 
-    public findAll(queryMetaData: QueryMetaData): Promise<UserModel[]> {
-        return this.repoBase.findAll(queryMetaData)
+    public findAll(pagination: PaginationModel): Promise<UserModel[]> {
+        return this.repoBase.findAll(pagination)
             .then(docs => docs.map(doc => UserRepository.toUserModel(doc)));
     }
 
@@ -69,8 +69,8 @@ export class UserRepository {
             .then(userDocument => UserRepository.toUserModel(userDocument));
     }
 
-    public findByText(searchString: string): Promise<UserModel[]> {
-        return this.repoBase.findByText(searchString)
+    public findByText(searchString: string, pagination: PaginationModel): Promise<UserModel[]> {
+        return this.repoBase.findByText(searchString, pagination)
             .then(docs => docs.map(doc => UserRepository.toUserModel(doc)));
     }
 
