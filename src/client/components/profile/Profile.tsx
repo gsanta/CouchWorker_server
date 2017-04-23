@@ -12,7 +12,7 @@ import { UserModel } from '../../../shared/model/user/UserModel';
 import { validateEmail } from '../../../shared/validation/validateEmail';
 import { Address } from './address/Address';
 import { AddressModel } from '../../../shared/model/AddressModel';
-// require('./Profile.scss');
+require('./Profile.scss');
 
 
 export class Profile extends React.Component<RegistrationProps, RegistrationState> {
