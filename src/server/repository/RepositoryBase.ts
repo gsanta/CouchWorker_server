@@ -83,9 +83,9 @@ export class RepositoryBase<T extends {uuid: string}> {
         });
     }
 
-    public findByEmail(email: string): Promise<T> {
+    public findOneBy(fields: T): Promise<T> {
         return new Promise((resolve, reject) => {
-            this.model.findOne({email: email}, (error: any, result: T) => {
+            this.model.findOne(fields, (error: any, result: T) => {
                 if (error) {
                     reject(error);
                 }
@@ -95,31 +95,16 @@ export class RepositoryBase<T extends {uuid: string}> {
         });
     }
 
-    public findByUserName(userName: string): Promise<T> {
-        const userNameParts = userName.split('.');
-        const firstName = userNameParts[0];
-        const lastName = userNameParts[1];
-        const uniqueIndex = userNameParts.length === 3 ? userNameParts[2] : 0;
+    public findByText(searchString: string): Promise<T[]> {
         return new Promise((resolve, reject) => {
-            this.model.findOne({firstName, lastName, uniqueIndex}, (error: any, result: T) => {
-                if (error) {
-                    reject(error);
-                }
+            this.model.find({$text: {$search: searchString}})
+                .exec(function(err, result) {
+                    if (err) {
+                        reject(err);
+                    }
 
-                resolve(result);
-            });
-        });
-    }
-
-    public findById (_id: string): Promise<T> {
-        return new Promise((resolve, reject) => {
-            this.model.findById( _id, (error: any, result: T) => {
-                if (error) {
-                    reject(error);
-                }
-
-                resolve(result);
-            });
+                    resolve(result);
+                });
         });
     }
 

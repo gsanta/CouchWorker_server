@@ -16,8 +16,7 @@ export class UserSchema {
     }
 
     public getSchema(): Mongoose.Schema {
-        const addressSchema = new AddressSchema(this.mInstance, this.mConnection);
-        return new this.mInstance.Schema({
+        const schema = new this.mInstance.Schema({
             firstName: {
                 type: String,
                 required: true
@@ -75,5 +74,9 @@ export class UserSchema {
                 }
             ]
         });
+
+        schema.index({'$**': 'text'});
+
+        return schema;
     }
 }

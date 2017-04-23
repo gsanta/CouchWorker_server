@@ -4,11 +4,11 @@ import { Host } from './Host';
 import { Row } from 'react-bootstrap';
 import { Col } from 'react-bootstrap';
 import { Pagination } from 'react-bootstrap';
-import { HostModel } from '../../../shared/model/host/HostModel';
+import { UserModel } from '../../../shared/model/user/UserModel';
 require('./Hosts.scss');
 
 export interface HostsProps {
-    hosts: List<HostModel>;
+    hosts: List<UserModel>;
     page: number;
     onPageSelect: (page: number) => void
 }

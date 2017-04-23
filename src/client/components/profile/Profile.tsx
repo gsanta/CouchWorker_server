@@ -10,9 +10,10 @@ import { ProfileValidationModel } from './ProfileValidationModel';
 import { StringInput } from '../form/StringInput';
 import { UserModel } from '../../../shared/model/user/UserModel';
 import { validateEmail } from '../../../shared/validation/validateEmail';
-import './Profile.scss';
 import { Address } from './address/Address';
 import { AddressModel } from '../../../shared/model/AddressModel';
+require('./Profile.scss');
+
 
 export class Profile extends React.Component<RegistrationProps, RegistrationState> {
 

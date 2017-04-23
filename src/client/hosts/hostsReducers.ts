@@ -1,9 +1,9 @@
 import { List } from 'immutable';
 import { FETCH_HOSTS } from './hostsActions';
 import { ASYNC_STATES } from '../utils/AsyncStates';
-import { HostModel } from '../../shared/model/host/HostModel';
+import { UserModel } from '../../shared/model/user/UserModel';
 
-export function hosts(state: List<HostModel> = List<HostModel>(), action: any): List<HostModel> {
+export function hosts(state: List<UserModel> = List<UserModel>(), action: any): List<UserModel> {
   switch (action.type) {
     case FETCH_HOSTS:
         if (action.state === ASYNC_STATES.SUCCESS) {

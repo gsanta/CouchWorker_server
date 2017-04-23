@@ -2,7 +2,7 @@ import { List } from 'immutable';
 import { hosts } from './hostsReducers';
 import { FETCH_HOSTS } from './hostsActions';
 import { ASYNC_STATES } from '../utils/AsyncStates';
-import { HostModel } from '../../shared/model/host/HostModel';
+import { UserModel } from '../../shared/model/user/UserModel';
 
 
 describe('hostsReducers', () => {
@@ -12,16 +12,16 @@ describe('hostsReducers', () => {
                 type: 'unknown'
             };
 
-            let state = List<HostModel>([
-                    new HostModel({
+            let state = List<UserModel>([
+                    new UserModel({
                         firstName: 'User2',
                         lastName: null,
                         birthDate: null,
-                        country: null,
-                        city: null,
+                        userName: null,
+                        profession: null,
                         email: null,
                         rating: null,
-                        id: null,
+                        addresses: [],
                         uuid: null
                     })
                 ]);
@@ -35,43 +35,43 @@ describe('hostsReducers', () => {
             let action = {
                 type: FETCH_HOSTS,
                 state: ASYNC_STATES.SUCCESS,
-                hosts: List<HostModel>([
-                    new HostModel({
+                hosts: List<UserModel>([
+                    new UserModel({
                         firstName: 'User1',
                         lastName: null,
                         birthDate: null,
+                        userName: null,
+                        profession: null,
                         email: null,
-                        country: null,
-                        city: null,
                         rating: null,
-                        id: null,
+                        addresses: [],
                         uuid: null
                     }),
-                    new HostModel({
+                    new UserModel({
                         firstName: 'User2',
                         lastName: null,
                         birthDate: null,
+                        userName: null,
+                        profession: null,
                         email: null,
-                        country: null,
-                        city: null,
                         rating: null,
-                        id: null,
-                        uuid: null                        
+                        addresses: [],
+                        uuid: null                     
                     }),
                 ])
             };
 
-            let state = List<HostModel>([
-                new HostModel({
+            let state = List<UserModel>([
+                new UserModel({
                     firstName: 'User3',
                     lastName: null,
                     birthDate: null,
+                    userName: null,
+                    profession: null,
                     email: null,
-                    country: null,
-                    city: null,
                     rating: null,
-                    id: null,
-                    uuid: null                    
+                    addresses: [],
+                    uuid: null                     
                 })
             ]);
 

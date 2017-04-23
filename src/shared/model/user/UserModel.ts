@@ -1,6 +1,7 @@
 import { UserDocument } from './UserDocument';
 import { AddressModel } from '../AddressModel';
 import { List } from 'immutable';
+import { RatingModel } from '../RatingModel';
 
 export interface UserModelParams {
     firstName: string;
@@ -10,6 +11,7 @@ export interface UserModelParams {
     email: string;
     profession: string;
     addresses: AddressModel[];
+    rating: RatingModel;
     uuid: string;
 }
 
@@ -22,6 +24,7 @@ export class UserModel {
     private email: string;
     private profession: string;
     private addresses: List<AddressModel>;
+    private rating: RatingModel;
 
     constructor(params?: UserModelParams) {
         if (params) {
@@ -32,6 +35,7 @@ export class UserModel {
             this.birthDate = params.birthDate,
             this.email = params.email                        
             this.addresses = params.addresses ? List<AddressModel>(params.addresses) : List<AddressModel>();
+            this.rating = params.rating;
             this.uuid = params.uuid;
         } else {
             this.addresses = List<AddressModel>();
@@ -128,6 +132,17 @@ export class UserModel {
         return clone;
     }
 
+    public getRating(): RatingModel {
+        return this.rating;
+    }
+
+    public setRating(rating: RatingModel): UserModel {
+        const copy = this.copy();
+        copy.rating = rating;
+
+        return copy;
+    }
+
     private copy(): UserModel {
         let copy = new UserModel(null);
         copy.profession = this.profession;
@@ -137,6 +152,7 @@ export class UserModel {
         copy.birthDate = this.birthDate;
         copy.email = this.email;
         copy.addresses = this.addresses;
+        copy.rating = this.rating;
 
         return copy;
     }

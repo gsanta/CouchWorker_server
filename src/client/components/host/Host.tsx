@@ -3,17 +3,18 @@ import { Table } from 'react-bootstrap';
 import { Image } from 'react-bootstrap';
 import * as React from 'react';
 import { Link } from 'react-router';
-import { HostModel } from '../../../shared/model/host/HostModel';
 import { AgeFormatter } from '../form/AgeFormatter';
 import { StarRatingWrapper } from '../form/StarRatingWrapper';
+import { UserModel } from '../../../shared/model/user/UserModel';
 const thumbnail = require('../../assets/thumbnail.png');
 require('./Host.scss')
 
 export interface HostProps {
-    host: HostModel
+    host: UserModel
 }
 
 export function Host(props: HostProps) {
+    let address = props.host.getAddresses().get(0);
     return (
         <Panel className='cw-host-panel'>
             <div className='cw-host-panel-row'>
@@ -22,14 +23,14 @@ export function Host(props: HostProps) {
                 </div>
                 <div className='cw-host-panel-col2'>
                     <div>
-                        <Link to={`/host/${props.host.getId()}`}>
+                        <Link to={`/host/${props.host.getUuid()}`}>
                             {props.host.getFirstName()}&nbsp;
                             {props.host.getLastName()}, &nbsp;
                         </Link>
                         <AgeFormatter date={props.host.getBirthDate()} />
                     </div>
                     <div>
-                        {props.host.getAddress().getCity()}, {props.host.getAddress().getCountry()}
+                        {address.getCity()}, {address.getCountry()}
                     </div>
                 </div>
                 <div className='cw-host-panel-col3'>

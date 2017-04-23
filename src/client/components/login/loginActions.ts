@@ -4,6 +4,7 @@ import { ASYNC_STATES } from '../../utils/AsyncStates';
 import { UserModel } from '../../../shared/model/user/UserModel';
 import { LoginModel } from '../../../shared/model/login/LoginModel';
 import { AddressModel } from '../../../shared/model/AddressModel';
+import { RatingModel } from '../../../shared/model/RatingModel';
 
 export const LOGIN = 'LOGIN';
 
@@ -24,6 +25,7 @@ export function receiveLogin(json: any) {
             birthDate: new Date(1980, 11, 28),
             email: json.email,
             profession: json.profession,
+            rating: new RatingModel(5),
             uuid: 'abcd',
             addresses: [
                 new AddressModel({

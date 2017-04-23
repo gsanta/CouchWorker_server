@@ -44,4 +44,8 @@ export class UserBusiness {
     public findAll (queryMetaData: QueryMetaData): Promise<UserModel[]> {
         return this.userRepository.findAll(queryMetaData);
     }
+
+    public findByText(searchText: string): Promise<UserModel[]> {
+        return this.userRepository.findByText(searchText);
+    }
 }

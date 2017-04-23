@@ -5,6 +5,7 @@ import { Button } from 'react-bootstrap';
 import { StringInput } from '../form/StringInput';
 import { UserModel } from '../../../shared/model/user/UserModel';
 import { AddressModel } from '../../../shared/model/AddressModel';
+import { RatingModel } from '../../../shared/model/RatingModel';
 
 describe('<Profile/>', () => {
     describe('if the valid state of \'Profile\' changes', () => {
@@ -16,6 +17,7 @@ describe('<Profile/>', () => {
                 birthDate: new Date(1980, 11, 28),
                 email: 'new_user@gmail.com',
                 profession: 'Drummer',
+                rating: new RatingModel(5),
                 uuid: '1234',
                 addresses: [new AddressModel({
                     country: 'Hungary',

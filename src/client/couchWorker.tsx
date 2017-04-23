@@ -7,17 +7,17 @@ import { List } from 'immutable';
 import { Router, Route, hashHistory, IndexRedirect } from 'react-router';
 import { ProfileWrapper } from './components/profile/ProfileWrapper';
 import { LoginWrapper } from './components/login/LoginWrapper';
-import { HostModel } from '../shared/model/host/HostModel';
 import { HostDetailWrapper } from './components/host_detail/HostDetailWrapper';
 import { AppWrapper } from './components/app/AppWrapper';
 import { HostsWrapper } from './components/host/HostsWrapper';
+import { UserModel } from '../shared/model/user/UserModel';
 
 require('bootstrap/dist/css/bootstrap.css');
 require('./couchWorker.scss');
 require('./bootstrapOverwrite.scss');
 
 let initialState: RootModel = {
-    hosts: List<HostModel>(),
+    hosts: List<UserModel>(),
     // List<HostModel>([
     //     new HostModel(
     //         {

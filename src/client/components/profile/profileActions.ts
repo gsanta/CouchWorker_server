@@ -2,6 +2,7 @@ import { UserModel } from '../../../shared/model/user/UserModel';
 import { Dispatch } from 'redux';
 import { ASYNC_STATES } from '../../utils/AsyncStates';
 import { AddressModel } from '../../../shared/model/AddressModel';
+import { RatingModel } from '../../../shared/model/RatingModel';
 
 export const SIGNUP = 'SIGNUP';
 export const LOGOUT = 'LOGOUT';
@@ -29,6 +30,7 @@ export function receiveSignup(json: any) {
             birthDate: new Date(1980, 11, 28),
             email: json.email,
             uuid: '1234',
+            rating: new RatingModel(5),
             profession: json.profession,
             addresses: [
                 new AddressModel({

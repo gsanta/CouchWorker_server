@@ -1,6 +1,6 @@
 import * as Router from 'koa-router';
 import { UserBusiness } from '../domain/user/UserBusiness';
-import { UserModel } from '../../shared/model/user/UserModel';
+import { UserModel, UserModelParams } from '../../shared/model/user/UserModel';
 import * as asyncBusboy from 'async-busboy';
 import { ImageModel } from '../../shared/model/image/ImageModel';
 import { ImageBusiness } from '../domain/user/ImageBusiness';
@@ -8,17 +8,19 @@ import { AddressModel, AddressDocument } from '../../shared/model/AddressModel';
 import * as uuid from 'uuid/v4';
 import { UrlModel } from '../../shared/model/UrlModel';
 import { List } from 'immutable';
+import { RatingModel } from '../../shared/model/RatingModel';
 
 export function jsonToUserModel(json: any): UserModel {
     const addresses = json.addresses ? json.addresses.map(address => this.toAddressModel(address)) : null;
 
-    const userParams = {
+    const userParams: UserModelParams = {
         firstName: json.firstName,
         lastName: json.lastName,
         email: json.email,       
         userName: json.userName,     
         birthDate: json.birthDate,            
         profession: json.profession,
+        rating: new RatingModel(5),
         addresses: addresses,
         uuid: json.id
     }
@@ -100,5 +102,11 @@ export function profileApi(router: Router, baseDir: string, userBusiness: UserBu
 
     router.get('/api/findUser/:userName', async (ctx) => {
         ctx.body = await userBusiness.findByUserName(ctx.params.userName);
+    });
+
+    router.get('/api/findUsers/', async ctx => {
+        const keywords = ctx.query.keywords.split(' ');
+        const users = await userBusiness.findByText(ctx.query.keywords);
+        ctx.body = ctx.query;
     });
 }
