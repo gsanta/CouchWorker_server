@@ -1,5 +1,6 @@
 import * as sinon from 'sinon';
 import * as proxyquire from 'proxyquire';
+import { PaginationModel } from './PaginationModel';
 
 let {RepositoryBase} = proxyquire('./RepositoryBase', {
     'mongoose': {
@@ -15,10 +16,7 @@ let {RepositoryBase} = proxyquire('./RepositoryBase', {
 
 describe('RepositoryBase', () => {
     let schemaModel: any;
-    let queryMetaData: any = {
-        page: 3,
-        limit: 2
-    }
+    let pagination = new PaginationModel(3, 2);
 
     let execStub: any;
     let skipStub: any;
@@ -54,7 +52,7 @@ describe('RepositoryBase', () => {
 
         limitStub
             .limit
-            .withArgs(queryMetaData.limit)
+            .withArgs(pagination.getLimit())
             .returns(execStub);
 
         skipStub = {
@@ -63,7 +61,7 @@ describe('RepositoryBase', () => {
         
         skipStub
             .skip
-            .withArgs(queryMetaData.page * queryMetaData.limit)
+            .withArgs(pagination.getPage() * pagination.getLimit())
             .returns(limitStub);
 
         schemaModel.find
@@ -173,7 +171,7 @@ describe('RepositoryBase', () => {
     describe('findAll', () => {
         it('should call the correct methods of the given model', () => {
             let repositoryBase = new RepositoryBase(schemaModel);
-            repositoryBase.findAll(queryMetaData);
+            repositoryBase.findAll(pagination);
             expect(schemaModel.find.callCount).toBe(1);
             expect(skipStub.skip.callCount).toBe(1);
             expect(limitStub.limit.callCount).toBe(1);
@@ -182,7 +180,7 @@ describe('RepositoryBase', () => {
 
         it('should resolve the promise with the correct data if there is no error', (done) => {
             let repositoryBase = new RepositoryBase(schemaModel);
-            repositoryBase.findAll(queryMetaData)
+            repositoryBase.findAll(pagination)
                 .then((data: any) => {
                     expect(data).toBe(result);
                     done();
@@ -194,7 +192,7 @@ describe('RepositoryBase', () => {
 
         it('should reject the promise with error data if there is an error', (done) => {
             let repositoryBase = new RepositoryBase(schemaModel);
-            repositoryBase.findAll(queryMetaData)
+            repositoryBase.findAll(pagination)
                 .then(() => done.fail('should reject the promise'))
                 .catch((err: any) => {
                     expect(err).toEqual(error);
@@ -208,7 +206,7 @@ describe('RepositoryBase', () => {
     describe('findBy', () => {
         it('should call the correct methods of the given model', () => {
             let repositoryBase = new RepositoryBase(schemaModel);
-            repositoryBase.findBy(item, queryMetaData);
+            repositoryBase.findBy(item, pagination);
             expect(schemaModel.find.callCount).toBe(1);
             expect(skipStub.skip.callCount).toBe(1);
             expect(limitStub.limit.callCount).toBe(1);
@@ -217,7 +215,7 @@ describe('RepositoryBase', () => {
 
         it('should resolve the promise with the correct data if there is no error', (done) => {
             let repositoryBase = new RepositoryBase(schemaModel);
-            repositoryBase.findBy(item, queryMetaData)
+            repositoryBase.findBy(item, pagination)
                 .then((data: any) => {
                     expect(data).toBe(result);
                     done();
@@ -229,7 +227,7 @@ describe('RepositoryBase', () => {
 
         it('should reject the promise with error data if there is an error', (done) => {
             let repositoryBase = new RepositoryBase(schemaModel);
-            repositoryBase.findBy(item, queryMetaData)
+            repositoryBase.findBy(item, pagination)
                 .then(() => done.fail('should reject the promise'))
                 .catch((err: any) => {
                     expect(err).toEqual(error);
@@ -237,76 +235,6 @@ describe('RepositoryBase', () => {
                 });
 
             execStub.exec.callArgWith(0, error, null);
-        });
-    });
-
-    describe('findByEmail', () => {
-        let email = 'abcd';
-
-        it('should call the findByEmail method of model with the correct parameters', () => {
-            let repositoryBase = new RepositoryBase(schemaModel);
-            repositoryBase.findByEmail(email);
-            expect(schemaModel.findOne.getCall(0).args[0]).toEqual({
-                email: "abcd"
-            });
-        });
-
-        it('should resolve the promise with the correct data if there is no error', (done) => {
-            let repositoryBase = new RepositoryBase(schemaModel);
-            repositoryBase.findByEmail(email)
-                .then((data: any) => {
-                    expect(data).toEqual(result);
-                    done();
-                })
-                .catch((err: any) => done.fail(err));
-
-            schemaModel.findOne.callArgWith(1, null, result);
-        });
-
-        it('should reject the promise with error data if there is an error', (done) => {
-            let repositoryBase = new RepositoryBase(schemaModel);
-            repositoryBase.findByEmail(email)
-                .then(() => done.fail('should reject the promise'))
-                .catch((err: any) => {
-                    expect(err).toEqual(error);
-                    done();
-                });
-
-            schemaModel.findOne.callArgWith(1, error, null);
-        });
-    });
-
-    describe('findById', () => {
-        let id = 'abcd';
-
-        it('should call the findById method of model with the correct parameters', () => {
-            let repositoryBase = new RepositoryBase(schemaModel);
-            repositoryBase.findById(id);
-            expect(schemaModel.findById.getCall(0).args[0]).toEqual(id);
-        });
-
-        it('should resolve the promise with the correct data if there is no error', (done) => {
-            let repositoryBase = new RepositoryBase(schemaModel);
-            repositoryBase.findById(id)
-                .then((data: any) => {
-                    expect(data).toEqual(result);
-                    done();
-                })
-                .catch((err: any) => done.fail(err));
-
-            schemaModel.findById.callArgWith(1, null, result);
-        });
-
-        it('should reject the promise with error data if there is an error', (done) => {
-            let repositoryBase = new RepositoryBase(schemaModel);
-            repositoryBase.findById(id)
-                .then(() => done.fail('should reject the promise'))
-                .catch((err: any) => {
-                    expect(err).toEqual(error);
-                    done();
-                });
-
-            schemaModel.findById.callArgWith(1, error, null);
         });
     });
 });

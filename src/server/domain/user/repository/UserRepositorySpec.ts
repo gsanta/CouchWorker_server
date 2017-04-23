@@ -6,6 +6,7 @@ import { Promise } from 'es6-promise';
 import { UserModel, UserModelParams } from '../../../../shared/model/user/UserModel';
 import { AddressModel } from '../../../../shared/model/AddressModel';
 import { UserDocument } from '../../../../shared/model/user/UserDocument';
+import { RepositoryBase } from '../../../repository/RepositoryBase';
 
 describe('UserRepository', () => {
     let userModel: UserModel;
@@ -57,9 +58,9 @@ describe('UserRepository', () => {
             create: sinon.stub(),
             update: sinon.stub(),
             delete: sinon.stub(),
-            findByEmail: sinon.stub(),
             findAll: sinon.stub(),
-            findBy: sinon.stub()
+            findBy: sinon.stub(),
+            findOneBy: sinon.stub()
         };
     });
 
@@ -290,20 +291,20 @@ describe('UserRepository', () => {
         it('should call the findByEmail method of RepositoryBase with the correct parameters', () => {
             let userRepository = new UserRepository(repositoryBase, () => null);
 
-            repositoryBase.findByEmail.returns({
+            repositoryBase.findOneBy.returns({
                 then: (callback: any) => callback(userDocument)
             });
 
             userRepository.findByEmail(email);
 
-            expect(repositoryBase.findByEmail.callCount).toBe(1);
-            expect(repositoryBase.findByEmail.getCall(0).args[0]).toEqual(email);
+            expect(repositoryBase.findOneBy.callCount).toBe(1);
+            expect(repositoryBase.findOneBy.getCall(0).args[0]).toEqual({email: email});
         });
 
         it('should return with a Promise<UserModel> if no error occures', (done) => {
             let userRepository = new UserRepository(repositoryBase, () => null);
-            repositoryBase.findByEmail
-                .withArgs(email)
+            repositoryBase.findOneBy
+                .withArgs({email: email})
                 .returns(new Promise((resolve, reject) => {
                     resolve(userDocument);
                 }));
@@ -318,7 +319,7 @@ describe('UserRepository', () => {
 
         it('should return with a rejectet Promise if an error occures', (done) => {
             let userRepository = new UserRepository(repositoryBase, () => null);
-            repositoryBase.findByEmail.returns(new Promise((resolve, reject) => {
+            repositoryBase.findOneBy.returns(new Promise((resolve, reject) => {
                 reject('Error happened');
             }));
 
