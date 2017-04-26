@@ -23,7 +23,7 @@ export function Host(props: HostProps) {
                 </div>
                 <div className='cw-host-panel-col2'>
                     <div>
-                        <Link to={`/host/${props.host.getUuid()}`}>
+                        <Link to={`/host/${props.host.getUserName()}`}>
                             {props.host.getFirstName()}&nbsp;
                             {props.host.getLastName()}, &nbsp;
                         </Link>

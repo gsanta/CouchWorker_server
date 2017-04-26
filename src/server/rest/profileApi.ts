@@ -85,7 +85,6 @@ export function profileApi(router: Router, baseDir: string, userBusiness: UserBu
         user = await userBusiness.addAddress(user, address)
         user = user.addAddress(address);
         user = await userBusiness.update(user);
-        console.log(user);
     });
 
     router.post('/api/updateUser/:userName', async (ctx) => {
@@ -106,9 +105,14 @@ export function profileApi(router: Router, baseDir: string, userBusiness: UserBu
     });
 
     router.get('/api/findUsers/:page', async ctx => {
-        const keywords = ctx.query.keywords.split(' ');
+        const keywords = ctx.query.keywords ? ctx.query.keywords.split(' ') : [];
         const page = parseInt(ctx.params.page, 10) - 1;
-        const users = await userBusiness.findByText(ctx.query.keywords, new PaginationModel(page));
+        let users = [];
+        if (!ctx.query.keywords) {
+            users = await userBusiness.findAll(new PaginationModel(page));
+        } else {
+            users = await userBusiness.findByText(ctx.query.keywords, new PaginationModel(page));            
+        }
         ctx.body = users;
     });
 }

@@ -95,7 +95,7 @@ export class RepositoryBase<T extends {uuid: string}> {
         });
     }
 
-    public findByText(searchString: string, pagination: PaginationModel): Promise<T[]> {
+    public findByText(searchString, pagination: PaginationModel): Promise<T[]> {
         return new Promise((resolve, reject) => {
             this.model.find({$text: {$search: searchString}})
                 .skip(pagination.getPage() * pagination.getLimit())

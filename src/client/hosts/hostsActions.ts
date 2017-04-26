@@ -26,7 +26,7 @@ export function fetchHosts() {
 
         dispatch(requestHosts());
 
-        return fetch('./api/hosts', {
+        return fetch('./api/findUsers/1', {
             method: 'GET'
         })
         .then(response => response.json())
@@ -45,7 +45,7 @@ function parseHosts(json: any): List<UserModel> {
             userName: '',
             birthDate: null,
             email: host.email,
-            rating: host.rating,
+            rating: new RatingModel(host.rating.rating),
             uuid: null,
             addresses: [
                 new AddressModel({

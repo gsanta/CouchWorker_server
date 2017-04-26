@@ -44,10 +44,11 @@ module.exports = function(gulp, config) {
         new WebpackDevServer(compiler, {
             contentBase: config.contentBase,
             watchOptions: watchOptions,
-            historyApiFallback: true,
+            historyApiFallback: false,
             proxy: {
                 "/api/*": {
-                    target: "http://localhost:3000"
+                    target: "http://localhost:8081",
+                    changeOrigin: true
                 }
             }
         }).listen(8765, '0.0.0.0', function(err) {
