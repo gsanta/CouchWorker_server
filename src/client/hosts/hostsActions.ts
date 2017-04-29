@@ -42,7 +42,7 @@ function parseHosts(json: any): List<UserModel> {
             firstName: host.firstName,
             lastName: host.lastName,
             profession: '',
-            userName: '',
+            userName: host.userName,
             birthDate: null,
             email: host.email,
             rating: new RatingModel(host.rating.rating),

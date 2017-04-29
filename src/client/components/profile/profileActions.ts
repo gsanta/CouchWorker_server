@@ -6,6 +6,7 @@ import { RatingModel } from '../../../shared/model/RatingModel';
 
 export const SIGNUP = 'SIGNUP';
 export const LOGOUT = 'LOGOUT';
+export const PROFILE = 'PROFILE';
 
 export function logout() {
     return {
@@ -69,4 +70,52 @@ export function signup(profile: UserModel) {
             dispatch(receiveSignup(json));
         });
     }
+}
+
+export function requestProfile() {
+    return {
+        type: PROFILE
+    };
+}
+
+export function receiveProfile(json: any) {
+    return {
+        type: PROFILE,
+        state: ASYNC_STATES.SUCCESS,
+        user: parseUser(json)
+    };
+}
+
+export function fetchProfile(userName: string) {
+    return function (dispatch: Dispatch<any>) {
+        dispatch(requestProfile());
+
+        return fetch(`./api/findUser/${userName}`, {
+            method: 'GET'
+        })
+        .then(response => response.json())
+        .then(json => {
+            dispatch(receiveProfile(json));
+        });
+    }
+}
+
+function parseUser(json: any) {
+    return new UserModel({
+        firstName: json.firstName,
+        lastName: json.lastName,
+        userName: json.userName,
+        birthDate: new Date(1980, 11, 28),
+        email: json.email,
+        uuid: '1234',
+        rating: new RatingModel(5),
+        profession: json.profession,
+        addresses: [
+            new AddressModel({
+                country: json.country,
+                city: json.city,
+                uuid: null
+            })
+        ]
+    });
 }

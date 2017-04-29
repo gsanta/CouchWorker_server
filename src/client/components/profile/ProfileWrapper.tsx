@@ -1,6 +1,7 @@
 import { RootModel } from '../../RootModel';
 import { connect } from 'react-redux';
-import { Profile } from './Profile';
+// import { Profile } from './Profile';
+import { Profile } from './Profile2';
 import { UserModel } from '../../../shared/model/user/UserModel';
 import { signup } from './profileActions';
 

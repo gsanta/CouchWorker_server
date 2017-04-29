@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { App } from './App';
 import { Dispatch } from 'redux';
 import { RootModel } from '../../RootModel';
-import { logout } from '../profile/profileActions';
+import { logout, fetchProfile } from '../profile/profileActions';
 
 
 function mapStateToProps(state: RootModel) {
@@ -13,11 +13,17 @@ function mapStateToProps(state: RootModel) {
 
 function mapDispatchToProps(dispatch: Dispatch<any>) {
     return {
-        logout: () => dispatch(logout())
+        logout: () => dispatch(logout()),
+        onMount: () => {
+            dispatch(fetchProfile('Santa.Gergely.0'));
+        }
     }
 }
 
 export const AppWrapper = connect(
     mapStateToProps,
     mapDispatchToProps
-)(App);
+/**
+ * TODO: why does not it accept App?
+ */    
+)(App as any);
