@@ -10,20 +10,26 @@ import { RatingModel } from '../../../shared/model/RatingModel';
 describe('<Profile/>', () => {
     describe('if the valid state of \'Profile\' changes', () => {
         it('should change the \'Update profile\' button\'s enable state accordingly', () => {
-            let user = new UserModel({
+            let user = UserModel.fromJson({
                 firstName: 'New',
                 lastName: 'User',
                 userName: 'New.User',
-                birthDate: new Date(1980, 11, 28),
+                birthDate: new Date(1980, 11, 28).toJSON(),
+                registrationDate: new Date(2000, 11, 28).toJSON(),
                 email: 'new_user@gmail.com',
                 profession: 'Drummer',
-                rating: new RatingModel(5),
+                country: 'Hungary',
+                city: 'Budapest',
+                languages: ['hungarian'],
+                rating: 5,
                 uuid: '1234',
-                addresses: [new AddressModel({
+                addresses: [{
                     country: 'Hungary',
                     city: 'Budapest',
-                    uuid: null
-                })]
+                    uuid: null,
+                    images: []
+                }],
+                isActive: true
             });
 
             const wrapper = shallow(

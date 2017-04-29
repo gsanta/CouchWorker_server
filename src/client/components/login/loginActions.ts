@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux';
 // import 'whatwg-fetch';
 import { ASYNC_STATES } from '../../utils/AsyncStates';
-import { UserModel } from '../../../shared/model/user/UserModel';
+import { UserModel, UserJson } from '../../../shared/model/user/UserModel';
 import { LoginModel } from '../../../shared/model/login/LoginModel';
 import { AddressModel } from '../../../shared/model/AddressModel';
 import { RatingModel } from '../../../shared/model/RatingModel';
@@ -14,27 +14,11 @@ export function requestLogin(login: LoginModel) {
     };
 }
 
-export function receiveLogin(json: any) {
+export function receiveLogin(json: UserJson) {
     return {
         type: LOGIN,
         state: ASYNC_STATES.SUCCESS,
-        user: new UserModel({
-            firstName: json.firstName,
-            lastName: json.lastName,
-            userName: json.userName,
-            birthDate: new Date(1980, 11, 28),
-            email: json.email,
-            profession: json.profession,
-            rating: new RatingModel(5),
-            uuid: 'abcd',
-            addresses: [
-                new AddressModel({
-                    country: json.country,
-                    city: json.city,
-                    uuid: null
-                })
-            ]
-        })
+        user: UserModel.fromJson(json)
     };
 }
 
@@ -57,7 +41,7 @@ export function login(login: LoginModel) {
         })
         .then(response => response.json())
         .then(json => {
-            dispatch(receiveLogin(json));
+            dispatch(receiveLogin(<any> json));
         });
     }
 }

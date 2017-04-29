@@ -1,23 +1,24 @@
 import { UserDocument } from './UserDocument';
-import { AddressModel } from '../AddressModel';
+import { AddressModel, AddressJson } from '../AddressModel';
 import { List } from 'immutable';
 import { RatingModel } from '../RatingModel';
 
-export interface UserModelParams {
+export interface UserJson {
+    uuid: string;
     firstName: string;
     lastName: string;
     userName: string;
-    birthDate: Date;
-    registrationDate: Date;
+    birthDate: string;
+    registrationDate: string;
     email: string;
     profession: string;
     country: string;
     city: string;
     languages: string[];
-    addresses: AddressModel[];
-    rating: RatingModel;
-    uuid: string;
+    addresses: AddressJson[];
+    rating: number;
     isActive: boolean;
+
 }
 
 export class UserModel {
@@ -36,25 +37,26 @@ export class UserModel {
     private rating: RatingModel;
     private isActive: boolean;
 
-    constructor(params?: UserModelParams) {
-        if (params) {
-            this.profession = params.profession;
-            this.firstName = params.firstName;
-            this.lastName = params.lastName;
-            this.userName = params.userName;
-            this.birthDate = params.birthDate;
-            this.registrationDate = params.registrationDate;
-            this.email = params.email;
-            this.country = params.country;                        
-            this.city = params.city;
-            this.languages = params.languages ? List<string>(params.languages) : List<string>();
-            this.addresses = params.addresses ? List<AddressModel>(params.addresses) : List<AddressModel>();
-            this.rating = params.rating;
-            this.uuid = params.uuid;
-            this.isActive = params.isActive;
-        } else {
+    constructor(userDocument?: UserDocument) {
+        if (!userDocument) {
             this.addresses = List<AddressModel>();
-            this.languages = List<string>();
+            this.languages = List<string>();            
+        } else {
+            const addresses = userDocument.addresses ? userDocument.addresses.map(address => new AddressModel(address)) : [];
+            this.addresses = List<AddressModel>(addresses);
+            this.firstName = userDocument.firstName;
+            this.lastName = userDocument.lastName;
+            this.email = userDocument.email;       
+            this.userName = `${userDocument.firstName}.${userDocument.lastName}.${userDocument.uniqueIndex}`;     
+            this.birthDate = userDocument.birthDate;
+            this.registrationDate = userDocument.registrationDate;            
+            this.profession = userDocument.profession;
+            this.country = userDocument.country;
+            this.city = userDocument.city;
+            this.rating = new RatingModel(5);
+            this.isActive = userDocument.isActive;
+            this.uuid = userDocument.uuid;
+            this.languages = List<string>(userDocument.languages)
         }
     }
 
@@ -218,6 +220,48 @@ export class UserModel {
         return copy;
     }
 
+    public toDocument(): UserDocument {
+        debugger;        
+        const uniqueIndex = parseInt(this.userName.split('.')[2], 10);
+        return {
+            firstName: this.firstName,
+            lastName: this.lastName,
+            email: this.email,
+            uniqueIndex: uniqueIndex,
+            birthDate: this.birthDate,
+            registrationDate: this.registrationDate,
+            profession: this.profession,
+            country: this.country,
+            city: this.city,
+            isActive: this.isActive,
+            uuid: this.uuid,
+            languages: this.languages.toArray(),
+            addresses: this.addresses.map(address => address.toDocument()).toArray()
+        }
+    }
+
+    public static fromJson(json: UserJson): UserModel {
+        const userModel = new UserModel();
+        userModel.uuid = json.uuid;
+        userModel.firstName = json.firstName;
+        userModel.lastName = json.lastName;
+        userModel.userName = json.userName;
+        userModel.birthDate = new Date(json.birthDate);
+        userModel.registrationDate = new Date(json.registrationDate);
+        userModel.email = json.email;
+        userModel.profession = json.profession;
+        userModel.country = json.country;
+        userModel.city = json.city;
+        userModel.languages = List<string>(json.languages);
+
+        const addresses = json.addresses.map(address => AddressModel.fromJson(address));
+        userModel.addresses = List<AddressModel>(addresses);
+        userModel.rating = new RatingModel(json.rating);
+        userModel.isActive = json.isActive;
+        
+        return userModel;
+    }
+
     private copy(): UserModel {
         let copy = new UserModel(null);
         copy.profession = this.profession;
@@ -228,6 +272,12 @@ export class UserModel {
         copy.email = this.email;
         copy.addresses = this.addresses;
         copy.rating = this.rating;
+        copy.city = this.city;
+        copy.country = this.country;
+        copy.userName = this.userName;
+        copy.languages = this.languages;
+        copy.isActive = this.isActive;
+        copy.registrationDate = this.registrationDate;
 
         return copy;
     }

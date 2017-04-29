@@ -1,7 +1,7 @@
 import { List } from 'immutable';
 import { ASYNC_STATES } from '../utils/AsyncStates';
 import { Dispatch } from 'redux';
-import { UserModel } from '../../shared/model/user/UserModel';
+import { UserModel, UserJson } from '../../shared/model/user/UserModel';
 import { RatingModel } from '../../shared/model/RatingModel';
 import { AddressModel } from '../../shared/model/AddressModel';
 
@@ -31,30 +31,14 @@ export function fetchHosts() {
         })
         .then(response => response.json())
         .then(json => {
-            dispatch(receiveHosts(parseHosts(json)));
+            dispatch(receiveHosts(parseHosts(<any> json)));
         });
     }
 }
 
-function parseHosts(json: any): List<UserModel> {
+function parseHosts(json: UserJson[]): List<UserModel> {
     const hosts = json.map(host => {
-        return new UserModel({
-            firstName: host.firstName,
-            lastName: host.lastName,
-            profession: '',
-            userName: host.userName,
-            birthDate: null,
-            email: host.email,
-            rating: new RatingModel(host.rating.rating),
-            uuid: null,
-            addresses: [
-                new AddressModel({
-                    country: host.country,
-                    city: host.city,
-                    uuid: null
-                })
-            ]
-        });
+        return UserModel.fromJson(host);
     });
 
     return List<UserModel>(hosts);

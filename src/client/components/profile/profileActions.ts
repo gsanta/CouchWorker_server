@@ -1,4 +1,4 @@
-import { UserModel } from '../../../shared/model/user/UserModel';
+import { UserModel, UserJson } from '../../../shared/model/user/UserModel';
 import { Dispatch } from 'redux';
 import { ASYNC_STATES } from '../../utils/AsyncStates';
 import { AddressModel } from '../../../shared/model/AddressModel';
@@ -20,27 +20,11 @@ export function requestSignup(profile: UserModel) {
     };
 }
 
-export function receiveSignup(json: any) {
+export function receiveSignup(json: UserJson) {
     return {
         type: SIGNUP,
         state: ASYNC_STATES.SUCCESS,
-        user: new UserModel({
-            firstName: json.firstName,
-            lastName: json.lastName,
-            userName: json.userName,
-            birthDate: new Date(1980, 11, 28),
-            email: json.email,
-            uuid: '1234',
-            rating: new RatingModel(5),
-            profession: json.profession,
-            addresses: [
-                new AddressModel({
-                    country: json.country,
-                    city: json.city,
-                    uuid: null
-                })
-            ]
-        })
+        user: UserModel.fromJson(json)
     };
 }
 
@@ -67,7 +51,7 @@ export function signup(profile: UserModel) {
         })
         .then(response => response.json())
         .then(json => {
-            dispatch(receiveSignup(json));
+            dispatch(receiveSignup(<any> json));
         });
     }
 }
@@ -78,11 +62,11 @@ export function requestProfile() {
     };
 }
 
-export function receiveProfile(json: any) {
+export function receiveProfile(json: UserJson) {
     return {
         type: PROFILE,
         state: ASYNC_STATES.SUCCESS,
-        user: parseUser(json)
+        user: UserModel.fromJson(json)
     };
 }
 
@@ -95,27 +79,7 @@ export function fetchProfile(userName: string) {
         })
         .then(response => response.json())
         .then(json => {
-            dispatch(receiveProfile(json));
+            dispatch(receiveProfile(<any> json));
         });
     }
-}
-
-function parseUser(json: any) {
-    return new UserModel({
-        firstName: json.firstName,
-        lastName: json.lastName,
-        userName: json.userName,
-        birthDate: new Date(1980, 11, 28),
-        email: json.email,
-        uuid: '1234',
-        rating: new RatingModel(5),
-        profession: json.profession,
-        addresses: [
-            new AddressModel({
-                country: json.country,
-                city: json.city,
-                uuid: null
-            })
-        ]
-    });
 }

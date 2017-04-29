@@ -1,6 +1,6 @@
 import * as Router from 'koa-router';
 import { UserBusiness } from '../domain/user/UserBusiness';
-import { UserModel, UserModelParams } from '../../shared/model/user/UserModel';
+import { UserModel, UserJson } from '../../shared/model/user/UserModel';
 import * as asyncBusboy from 'async-busboy';
 import { ImageModel } from '../../shared/model/image/ImageModel';
 import { ImageBusiness } from '../domain/user/ImageBusiness';
@@ -10,24 +10,6 @@ import { UrlModel } from '../../shared/model/UrlModel';
 import { List } from 'immutable';
 import { RatingModel } from '../../shared/model/RatingModel';
 import { PaginationModel } from '../repository/PaginationModel';
-
-export function jsonToUserModel(json: any): UserModel {
-    const addresses = json.addresses ? json.addresses.map(address => this.toAddressModel(address)) : null;
-
-    const userParams: UserModelParams = {
-        firstName: json.firstName,
-        lastName: json.lastName,
-        email: json.email,       
-        userName: json.userName,     
-        birthDate: json.birthDate,            
-        profession: json.profession,
-        rating: new RatingModel(5),
-        addresses: addresses,
-        uuid: json.id
-    }
-
-    return new UserModel(userParams);
-}
 
 export function jsonToAddressModel(json: any): AddressModel {
     const addressDocument: AddressDocument = {
@@ -48,7 +30,7 @@ export function profileApi(router: Router, baseDir: string, userBusiness: UserBu
         if (!ctx.request.is('multipart/*')) return await next();
 
         const {files, fields} = await asyncBusboy(ctx.req);
-        let user = jsonToUserModel(fields);
+        let user = UserModel.fromJson(fields);
         user = await userBusiness.create(user);
         
         if (files.length) {
@@ -88,7 +70,7 @@ export function profileApi(router: Router, baseDir: string, userBusiness: UserBu
     });
 
     router.post('/api/updateUser/:userName', async (ctx) => {
-        let newUserModel =  jsonToUserModel(ctx.request.body);
+        let newUserModel =  UserModel.fromJson(ctx.request.body);
         const oldUserModel = await userBusiness.findByUserName(ctx.params.userName);
         newUserModel = newUserModel.setUuid(oldUserModel.getUuid());
         const body = await userBusiness.update(newUserModel);

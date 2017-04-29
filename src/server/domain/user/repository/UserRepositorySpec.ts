@@ -3,7 +3,7 @@ import * as proxyquire from 'proxyquire';
 import * as sinon from 'sinon';
 import { MongooseUserDocument } from './MongooseUserDocument';
 import { Promise } from 'es6-promise';
-import { UserModel, UserModelParams } from '../../../../shared/model/user/UserModel';
+import { UserModel } from '../../../../shared/model/user/UserModel';
 import { AddressModel } from '../../../../shared/model/AddressModel';
 import { UserDocument } from '../../../../shared/model/user/UserDocument';
 import { RepositoryBase } from '../../../repository/RepositoryBase';
@@ -22,18 +22,24 @@ describe('UserRepository', () => {
             lastName: 'Gergely',
             uniqueIndex: 0,
             birthDate: new Date(1990, 3, 1),
+            registrationDate: new Date(2000, 2, 1),
             email: 'santagergely90@gmail.com',
             profession: 'Software Developer',
+            country: 'Hungary',
+            city: 'Budapest',
             uuid: null,
+            languages: ['hungarian', 'english'],
             addresses: [
                 {
                     country: 'Hungary',
                     city: 'Budapest',
                     street: 'Haller utca',
                     house: '15/a',
-                    uuid: null
+                    uuid: null,
+                    images: []
                 }
             ],
+            isActive: true
         };
 
         userDocument2 = {
@@ -41,18 +47,24 @@ describe('UserRepository', () => {
                 lastName: 'Gergely David',
                 uniqueIndex: 0,
                 birthDate: new Date(1990, 3, 1),
+                registrationDate: new Date(2000, 2, 1),
                 email: 'santagergely90@gmail.com updated',
                 profession: 'Software Developer updated',
+                country: 'Hungary',
+                city: 'Budapest',
                 uuid: null,
+                languages: ['hungarian', 'english'],
                 addresses: [{
                     country: 'Hungary2',
                     city: 'Budapest2',
-                    uuid: null
-                }]
+                    uuid: null,
+                    images: []
+                }],
+                isActive: true
             };
 
-        userModel = UserRepository.toUserModel(userDocument);
-        userModel2 = UserRepository.toUserModel(userDocument2);
+        userModel = new UserModel(userDocument);
+        userModel2 = new UserModel(userDocument2);
 
         repositoryBase = {
             create: sinon.stub(),
@@ -67,9 +79,10 @@ describe('UserRepository', () => {
 
     describe('create', () => {
         it('should call the create method of RepositoryBase with the correct parameters', () => {
+            debugger;
             let userRepository = new UserRepository(repositoryBase, () => null);
             repositoryBase.create.returns(new Promise((resolve, reject) => {
-                resolve(userDocument);
+                resolve(null);
             }));
 
             userRepository.create(userModel);

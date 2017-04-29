@@ -1,5 +1,5 @@
 import { List } from 'immutable';
-import { UrlModel, UrlDocument } from './UrlModel';
+import { UrlModel, UrlDocument, UrlJson } from './UrlModel';
 
 export function jsonToAddressModel(json: any): AddressModel {
     const addressDocument: AddressDocument = {        
@@ -11,6 +11,15 @@ export function jsonToAddressModel(json: any): AddressModel {
     };
 
    return new AddressModel(addressDocument);
+}
+
+export interface AddressJson {
+    country: string;
+    city: string;
+    street?: string;
+    house?: string;
+    uuid: string;
+    images?: UrlJson[]
 }
 
 export interface AddressDocument {
@@ -105,12 +114,37 @@ export class AddressModel {
         return this.images;
     }
 
+    public toDocument(): AddressDocument {
+        return {
+            country: this.country,
+            city: this.city,
+            street: this.street,
+            house: this.house,
+            uuid: this.uuid,
+            images: this.images.map(image => image.toDocument()).toArray()
+        }
+    }
+
+    public static fromJson(json: AddressJson) {
+        const address = new AddressModel();
+        address.country = json.country;
+        address.city = json.city;
+        address.street = json.street;
+        address.house = json.house;
+        address.uuid = json.uuid;
+
+        const images = json.images.map(image => UrlModel.fromJson(image));
+        address.images = List<UrlModel>(images); 
+        return address;
+    }
+
     private copy(): AddressModel {
         let copy = new AddressModel(null);
         copy.country = this.country;
         copy.city = this.city;
         copy.street = this.street;
         copy.house = this.house;
+        copy.images = this.images;
         return copy;
     }
 }

@@ -1,0 +1,71 @@
+[
+    {
+        "firstName": "Santa Gergely",
+        "lastName": null,
+        "userName": null,
+        "birthDate": null,
+        "registrationDate": null,
+        "profession": null,
+        "city": null,
+        "country": null,
+        "languages": [],
+        "email": null,
+        "rating": 5,
+        "uuid": null,
+        "addresses": [
+            {
+                "country": "Hungary",
+                "city": "Budapest",
+                "uuid": null,
+                "images": []
+            }
+        ],
+        "isActive": true
+    },
+    {
+        "firstName": "User2",
+        "lastName": null,
+        "userName": null,
+        "birthDate": null,
+        "registrationDate": null,
+        "profession": null,
+        "city": null,
+        "country": null,
+        "languages": [],
+        "email": null,
+        "rating": 5,
+        "uuid": null,
+        "addresses": [
+            {
+                "country": "London",
+                "city": "UK",
+                "uuid": null,
+                "images": []
+            }
+        ],
+        "isActive": true           
+    },
+    {
+        "firstName": "User3",
+        "lastName": null,
+        "userName": null,
+        "birthDate": null,
+        "registrationDate": null,
+        "profession": null,
+        "city": null,
+        "country": null,
+        "languages": [],
+        "email": null,
+        "rating": 5,
+        "uuid": null,
+        "addresses": [
+            {
+                "country": "Hungary",
+                "city": "Budapest",
+                "uuid": null,
+                "images": []
+            }
+        ],
+        "isActive": true                 
+    }
+]

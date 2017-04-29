@@ -9,61 +9,79 @@ describe('hostsActions', () => {
     describe('receiveHosts', () => {
         it('should return receive hosts info', () => {
             let hosts = List<UserModel>([
-                new UserModel(
+                UserModel.fromJson(
                     {
                         firstName: 'Santa Gergely',
                         lastName: null,
                         userName: null,
                         birthDate: null,
+                        registrationDate: null,
                         profession: null,
+                        city: null,
+                        country: null,
+                        languages: [],
                         email: null,
-                        rating: new RatingModel(5),
+                        rating: 5,
                         uuid: null,
                         addresses: [
-                            new AddressModel({
+                            {
                                 country: 'Hungary',
                                 city: 'Budapest',
-                                uuid: null
-                            })
-                        ]
+                                uuid: null,
+                                images: []
+                            }
+                        ],
+                        isActive: true
                     }
                 ),
-                new UserModel(
+                UserModel.fromJson(
                     {
                         firstName: 'User2',
                         lastName: null,
-                        birthDate: null,
                         userName: null,
+                        birthDate: null,
+                        registrationDate: null,
                         profession: null,
+                        city: null,
+                        country: null,
+                        languages: [],
                         email: null,
-                        rating: new RatingModel(3.4),
+                        rating: 5,
                         uuid: null,
                         addresses: [
-                            new AddressModel({
+                            {
                                 country: 'London',
                                 city: 'UK',
-                                uuid: null
-                            })
-                        ]                     
+                                uuid: null,
+                                images: []
+                            }
+                        ],
+                        isActive: true           
                     }
                 ),
-                new UserModel(
+                UserModel.fromJson(
                     {
                         firstName: 'User3',
                         lastName: null,
-                        birthDate: null,
                         userName: null,
+                        birthDate: null,
+                        registrationDate: null,
                         profession: null,
+                        city: null,
+                        country: null,
+                        languages: [],
                         email: null,
-                        rating: new RatingModel(4.2),
+                        rating: 5,
                         uuid: null,
                         addresses: [
-                            new AddressModel({
+                            {
                                 country: 'Hungary',
                                 city: 'Budapest',
-                                uuid: null
-                            })
-                        ]                     
+                                uuid: null,
+                                images: []
+                            }
+                        ],
+                        isActive: true                 
                     }
                 )         
             ]);

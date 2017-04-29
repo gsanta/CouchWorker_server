@@ -5,12 +5,18 @@ export interface UrlDocument {
     extension: string;
 }
 
+export interface UrlJson extends UrlDocument {
+
+}
+
 export class UrlModel {
     private fileName: string;
     private extension: string;
-    constructor(urlDocument: UrlDocument) {
-        this.fileName = urlDocument.fileName;
-        this.extension = urlDocument.extension;
+    constructor(urlDocument?: UrlDocument) {
+        if (urlDocument) {
+            this.fileName = urlDocument.fileName;
+            this.extension = urlDocument.extension;
+        }
     }
 
     public getFileName(): string {
@@ -23,5 +29,19 @@ export class UrlModel {
 
     public getFullPath(basePath: string): string {
         return `${basePath}${this.fileName}.${this.extension}`;
+    }
+
+    public toDocument(): UrlDocument {
+        return {
+            fileName: this.fileName,
+            extension: this.extension
+        }
+    }
+
+    public static fromJson(json: UrlJson): UrlModel {
+        const urlModel = new UrlModel();
+        urlModel.fileName = json.fileName;
+        urlModel.extension = json.extension;
+        return urlModel;
     }
 }

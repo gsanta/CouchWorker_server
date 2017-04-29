@@ -1,7 +1,7 @@
 import { RepositoryBase } from '../../../repository/RepositoryBase';
 import { MongooseUserDocument } from './MongooseUserDocument';
 import { PaginationModel } from '../../../repository/PaginationModel';
-import { UserModel, UserModelParams } from '../../../../shared/model/user/UserModel';
+import { UserModel } from '../../../../shared/model/user/UserModel';
 import { AddressModel, AddressDocument } from '../../../../shared/model/AddressModel';
 import { UserDocument } from '../../../../shared/model/user/UserDocument';
 import { RatingModel } from '../../../../shared/model/RatingModel';
@@ -17,32 +17,32 @@ export class UserRepository {
 
     public create (user: UserModel): Promise<UserModel> {
         user = user.setUuid(this.createUniqueId());        
-        const userDocument = this.toUserDocument(user);
+        const userDocument = user.toDocument();
         return this.repoBase.create(userDocument)
-            .then(userDocument => UserRepository.toUserModel(userDocument));
+            .then(userDocument => new UserModel(userDocument));
     }
 
     public update(user: UserModel): Promise<UserModel> {
-        const userDocument = this.toUserDocument(user);
+        const userDocument = user.toDocument();
         return this.repoBase.update(userDocument)
-            .then(userDocument => UserRepository.toUserModel(userDocument));
+            .then(userDocument => new UserModel(userDocument));
     }
 
     public delete(user: UserModel): Promise<UserModel> {
-        const userDocument = this.toUserDocument(user);
+        const userDocument = user.toDocument();
         return this.repoBase.delete(userDocument)
             .then(() => user);
     }
     
     public findBy(user: UserModel, pagination: PaginationModel): Promise<UserModel[]> {
-        const userDocument = this.toUserDocument(user);
+        const userDocument = user.toDocument();
         return this.repoBase.findBy(userDocument, pagination)
-            .then(docs => docs.map(doc => UserRepository.toUserModel(doc)));
+            .then(docs => docs.map(doc => new UserModel(doc)));
     }
 
     public findAll(pagination: PaginationModel): Promise<UserModel[]> {
         return this.repoBase.findAll(pagination)
-            .then(docs => docs.map(doc => UserRepository.toUserModel(doc)));
+            .then(docs => docs.map(doc => new UserModel(doc)));
     }
 
     public findByEmail(email: string): Promise<UserModel> {
@@ -51,7 +51,7 @@ export class UserRepository {
         };
 
         return this.repoBase.findOneBy(userDocument)
-            .then(userDocument => UserRepository.toUserModel(userDocument));
+            .then(userDocument => new UserModel(userDocument));
     }
 
     public findByUserName(userName: string): Promise<UserModel> {
@@ -66,55 +66,11 @@ export class UserRepository {
         };
 
         return this.repoBase.findOneBy(userDocument)
-            .then(userDocument => UserRepository.toUserModel(userDocument));
+            .then(userDocument => new UserModel(userDocument));
     }
 
     public findByText(searchString: string, pagination: PaginationModel): Promise<UserModel[]> {
         return this.repoBase.findByText(searchString, pagination)
-            .then(docs => docs.map(doc => UserRepository.toUserModel(doc)));
-    }
-
-    private toUserDocument(userModel: UserModel): UserDocument {
-        return <UserDocument> {
-            firstName: userModel.getFirstName(),
-            lastName: userModel.getLastName(),
-            email: userModel.getEmail(),       
-            uniqueIndex: 0,     
-            birthDate: userModel.getBirthDate(),            
-            profession: userModel.getProfession(),
-            addresses: userModel.getAddresses().map(address => UserRepository.toAddressDocument(address)).toArray(),
-            uuid: userModel.getUuid()
-        }
-    }
-
-    private static toAddressDocument(addressModel: AddressModel): AddressDocument {
-        return {
-            country: addressModel.getCountry(),
-            city: addressModel.getCity(),
-            street: addressModel.getStreet(),
-            house: addressModel.getHouse(),
-            uuid: addressModel.getUuid()
-        }
-    }
-
-    public static toUserModel(userDocument: UserDocument): UserModel {
-        const addresses = userDocument.addresses ? userDocument.addresses.map(address => this.toAddressModel(address)) : null;
-        const userParams: UserModelParams = {
-            firstName: userDocument.firstName,
-            lastName: userDocument.lastName,
-            email: userDocument.email,       
-            userName: `${userDocument.firstName}.${userDocument.lastName}.${userDocument.uniqueIndex}`,     
-            birthDate: userDocument.birthDate,            
-            profession: userDocument.profession,
-            addresses: addresses,
-            rating: new RatingModel(5),
-            uuid: userDocument.uuid
-        }
-
-        return new UserModel(userParams);
-    }
-
-    private static toAddressModel(addressDocument: AddressDocument): AddressModel {
-        return new AddressModel(addressDocument);
+            .then(docs => docs.map(doc => new UserModel(doc)));
     }
 }

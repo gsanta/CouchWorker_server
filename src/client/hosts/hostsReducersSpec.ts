@@ -3,7 +3,7 @@ import { hosts } from './hostsReducers';
 import { FETCH_HOSTS } from './hostsActions';
 import { ASYNC_STATES } from '../utils/AsyncStates';
 import { UserModel } from '../../shared/model/user/UserModel';
-
+const usersJson = require('../../../../test/mocks/users.json');
 
 describe('hostsReducers', () => {
     describe('hosts', () => {
@@ -12,19 +12,7 @@ describe('hostsReducers', () => {
                 type: 'unknown'
             };
 
-            let state = List<UserModel>([
-                    new UserModel({
-                        firstName: 'User2',
-                        lastName: null,
-                        birthDate: null,
-                        userName: null,
-                        profession: null,
-                        email: null,
-                        rating: null,
-                        addresses: [],
-                        uuid: null
-                    })
-                ]);
+            let state = List<UserModel>([UserModel.fromJson(usersJson[0])]);
 
             let newState = hosts(state, action);
 
@@ -35,45 +23,10 @@ describe('hostsReducers', () => {
             let action = {
                 type: FETCH_HOSTS,
                 state: ASYNC_STATES.SUCCESS,
-                hosts: List<UserModel>([
-                    new UserModel({
-                        firstName: 'User1',
-                        lastName: null,
-                        birthDate: null,
-                        userName: null,
-                        profession: null,
-                        email: null,
-                        rating: null,
-                        addresses: [],
-                        uuid: null
-                    }),
-                    new UserModel({
-                        firstName: 'User2',
-                        lastName: null,
-                        birthDate: null,
-                        userName: null,
-                        profession: null,
-                        email: null,
-                        rating: null,
-                        addresses: [],
-                        uuid: null                     
-                    }),
-                ])
+                hosts: List<UserModel>([UserModel.fromJson(usersJson[0]), UserModel.fromJson(usersJson[1])])
             };
 
-            let state = List<UserModel>([
-                new UserModel({
-                    firstName: 'User3',
-                    lastName: null,
-                    birthDate: null,
-                    userName: null,
-                    profession: null,
-                    email: null,
-                    rating: null,
-                    addresses: [],
-                    uuid: null                     
-                })
-            ]);
+            let state = List<UserModel>([UserModel.fromJson(usersJson[2])]);
 
             let newState = hosts(state, action);
 
