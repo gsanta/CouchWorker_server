@@ -8,11 +8,16 @@ export interface UserModelParams {
     lastName: string;
     userName: string;
     birthDate: Date;
+    registrationDate: Date;
     email: string;
     profession: string;
+    country: string;
+    city: string;
+    languages: string[];
     addresses: AddressModel[];
     rating: RatingModel;
     uuid: string;
+    isActive: boolean;
 }
 
 export class UserModel {
@@ -21,24 +26,35 @@ export class UserModel {
     private lastName: string;
     private userName: string;
     private birthDate: Date;
+    private registrationDate: Date;
     private email: string;
     private profession: string;
+    private country: string;
+    private city: string;
+    private languages: List<string>;
     private addresses: List<AddressModel>;
     private rating: RatingModel;
+    private isActive: boolean;
 
     constructor(params?: UserModelParams) {
         if (params) {
             this.profession = params.profession;
-            this.firstName = params.firstName,
-            this.lastName = params.lastName,
-            this.userName = params.userName,
-            this.birthDate = params.birthDate,
-            this.email = params.email                        
+            this.firstName = params.firstName;
+            this.lastName = params.lastName;
+            this.userName = params.userName;
+            this.birthDate = params.birthDate;
+            this.registrationDate = params.registrationDate;
+            this.email = params.email;
+            this.country = params.country;                        
+            this.city = params.city;
+            this.languages = params.languages ? List<string>(params.languages) : List<string>();
             this.addresses = params.addresses ? List<AddressModel>(params.addresses) : List<AddressModel>();
             this.rating = params.rating;
             this.uuid = params.uuid;
+            this.isActive = params.isActive;
         } else {
             this.addresses = List<AddressModel>();
+            this.languages = List<string>();
         }
     }
 
@@ -104,6 +120,16 @@ export class UserModel {
         return copy;
     }
 
+    public getRegistrationDate() {
+        return this.registrationDate;
+    }
+
+    public setRegistrationDate(registrationDate: Date): UserModel {
+        let copy = this.copy();
+        copy.registrationDate = registrationDate;
+        return copy;
+    }
+
     public getEmail(): string {
         return this.email;
     }
@@ -112,6 +138,44 @@ export class UserModel {
         let copy = this.copy();
         copy.email = email;
         return copy;
+    }
+
+    public getCountry(): string {
+        return this.country;
+    }
+
+    public setCountry(country: string): UserModel {
+        let copy = this.copy();
+        copy.country = country;
+        return copy;
+    }
+
+    public getCity(): string {
+        return this.city;
+    }
+
+    public setCity(city: string): UserModel {
+        let copy = this.copy();
+        copy.city = city;
+        return copy;
+    }
+    
+    public getLanguages(): List<string> {
+        return this.languages;
+    }
+
+    public addLanguage(language: string): UserModel {
+        const copy = this.copy();
+        copy.languages = copy.languages.push(language);
+
+        return copy;
+    }    
+
+    public setLanguages(languages: string[]): UserModel {
+        let clone = this.copy();
+        clone.languages = List(languages);
+
+        return clone;
     }
 
     public getAddresses(): List<AddressModel> {
@@ -139,6 +203,17 @@ export class UserModel {
     public setRating(rating: RatingModel): UserModel {
         const copy = this.copy();
         copy.rating = rating;
+
+        return copy;
+    }
+
+    public getActive(): boolean {
+        return this.isActive;
+    }
+
+    public setActive(isActive: boolean): UserModel {
+        const copy = this.copy();
+        copy.isActive = isActive;
 
         return copy;
     }

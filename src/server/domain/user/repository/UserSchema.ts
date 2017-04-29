@@ -37,8 +37,31 @@ export class UserSchema {
                 type: String,
                 required: false
             },
+            country: {
+                type: String,
+                required: true
+            },
+            city: {
+                type: String,
+                required: true
+            },
+            languages: [
+                String
+            ],
+            birthDate: {
+                type: Date,
+                required: true
+            },
+            registrationDate: {
+                type: Date,
+                required: true
+            },
             uuid: {
                 type: String,
+                required: true
+            },
+            isActive: {
+                type: Boolean,
                 required: true
             },
             addresses: [
