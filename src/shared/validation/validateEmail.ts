@@ -2,7 +2,7 @@ import * as validator from 'validator';
 import { Optional } from '../Optional';
 import { ValidationError } from './ValidationError';
 
-type setEmailError<T> = {setEmailErrorMessage: (error: string) => T};
+type setEmailError<T> = {setEmailError: (error: string) => T};
 type getEmail = {getEmail: () => string};
 type OptionalEmailValidationError<T extends setEmailError<T>> = Optional<EmailValidationError<T>>;
 
@@ -12,7 +12,7 @@ export class EmailValidationError<T extends setEmailError<T>> extends Validation
     }
 
     public setError(errorHolder: T): T {
-        return errorHolder.setEmailErrorMessage(this.errorMessage);
+        return errorHolder.setEmailError(this.errorMessage);
     }
 }
 

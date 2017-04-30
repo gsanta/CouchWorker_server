@@ -84,6 +84,7 @@ export function profileApi(router: Router, baseDir: string, userBusiness: UserBu
 
     router.get('/api/findUser/:userName', async (ctx) => {
         ctx.body = await userBusiness.findByUserName(ctx.params.userName);
+        debugger;
     });
 
     router.get('/api/findUsers/:page', async ctx => {

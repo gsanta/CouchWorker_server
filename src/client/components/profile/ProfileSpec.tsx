@@ -1,4 +1,4 @@
-import { mount, shallow } from 'enzyme';
+/*import { mount, shallow } from 'enzyme';
 import { Profile } from './Profile';
 import * as React from 'react';
 import { Button } from 'react-bootstrap';
@@ -50,4 +50,4 @@ describe('<Profile/>', () => {
             // expect(wrapper.find(Button).first().prop('disabled')).toBeFalsy();                  
         });  
     });
-});
+});*/

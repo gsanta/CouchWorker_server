@@ -1,4 +1,4 @@
-import * as React from 'react';
+/*import * as React from 'react';
 import { FormGroup } from 'react-bootstrap';
 import { ControlLabel } from 'react-bootstrap';
 import { FormControl } from 'react-bootstrap';
@@ -199,4 +199,4 @@ interface RegistrationState {
 export interface RegistrationProps {
     user: UserModel;
     onSubmit: (user: UserModel) => void;
-}
+}*/

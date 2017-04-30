@@ -4,30 +4,30 @@ export class LoginValidationModel {
     private emailError: string;
     private passwordError: string;
 
-    public setEmailErrorMessage(error: string): LoginValidationModel {
+    public setEmailError(error: string): LoginValidationModel {
         const copy = this.copy();
         copy.emailError = error;
         return copy;
     }
 
-    public getEmailErrorMessage(): string {
+    public getEmailError(): string {
         return this.emailError;
     }
 
-    public setPasswordErrorMessage(error: string): LoginValidationModel {
+    public setPasswordError(error: string): LoginValidationModel {
         const copy = this.copy();
         copy.passwordError = error;
         return copy;
     }
 
-    public getPasswordErrorMessage(): string {
+    public getPasswordError(): string {
         return this.passwordError;
     }
 
     public hasError(): boolean {
         return !!(
-            this.getEmailErrorMessage() ||
-            this.getPasswordErrorMessage()
+            this.getEmailError() ||
+            this.getPasswordError()
         )
     }
 

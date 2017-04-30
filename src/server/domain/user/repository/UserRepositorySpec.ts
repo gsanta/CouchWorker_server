@@ -79,7 +79,6 @@ describe('UserRepository', () => {
 
     describe('create', () => {
         it('should call the create method of RepositoryBase with the correct parameters', () => {
-            debugger;
             let userRepository = new UserRepository(repositoryBase, () => null);
             repositoryBase.create.returns(new Promise((resolve, reject) => {
                 resolve(null);

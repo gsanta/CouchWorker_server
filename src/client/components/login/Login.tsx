@@ -19,7 +19,7 @@ export class Login extends React.Component<LoginProps, LoginState> {
     }
 
     public render() {
-        console.log('eeeeeee', this.state.validation.getEmailErrorMessage())
+        console.log('eeeeeee', this.state.validation.getEmailError())
         return (
             <div>
                 <div>Login page</div>
@@ -30,7 +30,7 @@ export class Login extends React.Component<LoginProps, LoginState> {
                         controlId='cw-form-login-email'
                         placeHolder='Enter email'
                         controlLabel='Email'
-                        error={this.state.validation.getEmailErrorMessage()}
+                        error={this.state.validation.getEmailError()}
                     />
                     <StringInput
                         value={this.state.model.getPassword()}
@@ -38,7 +38,7 @@ export class Login extends React.Component<LoginProps, LoginState> {
                         controlId='cw-form-login-password'
                         placeHolder='Enter password'
                         controlLabel='Password'
-                        error={this.state.validation.getPasswordErrorMessage()}
+                        error={this.state.validation.getPasswordError()}
                         type='password'
                     />
                     <Button
@@ -76,7 +76,7 @@ export class Login extends React.Component<LoginProps, LoginState> {
     private onEmailChange(event: React.ChangeEvent<any>) {
         const val = event.target.value;
         const model = this.state.model.setEmail(val);
-        let validation = this.state.validation.setEmailErrorMessage(null);
+        let validation = this.state.validation.setEmailError(null);
         validateEmail<LoginValidationModel>(model).ifPresent(error => validation = error.setError(validation)); 
         this.setState({
             model,
@@ -87,7 +87,7 @@ export class Login extends React.Component<LoginProps, LoginState> {
     private onPasswordChange(event: React.ChangeEvent<any>) {
         const val = event.target.value;
         const model = this.state.model.setPassword(val);
-        let validation = this.state.validation.setPasswordErrorMessage(null);
+        let validation = this.state.validation.setPasswordError(null);
         validatePassword<LoginValidationModel>(model).ifPresent(error => validation = error.setError(validation));
         this.setState({
             model,

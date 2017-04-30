@@ -1,3 +1,4 @@
+import { isEditingAction } from '../../actions/editModeActions';
 import { RootModel } from '../../RootModel';
 import { connect } from 'react-redux';
 // import { Profile } from './Profile';
@@ -7,7 +8,8 @@ import { signup } from './profileActions';
 
 const mapStateToProps = (state: RootModel) => {
     return {
-        user: state.user
+        user: state.user,
+        isEditing: state.isEditing
     }
 }
 
@@ -18,6 +20,9 @@ const mapDispatchToProps = (dispatch, props: any) => {
             .then((data) => {
                 props.history.push('/');
             });
+        },
+        onEditModeChange: (isEditing: boolean) => {
+            dispatch(isEditingAction(isEditing));
         }
     }
 }

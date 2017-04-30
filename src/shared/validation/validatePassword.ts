@@ -1,7 +1,7 @@
 import { ValidationError } from './ValidationError';
 import { Optional } from '../Optional';
 
-type setPasswordError<T> = {setPasswordErrorMessage: (error: string) => T};
+type setPasswordError<T> = {setPasswordError: (error: string) => T};
 type getPassword = {getPassword: () => string};
 type OptionalPasswordValidationError<T extends setPasswordError<T>> = Optional<PasswordValidationError<T>>;
 
@@ -11,7 +11,7 @@ export class PasswordValidationError<T extends setPasswordError<T>> extends Vali
     }
 
     public setError(errorHolder: T): T {
-        return errorHolder.setPasswordErrorMessage(this.errorMessage);
+        return errorHolder.setPasswordError(this.errorMessage);
     }
 }
 

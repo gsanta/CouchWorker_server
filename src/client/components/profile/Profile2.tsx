@@ -2,6 +2,9 @@ import * as React from 'react';
 import { UserModel } from '../../../shared/model/user/UserModel';
 import { Panel } from 'react-bootstrap';
 import * as moment from 'moment';
+import { AboutInfoEditor } from './edit_profile/AboutInfoEditor';
+import { AboutHeader } from './view_profile/AboutHeader';
+require('./Profile.scss');
 
 function getAge(birthDate: Date) {
     if (!birthDate) {
@@ -11,20 +14,25 @@ function getAge(birthDate: Date) {
 }
 
 export function Profile(props: ProfileProps) {
-
     const {user = new UserModel()} = props;
     const birthDate = user.getBirthDate() ? user.getBirthDate().toString() : null;
+
+    const header = <AboutHeader editAboutInfo={() => props.onEditModeChange(true)}/>
     return (
-        <div>
-            <Panel header={'About'}>
+        <div className="cw-profile">
+            <Panel header={header}
+            >
                 <div>{user.getFirstName()} {user.getLastName()} ({getAge(user.getBirthDate())})</div>
                 <div>{user.getProfession()}</div>
             </Panel>
+            <AboutInfoEditor user={props.user} isOpen={props.isEditing} close={() => props.onEditModeChange(false)}/>
         </div>
     );
 }
 
 export interface ProfileProps {
     user: UserModel;
+    isEditing: boolean;
     onSubmit: (user: UserModel) => void;
+    onEditModeChange: (isEditing: boolean) => void;
 }

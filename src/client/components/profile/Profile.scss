@@ -3,3 +3,10 @@
 .cw-address-section-header {
     margin-bottom: 10px;
 }
+
+.cw-profile {
+    .cw-profile-header { 
+        display: flex; 
+        justify-content: space-between;
+    }
+}

@@ -221,7 +221,6 @@ export class UserModel {
     }
 
     public toDocument(): UserDocument {
-        debugger;        
         const uniqueIndex = parseInt(this.userName.split('.')[2], 10);
         return {
             firstName: this.firstName,

@@ -59,7 +59,7 @@ let initialState: RootModel = {
     //         }
     //     )        
     // ]),
-    user: undefined
+    user: undefined,
     // new UserModel({
     //     firstName: 'New',
     //     lastName: 'User',
@@ -70,6 +70,7 @@ let initialState: RootModel = {
     //     city: 'Budapest',
     //     id: null
     // })
+    isEditing: false
 }
 
 let store = configureStore(initialState);

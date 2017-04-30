@@ -7,10 +7,12 @@ import { RootModel } from './RootModel';
 import { hosts } from './hosts/hostsReducers';
 import thunk from 'redux-thunk';
 import { profile } from './components/profile/profileReducers';
+import { editModeReducer } from './reducers/editModeReducer';
 
 const rootReducer = combineReducers({
     hosts,
     user: profile,
+    isEditing: editModeReducer
 });
 
 export function configureStore(state: RootModel) {
