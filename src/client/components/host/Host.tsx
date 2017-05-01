@@ -14,7 +14,7 @@ export interface HostProps {
 }
 
 export function Host(props: HostProps) {
-    let address = props.host.getAddresses().get(0);
+    // let address = props.host.getAddresses().get(0);
     return (
         <Panel className='cw-host-panel'>
             <div className='cw-host-panel-row'>
@@ -30,7 +30,7 @@ export function Host(props: HostProps) {
                         <AgeFormatter date={props.host.getBirthDate()} />
                     </div>
                     <div>
-                        {address.getCity()}, {address.getCountry()}
+                        {/*{address.getCity()}, {address.getCountry()}*/}
                     </div>
                 </div>
                 <div className='cw-host-panel-col3'>

@@ -55,7 +55,6 @@ export class UserRepository {
     }
 
     public findByUserName(userName: string): Promise<UserModel> {
-        debugger;
         const userNameParts = userName.split('.');
         const firstName = userNameParts[0];
         const lastName = userNameParts[1];

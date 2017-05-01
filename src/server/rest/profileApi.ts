@@ -73,7 +73,8 @@ export function profileApi(router: Router, baseDir: string, userBusiness: UserBu
         let newUserModel =  UserModel.fromJson(ctx.request.body);
         const oldUserModel = await userBusiness.findByUserName(ctx.params.userName);
         newUserModel = newUserModel.setUuid(oldUserModel.getUuid());
-        const body = await userBusiness.update(newUserModel);
+        await userBusiness.update(newUserModel);
+        const body = await userBusiness.findByUserName(ctx.params.userName);
         ctx.body = body;
     });
 
@@ -84,7 +85,6 @@ export function profileApi(router: Router, baseDir: string, userBusiness: UserBu
 
     router.get('/api/findUser/:userName', async (ctx) => {
         ctx.body = await userBusiness.findByUserName(ctx.params.userName);
-        debugger;
     });
 
     router.get('/api/findUsers/:page', async ctx => {

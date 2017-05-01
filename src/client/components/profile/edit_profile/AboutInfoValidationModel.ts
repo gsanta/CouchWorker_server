@@ -6,6 +6,8 @@ export class AboutInfoValidationModel {
     private birthDateError: string;
     private emailError: string;
     private professionError: string;
+    private countryError: string;
+    private cityError: string;
 
     public setFirstNameError(errorMessage: string): AboutInfoValidationModel {
         const copy = this.copy();
@@ -55,6 +57,26 @@ export class AboutInfoValidationModel {
 
     public getProfessionError(): string {
         return this.professionError;
+    }
+
+    public setCountryError(errorMessage: string): AboutInfoValidationModel {
+        const copy = this.copy();                                                
+        copy.countryError = errorMessage;
+        return copy;
+    }
+
+    public getCountryError(): string {
+        return this.countryError;
+    }
+
+    public setCityError(errorMessage: string): AboutInfoValidationModel {
+        const copy = this.copy();                                                
+        copy.cityError = errorMessage;
+        return copy;
+    }
+
+    public getCityError(): string {
+        return this.countryError;
     }
 
     public hasError(): boolean {

@@ -24,8 +24,14 @@ export function Profile(props: ProfileProps) {
             >
                 <div>{user.getFirstName()} {user.getLastName()} ({getAge(user.getBirthDate())})</div>
                 <div>{user.getProfession()}</div>
+                <div>{user.getEmail()}</div>
             </Panel>
-            <AboutInfoEditor user={props.user} isOpen={props.isEditing} close={() => props.onEditModeChange(false)}/>
+            <AboutInfoEditor 
+                user={props.user}
+                isOpen={props.isEditing}
+                onSubmit={props.onSubmitAboutInfo}
+                close={() => props.onEditModeChange(false)}
+            />
         </div>
     );
 }
@@ -34,5 +40,6 @@ export interface ProfileProps {
     user: UserModel;
     isEditing: boolean;
     onSubmit: (user: UserModel) => void;
+    onSubmitAboutInfo: (user: UserModel) => void;
     onEditModeChange: (isEditing: boolean) => void;
 }

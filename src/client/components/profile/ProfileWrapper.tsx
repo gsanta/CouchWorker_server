@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Profile } from './Profile2';
 import { UserModel } from '../../../shared/model/user/UserModel';
 import { signup } from './profileActions';
+import { updateAboutInfo } from '../../actions/profile/aboutInfoActions';
 
 const mapStateToProps = (state: RootModel) => {
     return {
@@ -23,6 +24,9 @@ const mapDispatchToProps = (dispatch, props: any) => {
         },
         onEditModeChange: (isEditing: boolean) => {
             dispatch(isEditingAction(isEditing));
+        },
+        onSubmitAboutInfo: (model: UserModel) => {
+            dispatch(updateAboutInfo(model))
         }
     }
 }

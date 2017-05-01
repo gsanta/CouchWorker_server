@@ -22,12 +22,10 @@ export interface UserJson {
 }
 
 export class UserModel {
-    private uuid: string;
     private firstName: string;
     private lastName: string;
     private userName: string;
     private birthDate: Date;
-    private registrationDate: Date;
     private email: string;
     private profession: string;
     private country: string;
@@ -35,7 +33,10 @@ export class UserModel {
     private languages: List<string>;
     private addresses: List<AddressModel>;
     private rating: RatingModel;
+
+    private registrationDate: Date;
     private isActive: boolean;
+    private uuid: string;
 
     constructor(userDocument?: UserDocument) {
         if (!userDocument) {
@@ -253,12 +254,36 @@ export class UserModel {
         userModel.city = json.city;
         userModel.languages = List<string>(json.languages);
 
-        const addresses = json.addresses.map(address => AddressModel.fromJson(address));
-        userModel.addresses = List<AddressModel>(addresses);
+        if (json.addresses) {
+            const addresses = json.addresses.map(address => AddressModel.fromJson(address));
+            userModel.addresses = List<AddressModel>(addresses);
+        }
+        
         userModel.rating = new RatingModel(json.rating);
         userModel.isActive = json.isActive;
         
         return userModel;
+    }
+
+    public static toJson(userModel: UserModel): UserJson {
+        const addresses = userModel.addresses.map(address => AddressModel.toJson(address)).toArray();
+        return {
+            firstName: userModel.firstName,
+            lastName: userModel.lastName,
+            userName: userModel.userName,
+            birthDate: userModel.birthDate.toJSON(),
+            email: userModel.email,
+            profession: userModel.profession,
+            country: userModel.country,
+            city: userModel.city,
+            languages: userModel.languages.toArray(),
+            addresses: addresses,
+            rating: userModel.rating.getRating(),
+
+            registrationDate: userModel.registrationDate.toJSON(),
+            isActive: userModel.isActive,
+            uuid: userModel.uuid
+        }
     }
 
     private copy(): UserModel {

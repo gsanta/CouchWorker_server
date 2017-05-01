@@ -125,7 +125,7 @@ export class AddressModel {
         }
     }
 
-    public static fromJson(json: AddressJson) {
+    public static fromJson(json: AddressJson): AddressModel {
         const address = new AddressModel();
         address.country = json.country;
         address.city = json.city;
@@ -136,6 +136,18 @@ export class AddressModel {
         const images = json.images.map(image => UrlModel.fromJson(image));
         address.images = List<UrlModel>(images); 
         return address;
+    }
+
+    public static toJson(addressModel: AddressModel): AddressJson {
+        const images = addressModel.images.map(image => UrlModel.toJson(image)).toArray();
+        return {
+            country: addressModel.country,
+            city: addressModel.city,
+            street: addressModel.street,
+            house: addressModel.house,
+            images: images,
+            uuid: addressModel.uuid
+        }
     }
 
     private copy(): AddressModel {

@@ -19,6 +19,12 @@ export class AboutInfoEditor extends React.Component<AboutInfoEditorProps, About
             validation: new AboutInfoValidationModel()
         }
     }
+    
+    public componentWillReceiveProps(newProps: AboutInfoEditorProps) {
+        this.setState({
+            user: newProps.user || new UserModel()
+        });
+    }
 
     public render() {
         return (
@@ -59,15 +65,32 @@ export class AboutInfoEditor extends React.Component<AboutInfoEditorProps, About
                         controlLabel='Profession'
                         error={this.state.validation.getProfessionError()}
                     />
+                    <StringInput
+                        value={this.state.user.getCountry()}
+                        onChange={this.onCountryChange.bind(this)}
+                        controlId='cw-form-profile-country'
+                        placeHolder='Enter country'
+                        controlLabel='Country'
+                        error={this.state.validation.getProfessionError()}
+                    />
+                    <StringInput
+                        value={this.state.user.getCity()}
+                        onChange={this.onProfessionChange.bind(this)}
+                        controlId='cw-form-profile-profession'
+                        placeHolder='Enter profession'
+                        controlLabel='Profession'
+                        error={this.state.validation.getProfessionError()}
+                    />
                     <ProfileBirthDate
-                        date={this.state.user.getBirthDate()}
+                        date={this.state.user.getBirthDate() || new Date()}
                         onChange={this.onBirthDateChange.bind(this)}
                         error={this.state.validation.getBirthDateError()}
                     />
 
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={this.props.close}>Close</Button>
+                    <Button onClick={this.props.close}>Cancel</Button>
+                    <Button onClick={() => this.props.onSubmit(this.state.user)}>Save</Button>
                 </Modal.Footer>
             </Modal>
         );
@@ -122,8 +145,8 @@ export class AboutInfoEditor extends React.Component<AboutInfoEditorProps, About
 
     private onEmailChange(event: React.ChangeEvent<any>) {
         const user = this.state.user.setEmail(event.target.value);
-        let validation: AboutInfoValidationModel = this.state.validation.setEmailError(null);
         validateEmail<AboutInfoValidationModel>(user).ifPresent(error => validation = error.setError(this.state.validation));
+        let validation: AboutInfoValidationModel = this.state.validation.setEmailError(null);
         this.setState({
             user,
             validation
@@ -142,6 +165,7 @@ export interface AboutInfoEditorProps {
     user: UserModel,
     isOpen: boolean;
     close: () => void;
+    onSubmit: (user: UserModel) => void;
 }
 
 interface AboutInfoEditorState {

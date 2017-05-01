@@ -44,4 +44,11 @@ export class UrlModel {
         urlModel.extension = json.extension;
         return urlModel;
     }
+
+    public static toJson(urlModel: UrlModel): UrlJson {
+        return {
+            fileName: urlModel.fileName,
+            extension: urlModel.extension
+        }
+    }
 }
