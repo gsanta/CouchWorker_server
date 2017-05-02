@@ -7,6 +7,8 @@ import { AboutInfoValidationModel } from './AboutInfoValidationModel';
 import { validateEmail } from '../../../../shared/validation/validateEmail';
 import { validateFirstName } from '../../../../shared/validation/validateFirstName';
 import { validateLastName } from '../../../../shared/validation/validateLastName';
+import { validateCountry } from '../../../../shared/validation/validateCountry';
+import { validateCity } from '../../../../shared/validation/validateCity';
 
 export class AboutInfoEditor extends React.Component<AboutInfoEditorProps, AboutInfoEditorState> {
 
@@ -66,20 +68,20 @@ export class AboutInfoEditor extends React.Component<AboutInfoEditorProps, About
                         error={this.state.validation.getProfessionError()}
                     />
                     <StringInput
-                        value={this.state.user.getCountry()}
+                        value={this.state.user.getCountry() || ""}
                         onChange={this.onCountryChange.bind(this)}
                         controlId='cw-form-profile-country'
                         placeHolder='Enter country'
                         controlLabel='Country'
-                        error={this.state.validation.getProfessionError()}
+                        error={this.state.validation.getCountryError()}
                     />
                     <StringInput
                         value={this.state.user.getCity()}
-                        onChange={this.onProfessionChange.bind(this)}
-                        controlId='cw-form-profile-profession'
-                        placeHolder='Enter profession'
-                        controlLabel='Profession'
-                        error={this.state.validation.getProfessionError()}
+                        onChange={this.onCityChange.bind(this)}
+                        controlId='cw-form-profile-city'
+                        placeHolder='Enter city'
+                        controlLabel='City'
+                        error={this.state.validation.getCityError()}
                     />
                     <ProfileBirthDate
                         date={this.state.user.getBirthDate() || new Date()}
@@ -90,7 +92,11 @@ export class AboutInfoEditor extends React.Component<AboutInfoEditorProps, About
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={this.props.close}>Cancel</Button>
-                    <Button onClick={() => this.props.onSubmit(this.state.user)}>Save</Button>
+                    <Button 
+                        disabled={this.state.validation.hasError()}
+                        onClick={() => this.props.onSubmit(this.state.user)}>
+                        Save
+                    </Button>
                 </Modal.Footer>
             </Modal>
         );
@@ -111,7 +117,7 @@ export class AboutInfoEditor extends React.Component<AboutInfoEditorProps, About
     private onLastNameChange(event: React.ChangeEvent<any>) {
         const user = this.state.user.setLastName(event.target.value);
         let validation: AboutInfoValidationModel = this.state.validation.setLastNameError(null);
-        validateLastName<AboutInfoValidationModel>(user).ifPresent(error => validation = error.setError(this.state.validation));                
+        validateLastName<AboutInfoValidationModel>(user).ifPresent(error => validation = error.setError(this.state.validation));              
         this.setState({
             user,
             validation
@@ -121,32 +127,35 @@ export class AboutInfoEditor extends React.Component<AboutInfoEditorProps, About
     private onProfessionChange(event: React.ChangeEvent<any>) {
         const user = this.state.user.setProfession(event.target.value);
         this.setState({
-            user 
+            user
         });        
     }
 
     private onCountryChange(event: React.ChangeEvent<any>) {
-        const user = this.state.user.setAddresses(
-            [this.state.user.getAddresses()[0].setCountry(event.target.value)]
-        );
+        const user = this.state.user.setCountry(event.target.value);
+        let validation: AboutInfoValidationModel = this.state.validation.setCountryError(null);
+        validateCountry<AboutInfoValidationModel>(user).ifPresent(error => validation = error.setError(this.state.validation));  
         this.setState({
-            user
+            user,
+            validation            
         });
     }
 
     private onCityChange(event: React.ChangeEvent<any>) {
-        const user = this.state.user.setAddresses(
-            [this.state.user.getAddresses()[0].setCity(event.target.value)]
-        );
+        const user = this.state.user.setCity(event.target.value);
+        let validation: AboutInfoValidationModel = this.state.validation.setCityError(null);
+        validateCity<AboutInfoValidationModel>(user).ifPresent(error => validation = error.setError(this.state.validation));  
+
         this.setState({
-            user
+            user,
+            validation            
         });
     }
 
     private onEmailChange(event: React.ChangeEvent<any>) {
         const user = this.state.user.setEmail(event.target.value);
-        validateEmail<AboutInfoValidationModel>(user).ifPresent(error => validation = error.setError(this.state.validation));
         let validation: AboutInfoValidationModel = this.state.validation.setEmailError(null);
+        validateEmail<AboutInfoValidationModel>(user).ifPresent(error => validation = error.setError(this.state.validation));
         this.setState({
             user,
             validation

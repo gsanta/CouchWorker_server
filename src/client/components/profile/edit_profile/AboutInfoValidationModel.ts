@@ -76,7 +76,7 @@ export class AboutInfoValidationModel {
     }
 
     public getCityError(): string {
-        return this.countryError;
+        return this.cityError;
     }
 
     public hasError(): boolean {
@@ -85,7 +85,9 @@ export class AboutInfoValidationModel {
             this.lastNameError ||
             this.birthDateError ||
             this.emailError ||
-            this.professionError
+            this.professionError ||
+            this.countryError ||
+            this.cityError
         );
     }
 
@@ -96,6 +98,8 @@ export class AboutInfoValidationModel {
         copy.birthDateError = this.birthDateError;
         copy.emailError = this.emailError;
         copy.professionError = this.professionError;
+        copy.countryError = this.countryError;
+        copy.cityError = this.cityError;
 
         return copy;
     }

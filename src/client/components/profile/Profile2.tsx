@@ -25,6 +25,8 @@ export function Profile(props: ProfileProps) {
                 <div>{user.getFirstName()} {user.getLastName()} ({getAge(user.getBirthDate())})</div>
                 <div>{user.getProfession()}</div>
                 <div>{user.getEmail()}</div>
+                <div>{user.getCountry()}</div>
+                <div>{user.getCity()}</div>
             </Panel>
             <AboutInfoEditor 
                 user={props.user}
