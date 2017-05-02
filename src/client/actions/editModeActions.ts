@@ -1,9 +1,9 @@
 
 export const EDITMODE = 'EDITMODE';
 
-export function isEditingAction(isEditing: boolean) {
+export function setEditedComponentAction(editedComponent: string) {
     return {
         type: EDITMODE,
-        isEditing: isEditing
+        editedComponent: editedComponent
     };
 }

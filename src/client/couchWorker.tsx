@@ -70,7 +70,7 @@ let initialState: RootModel = {
     //     city: 'Budapest',
     //     id: null
     // })
-    isEditing: false
+    editedComponent: null
 }
 
 let store = configureStore(initialState);

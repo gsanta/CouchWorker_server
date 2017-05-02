@@ -12,7 +12,7 @@ import { editModeReducer } from './reducers/editModeReducer';
 const rootReducer = combineReducers({
     hosts,
     user: profile,
-    isEditing: editModeReducer
+    editedComponent: editModeReducer
 });
 
 export function configureStore(state: RootModel) {
