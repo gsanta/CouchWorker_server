@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { AddressModel } from '../../../../shared/model/AddressModel';
 import { Modal, Button } from 'react-bootstrap';
+import { StringInput } from '../../form/StringInput';
 
 export class AddressEditor extends React.Component<AddressEditorProps, any> {
 
@@ -11,7 +12,14 @@ export class AddressEditor extends React.Component<AddressEditorProps, any> {
                     <Modal.Title>Modal heading</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-
+                    <StringInput
+                        value={this.state.user.getFirstName()}
+                        onChange={null}
+                        controlId='cw-form-profile-first-name'
+                        placeHolder='Enter first name'
+                        controlLabel='First name'
+                        error={this.state.validation.getFirstNameError()}
+                    />
 
                 </Modal.Body>
                 <Modal.Footer>

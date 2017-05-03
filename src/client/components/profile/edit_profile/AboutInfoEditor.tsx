@@ -5,13 +5,13 @@ import { StringInput } from '../../form/StringInput';
 import { ProfileBirthDate } from '../ProfileBirthDate';
 import { AboutInfoValidationModel } from './AboutInfoValidationModel';
 import { validateEmail } from '../../../../shared/validation/validateEmail';
-import { validateFirstName } from '../../../../shared/validation/validateFirstName';
+import { validateFirstName, FirstNameValidationError } from '../../../../shared/validation/validateFirstName';
 import { validateLastName } from '../../../../shared/validation/validateLastName';
 import { validateCountry } from '../../../../shared/validation/validateCountry';
 import { validateCity } from '../../../../shared/validation/validateCity';
+import { optionalValidationErrorDecorator } from '../../../../shared/validation/optionalValidationErrorDecorator';
 
 export class AboutInfoEditor extends React.Component<AboutInfoEditorProps, AboutInfoEditorState> {
-
     constructor(props: AboutInfoEditorProps) {
         super(props);
 
@@ -104,10 +104,9 @@ export class AboutInfoEditor extends React.Component<AboutInfoEditorProps, About
 
     private onFirstNameChange(event: React.ChangeEvent<any>) {
         const user = this.state.user.setFirstName(event.target.value);
-        let validation: AboutInfoValidationModel = this.state.validation.setFirstNameError(null);
-        validateFirstName<AboutInfoValidationModel>(user).ifPresent(error => {
-            validation = error.setError(this.state.validation)
-        });
+        const validation = this.state.validation.setFirstNameError(
+            validateFirstName(user.getFirstName())
+        );
         this.setState({
             user,
             validation 

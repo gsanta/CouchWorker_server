@@ -9,6 +9,16 @@ export class Optional<T> {
         if (this.isPresent()) {
             func(this.value);        
         }
+
+        return this;
+    }
+
+    public ifNotPresent(func: (value: T) => void) {
+        if (!this.isPresent()) {
+            func(this.value);        
+        }
+
+        return this;
     }
 
     public isPresent(): boolean {

@@ -1,3 +1,7 @@
+export interface ValidationErrorConstructor<T> {
+    new (errorMessage: string): ValidationError<T>;
+}
+
 export abstract class ValidationError<T> {
     protected errorMessage: string;
 
