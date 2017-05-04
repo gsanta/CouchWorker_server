@@ -5,7 +5,7 @@ import { StringInput } from '../../form/StringInput';
 import { ProfileBirthDate } from '../ProfileBirthDate';
 import { AboutInfoValidationModel } from './AboutInfoValidationModel';
 import { validateEmail } from '../../../../shared/validation/validateEmail';
-import { validateFirstName, FirstNameValidationError } from '../../../../shared/validation/validateFirstName';
+import { validateFirstName } from '../../../../shared/validation/validateFirstName';
 import { validateLastName } from '../../../../shared/validation/validateLastName';
 import { validateCountry } from '../../../../shared/validation/validateCountry';
 import { validateCity } from '../../../../shared/validation/validateCity';
@@ -115,8 +115,9 @@ export class AboutInfoEditor extends React.Component<AboutInfoEditorProps, About
 
     private onLastNameChange(event: React.ChangeEvent<any>) {
         const user = this.state.user.setLastName(event.target.value);
-        let validation: AboutInfoValidationModel = this.state.validation.setLastNameError(null);
-        validateLastName<AboutInfoValidationModel>(user).ifPresent(error => validation = error.setError(this.state.validation));              
+        const validation = this.state.validation.setLastNameError(
+            validateLastName(user.getLastName())
+        );
         this.setState({
             user,
             validation
@@ -132,8 +133,9 @@ export class AboutInfoEditor extends React.Component<AboutInfoEditorProps, About
 
     private onCountryChange(event: React.ChangeEvent<any>) {
         const user = this.state.user.setCountry(event.target.value);
-        let validation: AboutInfoValidationModel = this.state.validation.setCountryError(null);
-        validateCountry<AboutInfoValidationModel>(user).ifPresent(error => validation = error.setError(this.state.validation));  
+        const validation = this.state.validation.setCountryError(
+            validateCountry(user.getCountry())
+        );
         this.setState({
             user,
             validation            
@@ -142,9 +144,9 @@ export class AboutInfoEditor extends React.Component<AboutInfoEditorProps, About
 
     private onCityChange(event: React.ChangeEvent<any>) {
         const user = this.state.user.setCity(event.target.value);
-        let validation: AboutInfoValidationModel = this.state.validation.setCityError(null);
-        validateCity<AboutInfoValidationModel>(user).ifPresent(error => validation = error.setError(this.state.validation));  
-
+        const validation = this.state.validation.setCityError(
+            validateCity(user.getCity())
+        );
         this.setState({
             user,
             validation            
@@ -153,8 +155,9 @@ export class AboutInfoEditor extends React.Component<AboutInfoEditorProps, About
 
     private onEmailChange(event: React.ChangeEvent<any>) {
         const user = this.state.user.setEmail(event.target.value);
-        let validation: AboutInfoValidationModel = this.state.validation.setEmailError(null);
-        validateEmail<AboutInfoValidationModel>(user).ifPresent(error => validation = error.setError(this.state.validation));
+        const validation = this.state.validation.setEmailError(
+            validateEmail(user.getEmail())
+        );
         this.setState({
             user,
             validation

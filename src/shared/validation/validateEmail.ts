@@ -1,28 +1,11 @@
 import * as validator from 'validator';
-import { Optional } from '../Optional';
-import { ValidationError } from './ValidationError';
+import { validateRequired } from './validateRequired';
 
-type setEmailError<T> = {setEmailError: (error: string) => T};
-type getEmail = {getEmail: () => string};
-type OptionalEmailValidationError<T extends setEmailError<T>> = Optional<EmailValidationError<T>>;
-
-export class EmailValidationError<T extends setEmailError<T>> extends ValidationError<T> {
-    constructor(errorMessage: string) {
-        super(errorMessage);
+export function validateEmail(email: string): string {
+    let message = validateRequired(email, 'Email is required');
+    if (!message && !validator.isEmail(email)) {
+        message = 'Not a valid email.';
     }
 
-    public setError(errorHolder: T): T {
-        return errorHolder.setEmailError(this.errorMessage);
-    }
-}
-
-export function validateEmail<T extends setEmailError<T>>(model: getEmail): OptionalEmailValidationError<T> {
-    let validationError: EmailValidationError<T> = null;
-    if (!model.getEmail() || model.getEmail().length === 0) {
-        validationError = new EmailValidationError<T>('Email is required.');
-    } else if (!validator.isEmail(model.getEmail())) {
-        validationError = new EmailValidationError<T>('Not a valid email.');        
-    }
-
-    return new Optional<EmailValidationError<T>>(validationError);
+    return message;
 }

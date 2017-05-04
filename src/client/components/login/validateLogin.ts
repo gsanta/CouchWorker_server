@@ -7,12 +7,13 @@ import { LoginValidationModel } from '../../../shared/model/login/LoginValidatio
 
 export function validateLogin(
     model: LoginModel,
-    validators: ValidatorFunc<LoginModel, LoginValidationModel>[] = [
+    validators: ValidatorFunc[] = [
         validateEmail,
         validatePassword
     ]
 ) {
     return validators.reduce((validationModel, validator) => {
+        validationModel = error.setError(validationModel)
         validator(model).ifPresent((error) => validationModel = error.setError(validationModel));
         return validationModel;
     }, new LoginValidationModel());

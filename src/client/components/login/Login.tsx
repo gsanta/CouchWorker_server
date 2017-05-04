@@ -76,8 +76,9 @@ export class Login extends React.Component<LoginProps, LoginState> {
     private onEmailChange(event: React.ChangeEvent<any>) {
         const val = event.target.value;
         const model = this.state.model.setEmail(val);
-        let validation = this.state.validation.setEmailError(null);
-        validateEmail<LoginValidationModel>(model).ifPresent(error => validation = error.setError(validation)); 
+        const validation = this.state.validation.setEmailError(
+            validateEmail(model.getEmail())
+        );
         this.setState({
             model,
             validation
@@ -87,8 +88,10 @@ export class Login extends React.Component<LoginProps, LoginState> {
     private onPasswordChange(event: React.ChangeEvent<any>) {
         const val = event.target.value;
         const model = this.state.model.setPassword(val);
-        let validation = this.state.validation.setPasswordError(null);
-        validatePassword<LoginValidationModel>(model).ifPresent(error => validation = error.setError(validation));
+        const validation = this.state.validation.setEmailError(
+            validatePassword(model.getPassword())
+        );
+
         this.setState({
             model,
             validation
