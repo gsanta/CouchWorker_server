@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { StringInput } from '../form/StringInput';
 import { Button } from 'react-bootstrap';
-import { validateLogin } from './validateLogin';
 import { LoginModel } from '../../../shared/model/login/LoginModel';
 import { LoginValidationModel } from '../../../shared/model/login/LoginValidationModel';
 import { validateEmail } from '../../../shared/validation/validateEmail';
 import { validatePassword } from '../../../shared/validation/validatePassword';
+import validate from 'validate.js';
 import * as passport from 'passport';
+import { loginValidator } from '../../../shared/model/login/loginValidator';
 
 export class Login extends React.Component<LoginProps, LoginState> {
     
@@ -15,12 +16,11 @@ export class Login extends React.Component<LoginProps, LoginState> {
 
         this.state = {
             model: new LoginModel(),
-            validation: new LoginValidationModel()
+            errors: null
         }
     }
 
     public render() {
-        console.log('eeeeeee', this.state.validation.getEmailError())
         return (
             <div>
                 <div>Login page</div>
@@ -31,7 +31,7 @@ export class Login extends React.Component<LoginProps, LoginState> {
                         controlId='cw-form-login-email'
                         placeHolder='Enter email'
                         controlLabel='Email'
-                        error={this.state.validation.getEmailError()}
+                        error={this.state.errors['email']}
                     />
                     <StringInput
                         value={this.state.model.password}
@@ -39,7 +39,7 @@ export class Login extends React.Component<LoginProps, LoginState> {
                         controlId='cw-form-login-password'
                         placeHolder='Enter password'
                         controlLabel='Password'
-                        error={this.state.validation.getPasswordError()}
+                        error={this.state.errors['password']}
                         type='password'
                     />
                     <Button
@@ -64,45 +64,44 @@ export class Login extends React.Component<LoginProps, LoginState> {
     }
 
     private onSubmit() {
-        const validation = validateLogin(this.state.model);
-        if (!validation.hasError()) {
+        const errors = this.validate(this.state.model);
+        if (!errors) {
             this.props.onSubmit(this.state.model);
         }
 
         this.setState({
-            validation
+            errors
         });
     }
 
     private onEmailChange(event: React.ChangeEvent<any>) {
         const val = event.target.value;
         const model = {...this.state.model, email: val};
-        const validation = this.state.validation.setEmailError(
-            validateEmail(model.email)
-        );
+        const errors = this.validate(model);
         this.setState({
             model,
-            validation
+            errors
         });
     }
 
     private onPasswordChange(event: React.ChangeEvent<any>) {
         const val = event.target.value;
         const model = {...this.state.model, password: val};
-        const validation = this.state.validation.setEmailError(
-            validatePassword(model.password)
-        );
-
+        const errors = this.validate(model);
         this.setState({
             model,
-            validation
+            errors
         });
+    }
+
+    private validate(model: LoginModel) {
+        return validate(model, loginValidator);
     }
 }
 
 export interface LoginState {
     model: LoginModel;
-    validation: LoginValidationModel;
+    errors: any;
 }
 
 export interface LoginProps {

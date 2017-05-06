@@ -23,10 +23,10 @@ describe('hostsReducers', () => {
             let action = {
                 type: FETCH_HOSTS,
                 state: ASYNC_STATES.SUCCESS,
-                hosts: List<UserModel>([UserModel.fromJson(usersJson[0]), UserModel.fromJson(usersJson[1])])
+                hosts: List<UserModel>([fromUserJson(usersJson[0]), fromUserJson(usersJson[1])])
             };
 
-            let state = List<UserModel>([UserModel.fromJson(usersJson[2])]);
+            let state = List<UserModel>([fromUserJson(usersJson[2])]);
 
             let newState = hosts(state, action);
 

@@ -10,6 +10,8 @@ import { validateLastName } from '../../../../shared/validation/validateLastName
 import { validateCountry } from '../../../../shared/validation/validateCountry';
 import { validateCity } from '../../../../shared/validation/validateCity';
 import { optionalValidationErrorDecorator } from '../../../../shared/validation/optionalValidationErrorDecorator';
+import * as validate from 'validate.js';
+import { userValidator } from '../../../../shared/model/user/userValidator';
 
 export class AboutInfoEditor extends React.Component<AboutInfoEditorProps, AboutInfoEditorState> {
     constructor(props: AboutInfoEditorProps) {
@@ -18,7 +20,7 @@ export class AboutInfoEditor extends React.Component<AboutInfoEditorProps, About
         const user = props.user || new UserModel(); 
         this.state = {
             user,
-            validation: new AboutInfoValidationModel()
+            errors: null
         }
     }
     
@@ -41,7 +43,7 @@ export class AboutInfoEditor extends React.Component<AboutInfoEditorProps, About
                         controlId='cw-form-profile-first-name'
                         placeHolder='Enter first name'
                         controlLabel='First name'
-                        error={this.state.validation.getFirstNameError()}
+                        error={this.state.errors && this.state.errors['firstName']}
                     />
                     <StringInput
                         value={this.state.user.lastName}
@@ -49,7 +51,7 @@ export class AboutInfoEditor extends React.Component<AboutInfoEditorProps, About
                         controlId='cw-form-profile-last-name'
                         placeHolder='Enter last name'
                         controlLabel='Last name'
-                        error={this.state.validation.getLastNameError()}
+                        error={this.state.errors && this.state.errors['lastName']}
                     />
                     <StringInput
                         value={this.state.user.email}
@@ -57,7 +59,7 @@ export class AboutInfoEditor extends React.Component<AboutInfoEditorProps, About
                         controlId='cw-form-profile-email'
                         placeHolder='Enter email'
                         controlLabel='Email'
-                        error={this.state.validation.getEmailError()}
+                        error={this.state.errors && this.state.errors['email']}
                     />
                     <StringInput
                         value={this.state.user.profession}
@@ -65,7 +67,7 @@ export class AboutInfoEditor extends React.Component<AboutInfoEditorProps, About
                         controlId='cw-form-profile-profession'
                         placeHolder='Enter profession'
                         controlLabel='Profession'
-                        error={this.state.validation.getProfessionError()}
+                        error={this.state.errors && this.state.errors['profession']}
                     />
                     <StringInput
                         value={this.state.user.country || ""}
@@ -73,7 +75,7 @@ export class AboutInfoEditor extends React.Component<AboutInfoEditorProps, About
                         controlId='cw-form-profile-country'
                         placeHolder='Enter country'
                         controlLabel='Country'
-                        error={this.state.validation.getCountryError()}
+                        error={this.state.errors && this.state.errors['country']}
                     />
                     <StringInput
                         value={this.state.user.city}
@@ -81,19 +83,19 @@ export class AboutInfoEditor extends React.Component<AboutInfoEditorProps, About
                         controlId='cw-form-profile-city'
                         placeHolder='Enter city'
                         controlLabel='City'
-                        error={this.state.validation.getCityError()}
+                        error={this.state.errors && this.state.errors['city']}
                     />
                     <ProfileBirthDate
                         date={this.state.user.birthDate || new Date()}
                         onChange={this.onBirthDateChange.bind(this)}
-                        error={this.state.validation.getBirthDateError()}
+                        error={this.state.errors && this.state.errors['birthDate']}
                     />
 
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={this.props.close}>Cancel</Button>
                     <Button 
-                        disabled={this.state.validation.hasError()}
+                        disabled={this.state.errors}
                         onClick={() => this.props.onSubmit(this.state.user)}>
                         Save
                     </Button>
@@ -104,23 +106,17 @@ export class AboutInfoEditor extends React.Component<AboutInfoEditorProps, About
 
     private onFirstNameChange(event: React.ChangeEvent<any>) {
         const user = {...this.state.user, firstName: event.target.value};
-        const validation = this.state.validation.setFirstNameError(
-            validateFirstName(user.firstName)
-        );
+        const errors = this.validate(user);
         this.setState({
             user,
-            validation 
+            errors
         });
     }
 
     private onLastNameChange(event: React.ChangeEvent<any>) {
         const user = {...this.state.user, lastName: event.target.value};
-        const validation = this.state.validation.setLastNameError(
-            validateLastName(user.lastName)
-        );
         this.setState({
             user,
-            validation
         });        
     }
 
@@ -133,34 +129,22 @@ export class AboutInfoEditor extends React.Component<AboutInfoEditorProps, About
 
     private onCountryChange(event: React.ChangeEvent<any>) {
         const user = {...this.state.user, country: event.target.value};
-        const validation = this.state.validation.setCountryError(
-            validateCountry(user.country)
-        );
         this.setState({
             user,
-            validation            
         });
     }
 
     private onCityChange(event: React.ChangeEvent<any>) {
         const user = {...this.state.user, city: event.target.value};
-        const validation = this.state.validation.setCityError(
-            validateCity(user.city)
-        );
         this.setState({
             user,
-            validation            
         });
     }
 
     private onEmailChange(event: React.ChangeEvent<any>) {
         const user = {...this.state.user, email: event.target.value};
-        const validation = this.state.validation.setEmailError(
-            validateEmail(user.email)
-        );
         this.setState({
             user,
-            validation
         });
     }
 
@@ -169,6 +153,10 @@ export class AboutInfoEditor extends React.Component<AboutInfoEditorProps, About
         this.setState({
             user
         });
+    }
+
+    private validate(model: UserModel) {
+        return (validate as any).validate(model, userValidator);
     }
 }
 
@@ -181,5 +169,5 @@ export interface AboutInfoEditorProps {
 
 interface AboutInfoEditorState {
     user: UserModel;
-    validation: AboutInfoValidationModel;
+    errors: any;
 }

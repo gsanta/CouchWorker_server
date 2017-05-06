@@ -108,6 +108,10 @@ export function toUserJson(userModel: UserModel): UserJson {
 }
 
 export class UserModel {
+
+    constructor() {
+        this.addresses = List<AddressModel>();
+    }
     public firstName: string;
     public lastName: string;
     public userName: string;
