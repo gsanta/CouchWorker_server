@@ -1,4 +1,4 @@
-import { UserModel, UserJson } from '../../../shared/model/user/UserModel';
+import { UserModel, UserJson, fromUserJson, toUserJson } from '../../../shared/model/user/UserModel';
 import { ASYNC_STATES } from '../../utils/AsyncStates';
 import { Dispatch } from 'redux';
 
@@ -15,7 +15,7 @@ export function updateAboutInfoRequest(profile: UserModel) {
 export function updateAboutInfoResponse(json: UserJson) {
     return {
         type: UDPATE_ABOUT_INFO_RESPONSE,
-        user: UserModel.fromJson(json)
+        user: fromUserJson(json)
     };
 }
 
@@ -24,7 +24,7 @@ export function updateAboutInfo(profile: UserModel) {
 
         dispatch(updateAboutInfoRequest(profile));
 
-        const userJson = UserModel.toJson(profile);
+        const userJson = toUserJson(profile);
 
         return fetch(`./api/updateUser/${userJson.userName}`, {
             method: 'POST',

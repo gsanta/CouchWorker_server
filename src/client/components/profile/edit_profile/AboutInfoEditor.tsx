@@ -36,7 +36,7 @@ export class AboutInfoEditor extends React.Component<AboutInfoEditorProps, About
                 </Modal.Header>
                 <Modal.Body>
                     <StringInput
-                        value={this.state.user.getFirstName()}
+                        value={this.state.user.firstName}
                         onChange={this.onFirstNameChange.bind(this)}
                         controlId='cw-form-profile-first-name'
                         placeHolder='Enter first name'
@@ -44,7 +44,7 @@ export class AboutInfoEditor extends React.Component<AboutInfoEditorProps, About
                         error={this.state.validation.getFirstNameError()}
                     />
                     <StringInput
-                        value={this.state.user.getLastName()}
+                        value={this.state.user.lastName}
                         onChange={this.onLastNameChange.bind(this)}
                         controlId='cw-form-profile-last-name'
                         placeHolder='Enter last name'
@@ -52,7 +52,7 @@ export class AboutInfoEditor extends React.Component<AboutInfoEditorProps, About
                         error={this.state.validation.getLastNameError()}
                     />
                     <StringInput
-                        value={this.state.user.getEmail()}
+                        value={this.state.user.email}
                         onChange={this.onEmailChange.bind(this)}
                         controlId='cw-form-profile-email'
                         placeHolder='Enter email'
@@ -60,7 +60,7 @@ export class AboutInfoEditor extends React.Component<AboutInfoEditorProps, About
                         error={this.state.validation.getEmailError()}
                     />
                     <StringInput
-                        value={this.state.user.getProfession()}
+                        value={this.state.user.profession}
                         onChange={this.onProfessionChange.bind(this)}
                         controlId='cw-form-profile-profession'
                         placeHolder='Enter profession'
@@ -68,7 +68,7 @@ export class AboutInfoEditor extends React.Component<AboutInfoEditorProps, About
                         error={this.state.validation.getProfessionError()}
                     />
                     <StringInput
-                        value={this.state.user.getCountry() || ""}
+                        value={this.state.user.country || ""}
                         onChange={this.onCountryChange.bind(this)}
                         controlId='cw-form-profile-country'
                         placeHolder='Enter country'
@@ -76,7 +76,7 @@ export class AboutInfoEditor extends React.Component<AboutInfoEditorProps, About
                         error={this.state.validation.getCountryError()}
                     />
                     <StringInput
-                        value={this.state.user.getCity()}
+                        value={this.state.user.city}
                         onChange={this.onCityChange.bind(this)}
                         controlId='cw-form-profile-city'
                         placeHolder='Enter city'
@@ -84,7 +84,7 @@ export class AboutInfoEditor extends React.Component<AboutInfoEditorProps, About
                         error={this.state.validation.getCityError()}
                     />
                     <ProfileBirthDate
-                        date={this.state.user.getBirthDate() || new Date()}
+                        date={this.state.user.birthDate || new Date()}
                         onChange={this.onBirthDateChange.bind(this)}
                         error={this.state.validation.getBirthDateError()}
                     />
@@ -103,9 +103,9 @@ export class AboutInfoEditor extends React.Component<AboutInfoEditorProps, About
     }
 
     private onFirstNameChange(event: React.ChangeEvent<any>) {
-        const user = this.state.user.setFirstName(event.target.value);
+        const user = {...this.state.user, firstName: event.target.value};
         const validation = this.state.validation.setFirstNameError(
-            validateFirstName(user.getFirstName())
+            validateFirstName(user.firstName)
         );
         this.setState({
             user,
@@ -114,9 +114,9 @@ export class AboutInfoEditor extends React.Component<AboutInfoEditorProps, About
     }
 
     private onLastNameChange(event: React.ChangeEvent<any>) {
-        const user = this.state.user.setLastName(event.target.value);
+        const user = {...this.state.user, lastName: event.target.value};
         const validation = this.state.validation.setLastNameError(
-            validateLastName(user.getLastName())
+            validateLastName(user.lastName)
         );
         this.setState({
             user,
@@ -125,16 +125,16 @@ export class AboutInfoEditor extends React.Component<AboutInfoEditorProps, About
     }
 
     private onProfessionChange(event: React.ChangeEvent<any>) {
-        const user = this.state.user.setProfession(event.target.value);
+        const user = {...this.state.user, profession: event.target.value};
         this.setState({
             user
         });        
     }
 
     private onCountryChange(event: React.ChangeEvent<any>) {
-        const user = this.state.user.setCountry(event.target.value);
+        const user = {...this.state.user, country: event.target.value};
         const validation = this.state.validation.setCountryError(
-            validateCountry(user.getCountry())
+            validateCountry(user.country)
         );
         this.setState({
             user,
@@ -143,9 +143,9 @@ export class AboutInfoEditor extends React.Component<AboutInfoEditorProps, About
     }
 
     private onCityChange(event: React.ChangeEvent<any>) {
-        const user = this.state.user.setCity(event.target.value);
+        const user = {...this.state.user, city: event.target.value};
         const validation = this.state.validation.setCityError(
-            validateCity(user.getCity())
+            validateCity(user.city)
         );
         this.setState({
             user,
@@ -154,9 +154,9 @@ export class AboutInfoEditor extends React.Component<AboutInfoEditorProps, About
     }
 
     private onEmailChange(event: React.ChangeEvent<any>) {
-        const user = this.state.user.setEmail(event.target.value);
+        const user = {...this.state.user, email: event.target.value};
         const validation = this.state.validation.setEmailError(
-            validateEmail(user.getEmail())
+            validateEmail(user.email)
         );
         this.setState({
             user,
@@ -165,7 +165,7 @@ export class AboutInfoEditor extends React.Component<AboutInfoEditorProps, About
     }
 
     private onBirthDateChange(isoString: string) {
-        const user = this.state.user.setBirthDate(new Date(Date.parse(isoString)));
+        const user = {...this.state.user, birthDate: new Date(Date.parse(isoString))};
         this.setState({
             user
         });

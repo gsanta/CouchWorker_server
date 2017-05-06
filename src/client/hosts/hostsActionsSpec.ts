@@ -1,7 +1,7 @@
 import { ASYNC_STATES } from '../utils/AsyncStates';
 import { receiveHosts, FETCH_HOSTS } from './hostsActions';
 import { List } from 'immutable';
-import { UserModel } from '../../shared/model/user/UserModel';
+import { UserModel, fromUserJson } from '../../shared/model/user/UserModel';
 import { AddressModel } from '../../shared/model/AddressModel';
 import { RatingModel } from '../../shared/model/RatingModel';
 
@@ -9,7 +9,7 @@ describe('hostsActions', () => {
     describe('receiveHosts', () => {
         it('should return receive hosts info', () => {
             let hosts = List<UserModel>([
-                UserModel.fromJson(
+                fromUserJson(
                     {
                         firstName: 'Santa Gergely',
                         lastName: null,
@@ -34,7 +34,7 @@ describe('hostsActions', () => {
                         isActive: true
                     }
                 ),
-                UserModel.fromJson(
+                fromUserJson(
                     {
                         firstName: 'User2',
                         lastName: null,
@@ -59,7 +59,7 @@ describe('hostsActions', () => {
                         isActive: true           
                     }
                 ),
-                UserModel.fromJson(
+                fromUserJson(
                     {
                         firstName: 'User3',
                         lastName: null,

@@ -5,7 +5,7 @@ import { hosts } from '../../hosts/hostsReducers';
 
 const mapStateToProps = (state: RootModel, props: any) => {
     const hostIndex = props.params.id;
-    const host = state.hosts.find((host) => host.getUserName() === hostIndex); 
+    const host = state.hosts.find((host) => host.userName === hostIndex); 
     return {
         host: host
     };

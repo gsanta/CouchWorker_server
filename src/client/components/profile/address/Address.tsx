@@ -22,7 +22,7 @@ export class Address extends React.Component<AddressProps, any> {
         return (
             <div>
                 <StringInput
-                    value={this.props.address.getCountry()}
+                    value={this.props.address.country}
                     onChange={this.onCountryChange.bind(this)}
                     controlId='cw-form-profile-country'
                     placeHolder='Enter country'
@@ -30,7 +30,7 @@ export class Address extends React.Component<AddressProps, any> {
                     error={null}
                 />
                 <StringInput
-                    value={this.props.address.getCity()}
+                    value={this.props.address.city}
                     onChange={this.onCityChange.bind(this)}
                     controlId='cw-form-profile-city'
                     placeHolder='Enter city'
@@ -38,7 +38,7 @@ export class Address extends React.Component<AddressProps, any> {
                     error={null}
                 />
                 <StringInput
-                    value={this.props.address.getStreet()}
+                    value={this.props.address.street}
                     onChange={this.onStreetChange.bind(this)}
                     controlId='cw-form-profile-street'
                     placeHolder='Enter city'
@@ -46,7 +46,7 @@ export class Address extends React.Component<AddressProps, any> {
                     error={null}
                 />
                 <StringInput
-                    value={this.props.address.getHouse()}
+                    value={this.props.address.house}
                     onChange={this.onHouseChange.bind(this)}
                     controlId='cw-form-profile-house'
                     placeHolder='Enter house'
@@ -59,7 +59,7 @@ export class Address extends React.Component<AddressProps, any> {
     
     private onCountryChange(event: React.ChangeEvent<any>) {
         // const user = this.state.user.setAddresses(
-        //     [this.state.user.getAddresses()[0].setCountry(event.target.value)]
+        //     [this.state.user.addresses()[0].setCountry(event.target.value)]
         // );
         // this.setState({
         //     user
@@ -68,7 +68,7 @@ export class Address extends React.Component<AddressProps, any> {
 
     private onCityChange(event: React.ChangeEvent<any>) {
         // const user = this.state.user.setAddresses(
-        //     [this.state.user.getAddresses()[0].setCity(event.target.value)]
+        //     [this.state.user.addresses()[0].setCity(event.target.value)]
         // );
         // this.setState({
         //     user
@@ -77,7 +77,7 @@ export class Address extends React.Component<AddressProps, any> {
 
     private onStreetChange(event: React.ChangeEvent<any>) {
         // const user = this.state.user.setAddresses(
-        //     [this.state.user.getAddresses()[0].setCity(event.target.value)]
+        //     [this.state.user.addresses()[0].setCity(event.target.value)]
         // );
         // this.setState({
         //     user

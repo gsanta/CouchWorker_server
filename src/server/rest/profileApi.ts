@@ -1,28 +1,15 @@
 import * as Router from 'koa-router';
 import { UserBusiness } from '../domain/user/UserBusiness';
-import { UserModel, UserJson } from '../../shared/model/user/UserModel';
+import { UserModel, UserJson, fromUserJson } from '../../shared/model/user/UserModel';
 import * as asyncBusboy from 'async-busboy';
 import { ImageModel } from '../../shared/model/image/ImageModel';
 import { ImageBusiness } from '../domain/user/ImageBusiness';
-import { AddressModel, AddressDocument } from '../../shared/model/AddressModel';
+import { AddressModel, AddressDocument, fromAddressJson } from '../../shared/model/AddressModel';
 import * as uuid from 'uuid/v4';
 import { UrlModel } from '../../shared/model/UrlModel';
 import { List } from 'immutable';
 import { RatingModel } from '../../shared/model/RatingModel';
 import { PaginationModel } from '../repository/PaginationModel';
-
-export function jsonToAddressModel(json: any): AddressModel {
-    const addressDocument: AddressDocument = {
-        country: json.country,
-        city: json.city,
-        street: json.street,
-        house: json.house,
-        uuid: json.uuid
-    };
-
-    return new AddressModel(addressDocument);
-}
-
 
 export function profileApi(router: Router, baseDir: string, userBusiness: UserBusiness, imageBusiness: ImageBusiness) {
 
@@ -30,11 +17,11 @@ export function profileApi(router: Router, baseDir: string, userBusiness: UserBu
         if (!ctx.request.is('multipart/*')) return await next();
 
         const {files, fields} = await asyncBusboy(ctx.req);
-        let user = UserModel.fromJson(fields);
+        let user = fromUserJson(fields);
         user = await userBusiness.create(user);
         
         if (files.length) {
-            const image = new ImageModel(files[0], baseDir, `img/${user.getUuid()}/profile/`, 'profile');
+            const image = new ImageModel(files[0], baseDir, `img/${user.uuid}/profile/`, 'profile');
             await imageBusiness.create(image);
         }
     });
@@ -46,33 +33,33 @@ export function profileApi(router: Router, baseDir: string, userBusiness: UserBu
         
         const {files, fields} = await asyncBusboy(ctx.req);            
 
-        let address = jsonToAddressModel(fields);
-        address = address.setUuid(uuid());
+        let address = fromAddressJson(fields);
+        address = {...address, uuid: uuid()};
 
         let urlModels = [];
         for (let file of files) {
             const fileName = uuid();
             const extension = file.mime.split('/')[1];
-            const urlModel = new UrlModel({
+            const urlModel = {
                 fileName,
                 extension
-            });
+            };
             urlModels.push(urlModel);
-            const image = new ImageModel(file, baseDir, `img/${user.getUuid()}/addresses/${address.getUuid()}/`, fileName);
+            const image = new ImageModel(file, baseDir, `img/${user.uuid}/addresses/${address.uuid}/`, fileName);
             await imageBusiness.create(image);
         }
 
-        address = address.setImages(List(urlModels));
+        address = {...address, images: List(urlModels)};
 
         user = await userBusiness.addAddress(user, address)
-        user = user.addAddress(address);
+        user = {...user, address: address};
         user = await userBusiness.update(user);
     });
 
     router.post('/api/updateUser/:userName', async (ctx) => {
-        let newUserModel =  UserModel.fromJson(ctx.request.body);
+        let newUserModel =  fromUserJson(ctx.request.body);
         const oldUserModel = await userBusiness.findByUserName(ctx.params.userName);
-        newUserModel = newUserModel.setUuid(oldUserModel.getUuid());
+        newUserModel.uuid = oldUserModel.uuid;
         await userBusiness.update(newUserModel);
         const body = await userBusiness.findByUserName(ctx.params.userName);
         ctx.body = body;

@@ -52,7 +52,7 @@ export class Profile extends React.Component<RegistrationProps, RegistrationStat
             <form>
                 <h2>About</h2>
                 <StringInput
-                    value={this.state.user.getFirstName()}
+                    value={this.state.user.firstName}
                     onChange={this.onFirstNameChange.bind(this)}
                     controlId='cw-form-profile-first-name'
                     placeHolder='Enter first name'
@@ -60,7 +60,7 @@ export class Profile extends React.Component<RegistrationProps, RegistrationStat
                     error={this.state.validation.getFirstNameValidationError()}
                 />
                 <StringInput
-                    value={this.state.user.getLastName()}
+                    value={this.state.user.lastName}
                     onChange={this.onLastNameChange.bind(this)}
                     controlId='cw-form-profile-last-name'
                     placeHolder='Enter last name'
@@ -68,7 +68,7 @@ export class Profile extends React.Component<RegistrationProps, RegistrationStat
                     error={this.state.validation.getLastNameValidationError()}
                 />
                 <StringInput
-                    value={this.state.user.getEmail()}
+                    value={this.state.user.email}
                     onChange={this.onEmailChange.bind(this)}
                     controlId='cw-form-profile-email'
                     placeHolder='Enter email'
@@ -76,7 +76,7 @@ export class Profile extends React.Component<RegistrationProps, RegistrationStat
                     error={this.state.validation.getEmailErrorMessage()}
                 />
                 <StringInput
-                    value={this.state.user.getProfession()}
+                    value={this.state.user.profession}
                     onChange={this.onProfessionChange.bind(this)}
                     controlId='cw-form-profile-profession'
                     placeHolder='Enter profession'
@@ -84,7 +84,7 @@ export class Profile extends React.Component<RegistrationProps, RegistrationStat
                     error={this.state.validation.getProfessionValidationError()}
                 />
                 <ProfileBirthDate 
-                    date={this.state.user.getBirthDate()}
+                    date={this.state.user.birthDate}
                     onChange={this.onBirthDateChange.bind(this)}
                     error={this.state.validation.getBirthDateValidationError()}
                 />
@@ -157,7 +157,7 @@ export class Profile extends React.Component<RegistrationProps, RegistrationStat
 
     private onCountryChange(event: React.ChangeEvent<any>) {
         const user = this.state.user.setAddresses(
-            [this.state.user.getAddresses()[0].setCountry(event.target.value)]
+            [this.state.user.addresses()[0].setCountry(event.target.value)]
         );
         this.setState({
             user
@@ -166,7 +166,7 @@ export class Profile extends React.Component<RegistrationProps, RegistrationStat
 
     private onCityChange(event: React.ChangeEvent<any>) {
         const user = this.state.user.setAddresses(
-            [this.state.user.getAddresses()[0].setCity(event.target.value)]
+            [this.state.user.addresses()[0].setCity(event.target.value)]
         );
         this.setState({
             user

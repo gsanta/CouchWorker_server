@@ -16,7 +16,7 @@ export class UserBusiness {
     }
 
     public addAddress(user: UserModel, address: AddressModel) {
-        user = user.addAddress(address);
+        user = {...user, address: address }
 
         return this.userRepository.update(user);
     }

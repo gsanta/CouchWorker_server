@@ -1,4 +1,4 @@
-import { UserModel, UserJson } from '../../../shared/model/user/UserModel';
+import { UserModel, UserJson, fromUserJson } from '../../../shared/model/user/UserModel';
 import { Dispatch } from 'redux';
 import { ASYNC_STATES } from '../../utils/AsyncStates';
 import { AddressModel } from '../../../shared/model/AddressModel';
@@ -24,7 +24,7 @@ export function receiveSignup(json: UserJson) {
     return {
         type: SIGNUP,
         state: ASYNC_STATES.SUCCESS,
-        user: UserModel.fromJson(json)
+        user: fromUserJson(json)
     };
 }
 
@@ -34,12 +34,12 @@ export function signup(profile: UserModel) {
         dispatch(requestSignup(profile));
 
         let profileRequest = {
-            firstName: profile.getFirstName(),
-            lastName: profile.getLastName(),
+            firstName: profile.firstName,
+            lastName: profile.lastName,
             birthDate: null,
-            email: profile.getEmail(),
-            profession: profile.getProfession(),
-            addresses: profile.getAddresses()
+            email: profile.email,
+            profession: profile.profession,
+            addresses: profile.addresses
         };
 
         return fetch('./api/profile', {
@@ -66,7 +66,7 @@ export function receiveProfile(json: UserJson) {
     return {
         type: PROFILE,
         state: ASYNC_STATES.SUCCESS,
-        user: UserModel.fromJson(json)
+        user: fromUserJson(json)
     };
 }
 

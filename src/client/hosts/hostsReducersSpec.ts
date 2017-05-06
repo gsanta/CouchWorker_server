@@ -2,7 +2,7 @@ import { List } from 'immutable';
 import { hosts } from './hostsReducers';
 import { FETCH_HOSTS } from './hostsActions';
 import { ASYNC_STATES } from '../utils/AsyncStates';
-import { UserModel } from '../../shared/model/user/UserModel';
+import { UserModel, fromUserJson } from '../../shared/model/user/UserModel';
 const usersJson = require('../../../../test/mocks/users.json');
 
 describe('hostsReducers', () => {
@@ -12,7 +12,7 @@ describe('hostsReducers', () => {
                 type: 'unknown'
             };
 
-            let state = List<UserModel>([UserModel.fromJson(usersJson[0])]);
+            let state = List<UserModel>([fromUserJson(usersJson[0])]);
 
             let newState = hosts(state, action);
 

@@ -1,7 +1,7 @@
 import { List } from 'immutable';
 import { ASYNC_STATES } from '../utils/AsyncStates';
 import { Dispatch } from 'redux';
-import { UserModel, UserJson } from '../../shared/model/user/UserModel';
+import { UserModel, UserJson, fromUserJson } from '../../shared/model/user/UserModel';
 import { RatingModel } from '../../shared/model/RatingModel';
 import { AddressModel } from '../../shared/model/AddressModel';
 
@@ -38,7 +38,7 @@ export function fetchHosts() {
 
 function parseHosts(json: UserJson[]): List<UserModel> {
     const hosts = json.map(host => {
-        return UserModel.fromJson(host);
+        return fromUserJson(host);
     });
 
     return List<UserModel>(hosts);

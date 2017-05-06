@@ -17,26 +17,26 @@ function getAge(birthDate: Date) {
 
 export function Profile(props: ProfileProps) {
     const {user = new UserModel()} = props;
-    const birthDate = user.getBirthDate() ? user.getBirthDate().toString() : null;
+    const birthDate = user.birthDate ? user.birthDate.toString() : null;
 
     const header = <AboutHeader editAboutInfo={() => props.onEditModeChange('aboutInfo')}/>;
-    const addresses = user.getAddresses().map(address => {
-        const editedComponent = `address-${address.getUuid()}`;
+    const addresses = user.addresses.map(address => {
+        const editedComponent = `address-${address.uuid}`;
         const addressHeader = <AddressHeader editAddress={() => props.onEditModeChange(editedComponent)}/>;
         return (
             <Panel header={addressHeader}>
                 <div>
-                    <div>{address.getCountry()}</div>
-                    <div>{address.getCity()}</div>
-                    <div>{address.getStreet()}</div>
-                    <div>{address.getHouse()}</div>
+                    <div>{address.country}</div>
+                    <div>{address.city}</div>
+                    <div>{address.street}</div>
+                    <div>{address.house}</div>
                 </div>
             </Panel>
         )
     }).toArray();
 
-    const addressEditors = user.getAddresses().map(address => {
-        const editedComponent = `address-${address.getUuid()}`
+    const addressEditors = user.addresses.map(address => {
+        const editedComponent = `address-${address.uuid}`
         return (
             <AddressEditor
                 address={address}
@@ -50,11 +50,11 @@ export function Profile(props: ProfileProps) {
         <div className="cw-profile">
             <Panel header={header}
             >
-                <div>{user.getFirstName()} {user.getLastName()} ({getAge(user.getBirthDate())})</div>
-                <div>{user.getProfession()}</div>
-                <div>{user.getEmail()}</div>
-                <div>{user.getCountry()}</div>
-                <div>{user.getCity()}</div>
+                <div>{user.firstName} {user.lastName} ({getAge(user.birthDate)})</div>
+                <div>{user.profession}</div>
+                <div>{user.email}</div>
+                <div>{user.country}</div>
+                <div>{user.city}</div>
             </Panel>
             {addresses}
             <AboutInfoEditor 

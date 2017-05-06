@@ -6,6 +6,7 @@ import { LoginModel } from '../../../shared/model/login/LoginModel';
 import { LoginValidationModel } from '../../../shared/model/login/LoginValidationModel';
 import { validateEmail } from '../../../shared/validation/validateEmail';
 import { validatePassword } from '../../../shared/validation/validatePassword';
+import * as passport from 'passport';
 
 export class Login extends React.Component<LoginProps, LoginState> {
     
@@ -25,7 +26,7 @@ export class Login extends React.Component<LoginProps, LoginState> {
                 <div>Login page</div>
                 <form>
                     <StringInput
-                        value={this.state.model.getEmail()}
+                        value={this.state.model.email}
                         onChange={this.onEmailChange.bind(this)}
                         controlId='cw-form-login-email'
                         placeHolder='Enter email'
@@ -33,7 +34,7 @@ export class Login extends React.Component<LoginProps, LoginState> {
                         error={this.state.validation.getEmailError()}
                     />
                     <StringInput
-                        value={this.state.model.getPassword()}
+                        value={this.state.model.password}
                         onChange={this.onPasswordChange.bind(this)}
                         controlId='cw-form-login-password'
                         placeHolder='Enter password'
@@ -75,9 +76,9 @@ export class Login extends React.Component<LoginProps, LoginState> {
 
     private onEmailChange(event: React.ChangeEvent<any>) {
         const val = event.target.value;
-        const model = this.state.model.setEmail(val);
+        const model = {...this.state.model, email: val};
         const validation = this.state.validation.setEmailError(
-            validateEmail(model.getEmail())
+            validateEmail(model.email)
         );
         this.setState({
             model,
@@ -87,9 +88,9 @@ export class Login extends React.Component<LoginProps, LoginState> {
 
     private onPasswordChange(event: React.ChangeEvent<any>) {
         const val = event.target.value;
-        const model = this.state.model.setPassword(val);
+        const model = {...this.state.model, password: val};
         const validation = this.state.validation.setEmailError(
-            validatePassword(model.getPassword())
+            validatePassword(model.password)
         );
 
         this.setState({

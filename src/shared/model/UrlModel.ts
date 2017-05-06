@@ -9,46 +9,40 @@ export interface UrlJson extends UrlDocument {
 
 }
 
+export function getFullPath(basePath: string, urlModel: UrlModel): string {
+    return `${basePath}${urlModel.fileName}.${urlModel.extension}`;
+}
+
+export function toUrlDocument(urlModel: UrlModel): UrlDocument {
+    return {
+        fileName: urlModel.fileName,
+        extension: urlModel.extension
+    }
+}
+
+export function fromUrlDocument(urlDocument: UrlDocument): UrlModel {
+    return {
+        fileName: urlDocument.fileName,
+        extension: urlDocument.extension
+    }    
+}
+
+export function fromUrlJson(json: UrlJson): UrlModel {
+    const urlModel = new UrlModel();
+    urlModel.fileName = json.fileName;
+    urlModel.extension = json.extension;
+    return urlModel;
+}
+
+export function toUrlJson(urlModel: UrlModel): UrlJson {
+    return {
+        fileName: urlModel.fileName,
+        extension: urlModel.extension
+    }
+}
+
+
 export class UrlModel {
-    private fileName: string;
-    private extension: string;
-    constructor(urlDocument?: UrlDocument) {
-        if (urlDocument) {
-            this.fileName = urlDocument.fileName;
-            this.extension = urlDocument.extension;
-        }
-    }
-
-    public getFileName(): string {
-        return this.fileName;
-    }
-
-    public getExtension(): string {
-        return this.extension;
-    }
-
-    public getFullPath(basePath: string): string {
-        return `${basePath}${this.fileName}.${this.extension}`;
-    }
-
-    public toDocument(): UrlDocument {
-        return {
-            fileName: this.fileName,
-            extension: this.extension
-        }
-    }
-
-    public static fromJson(json: UrlJson): UrlModel {
-        const urlModel = new UrlModel();
-        urlModel.fileName = json.fileName;
-        urlModel.extension = json.extension;
-        return urlModel;
-    }
-
-    public static toJson(urlModel: UrlModel): UrlJson {
-        return {
-            fileName: urlModel.fileName,
-            extension: urlModel.extension
-        }
-    }
+    public fileName: string;
+    public extension: string;
 }

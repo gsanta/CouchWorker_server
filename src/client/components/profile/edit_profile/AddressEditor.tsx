@@ -13,7 +13,7 @@ export class AddressEditor extends React.Component<AddressEditorProps, any> {
                 </Modal.Header>
                 <Modal.Body>
                     <StringInput
-                        value={this.state.user.getFirstName()}
+                        value={this.state.user.firstName}
                         onChange={null}
                         controlId='cw-form-profile-first-name'
                         placeHolder='Enter first name'

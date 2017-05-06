@@ -14,7 +14,7 @@ export interface HostProps {
 }
 
 export function Host(props: HostProps) {
-    // let address = props.host.getAddresses().get(0);
+    // let address = props.host.addresses().get(0);
     return (
         <Panel className='cw-host-panel'>
             <div className='cw-host-panel-row'>
@@ -23,19 +23,19 @@ export function Host(props: HostProps) {
                 </div>
                 <div className='cw-host-panel-col2'>
                     <div>
-                        <Link to={`/host/${props.host.getUserName()}`}>
-                            {props.host.getFirstName()}&nbsp;
-                            {props.host.getLastName()}, &nbsp;
+                        <Link to={`/host/${props.host.userName}`}>
+                            {props.host.firstName}&nbsp;
+                            {props.host.lastName}, &nbsp;
                         </Link>
-                        <AgeFormatter date={props.host.getBirthDate()} />
+                        <AgeFormatter date={props.host.birthDate} />
                     </div>
                     <div>
-                        {/*{address.getCity()}, {address.getCountry()}*/}
+                        {/*{address.city}, {address.country}*/}
                     </div>
                 </div>
                 <div className='cw-host-panel-col3'>
                     <div>
-                        <StarRatingWrapper rate={props.host.getRating().getRating()}/>
+                        <StarRatingWrapper rate={props.host.rating.rating}/>
                     </div>
                 </div>
             </div>

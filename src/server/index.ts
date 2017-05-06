@@ -14,7 +14,6 @@ import * as Router from 'koa-router';
 import koaBody = require('koa-body');
 import * as asyncBusboy from 'async-busboy';
 // import {Promise} from 'es6-promise';
-import { jsonToAddressModel } from '../shared/model/AddressModel';
 import { profileApi } from './rest/profileApi';
 import { ImageBusiness } from './domain/user/ImageBusiness';
 const app = new Koa();

@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux';
 // import 'whatwg-fetch';
 import { ASYNC_STATES } from '../../utils/AsyncStates';
-import { UserModel, UserJson } from '../../../shared/model/user/UserModel';
+import { UserModel, UserJson, fromUserJson } from '../../../shared/model/user/UserModel';
 import { LoginModel } from '../../../shared/model/login/LoginModel';
 import { AddressModel } from '../../../shared/model/AddressModel';
 import { RatingModel } from '../../../shared/model/RatingModel';
@@ -18,7 +18,7 @@ export function receiveLogin(json: UserJson) {
     return {
         type: LOGIN,
         state: ASYNC_STATES.SUCCESS,
-        user: UserModel.fromJson(json)
+        user: fromUserJson(json)
     };
 }
 
@@ -28,8 +28,8 @@ export function login(login: LoginModel) {
         dispatch(requestLogin(login));
 
         let loginRequest = {
-            email: login.getEmail(),
-            password: login.getPassword()
+            email: login.email,
+            password: login.password
         };
 
         return fetch('./api/login', {

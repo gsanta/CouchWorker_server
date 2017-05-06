@@ -3,7 +3,7 @@ import * as proxyquire from 'proxyquire';
 import * as sinon from 'sinon';
 import { MongooseUserDocument } from './MongooseUserDocument';
 import { Promise } from 'es6-promise';
-import { UserModel } from '../../../../shared/model/user/UserModel';
+import { UserModel, fromUserDocument } from '../../../../shared/model/user/UserModel';
 import { AddressModel } from '../../../../shared/model/AddressModel';
 import { UserDocument } from '../../../../shared/model/user/UserDocument';
 import { RepositoryBase } from '../../../repository/RepositoryBase';
@@ -63,8 +63,8 @@ describe('UserRepository', () => {
                 isActive: true
             };
 
-        userModel = new UserModel(userDocument);
-        userModel2 = new UserModel(userDocument2);
+        userModel = fromUserDocument(userDocument);
+        userModel2 = fromUserDocument(userDocument2);
 
         repositoryBase = {
             create: sinon.stub(),
