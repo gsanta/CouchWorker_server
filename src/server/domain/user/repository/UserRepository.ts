@@ -16,16 +16,16 @@ export class UserRepository {
     }
 
     public create (user: UserModel): Promise<UserModel> {
-        user = {...user, uuid: this.createUniqueId()};        
+        user = {...user, uuid: this.createUniqueId()};
         const userDocument = toUserDocument(user);
         return this.repoBase.create(userDocument)
-            .then(userDocument => fromUserDocument(userDocument));
+            .then(document => fromUserDocument(document));
     }
 
     public update(user: UserModel): Promise<UserModel> {
         const userDocument = toUserDocument(user);
         return this.repoBase.update(userDocument)
-            .then(userDocument => fromUserDocument(userDocument));
+            .then(document => fromUserDocument(document));
     }
 
     public delete(user: UserModel): Promise<UserModel> {
@@ -33,7 +33,7 @@ export class UserRepository {
         return this.repoBase.delete(userDocument)
             .then(() => user);
     }
-    
+
     public findBy(user: UserModel, pagination: PaginationModel): Promise<UserModel[]> {
         const userDocument = toUserDocument(user);
         return this.repoBase.findBy(userDocument, pagination)
@@ -62,7 +62,7 @@ export class UserRepository {
         const userDocument = <UserDocument> {
             firstName: firstName,
             lastName: lastName,
-            uniqueIndex: uniqueIndex   
+            uniqueIndex: uniqueIndex
         };
 
         return this.repoBase.findOneBy(userDocument)

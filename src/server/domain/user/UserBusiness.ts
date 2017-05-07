@@ -16,11 +16,12 @@ export class UserBusiness {
     }
 
     public addAddress(user: UserModel, address: AddressModel) {
-        user = {...user, address: address }
+        const addresses = user.addresses.push(address);
+        user = {...user, addresses: addresses };
 
         return this.userRepository.update(user);
     }
-    
+
     public delete (item: UserModel): Promise<any> {
         return this.userRepository.delete(item);
     }

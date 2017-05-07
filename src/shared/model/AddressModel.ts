@@ -1,5 +1,5 @@
 import { List } from 'immutable';
-import { UrlModel, UrlDocument, UrlJson, fromUrlJson, toUrlJson } from './UrlModel';
+import { UrlModel, UrlDocument, UrlJson, fromUrlJson, toUrlJson, toUrlDocument, fromUrlDocument } from './UrlModel';
 
 export interface AddressJson {
     country: string;
@@ -7,7 +7,7 @@ export interface AddressJson {
     street?: string;
     house?: string;
     uuid: string;
-    images?: UrlJson[]
+    images?: UrlJson[];
 }
 
 export interface AddressDocument {
@@ -16,7 +16,7 @@ export interface AddressDocument {
     street?: string;
     house?: string;
     uuid: string;
-    images?: UrlDocument[]
+    images?: UrlDocument[];
 }
 
 export function toAddressDocument(addressModel: AddressModel): AddressDocument {
@@ -26,8 +26,8 @@ export function toAddressDocument(addressModel: AddressModel): AddressDocument {
         street: addressModel.street,
         house: addressModel.house,
         uuid: addressModel.uuid,
-        images: this.images.map(image => image.toDocument()).toArray()
-    }
+        images: addressModel.images.map(image => toUrlDocument(image)).toArray()
+    };
 }
 
 export function fromAddressDocument(addressDocument: AddressDocument): AddressModel {
@@ -37,8 +37,8 @@ export function fromAddressDocument(addressDocument: AddressDocument): AddressMo
         street: addressDocument.street,
         house: addressDocument.house,
         uuid: addressDocument.uuid,
-        images: this.images.map(image => image.toDocument()).toArray()
-    }
+        images: List<UrlModel>(addressDocument.images.map(image => fromUrlDocument(image)))
+    };
 }
 
 export function fromAddressJson(json: AddressJson): AddressModel {
@@ -49,8 +49,8 @@ export function fromAddressJson(json: AddressJson): AddressModel {
     address.house = json.house;
     address.uuid = json.uuid;
 
-    const images = json.images.map(image => fromUrlJson(image));
-    address.images = List<UrlModel>(images); 
+    const images = json.images ? json.images.map(image => fromUrlJson(image)) : [];
+    address.images = List<UrlModel>(images);
     return address;
 }
 
@@ -63,7 +63,7 @@ export function toAddressJson(addressModel: AddressModel): AddressJson {
         house: addressModel.house,
         images: images,
         uuid: addressModel.uuid
-    }
+    };
 }
 
 export class AddressModel {

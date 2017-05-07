@@ -46,14 +46,14 @@ export function signup(profile: UserModel) {
             method: 'POST',
             body: JSON.stringify(profileRequest),
             headers: {
-                "Content-Type": "application/json"
+                'Content-Type': 'application/json'
             }
         })
         .then(response => response.json())
         .then(json => {
             dispatch(receiveSignup(<any> json));
         });
-    }
+    };
 }
 
 export function requestProfile() {
@@ -81,5 +81,5 @@ export function fetchProfile(userName: string) {
         .then(json => {
             dispatch(receiveProfile(<any> json));
         });
-    }
+    };
 }

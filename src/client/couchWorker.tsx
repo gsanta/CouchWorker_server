@@ -11,10 +11,22 @@ import { HostDetailWrapper } from './components/host_detail/HostDetailWrapper';
 import { AppWrapper } from './components/app/AppWrapper';
 import { HostsWrapper } from './components/host/HostsWrapper';
 import { UserModel } from '../shared/model/user/UserModel';
+import * as validate from 'validate.js';
+import * as moment from 'moment';
 
 require('bootstrap/dist/css/bootstrap.css');
 require('./couchWorker.scss');
 require('./bootstrapOverwrite.scss');
+
+(validate as any).extend((validate as any).validators.datetime, {
+    parse: function(value, options) {
+        return +moment.utc(value);
+    },
+    format: function(value, options) {
+        const format = options.dateOnly ? 'YYYY-MM-DD' : 'YYYY-MM-DD hh:mm:ss';
+        return moment.utc(value).format(format);
+    }
+});
 
 let initialState: RootModel = {
     hosts: List<UserModel>(),
@@ -29,7 +41,7 @@ let initialState: RootModel = {
     //                 country: 'Hungary',
     //                 city: 'Budapest'
     //             }),
-    //             rating: new RatingModel(5)             
+    //             rating: new RatingModel(5)
     //         }
     //     ),
     //     new HostModel(
@@ -42,7 +54,7 @@ let initialState: RootModel = {
     //                 country: 'London',
     //                 city: 'UK'
     //             }),
-    //             rating: new RatingModel(3.4) 
+    //             rating: new RatingModel(3.4)
     //         }
     //     ),
     //     new HostModel(
@@ -55,9 +67,9 @@ let initialState: RootModel = {
     //                 country: 'Hungary',
     //                 city: 'Budapest'
     //             }),
-    //             rating: new RatingModel(4.2) 
+    //             rating: new RatingModel(4.2)
     //         }
-    //     )        
+    //     )
     // ]),
     user: undefined,
     // new UserModel({
@@ -71,19 +83,19 @@ let initialState: RootModel = {
     //     id: null
     // })
     editedComponent: null
-}
+};
 
 let store = configureStore(initialState);
 
 render(
     <Provider store={store}>
         <Router history={hashHistory}>
-            <Route path='/' component={AppWrapper}>
+            <Route path="/" component={AppWrapper}>
                 <IndexRedirect to="/hosts" />
-                <Route path='/hosts(/:page)' component={HostsWrapper} />                
-                <Route path='/host(/:id)' component={HostDetailWrapper} />                
-                <Route path='/register' component={ProfileWrapper} />
-                <Route path='/login' component={LoginWrapper} />
+                <Route path="/hosts(/:page)" component={HostsWrapper} />
+                <Route path="/host(/:id)" component={HostDetailWrapper} />
+                <Route path="/register" component={ProfileWrapper} />
+                <Route path="/login" component={LoginWrapper} />
             </Route>
         </Router>
     </Provider>,

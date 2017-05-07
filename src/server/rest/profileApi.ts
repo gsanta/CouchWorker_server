@@ -14,12 +14,14 @@ import { PaginationModel } from '../repository/PaginationModel';
 export function profileApi(router: Router, baseDir: string, userBusiness: UserBusiness, imageBusiness: ImageBusiness) {
 
     router.post('/api/register', async (ctx, next) => {
-        if (!ctx.request.is('multipart/*')) return await next();
+        if (!ctx.request.is('multipart/*')) {
+            return await next();
+        }
 
         const {files, fields} = await asyncBusboy(ctx.req);
         let user = fromUserJson(fields);
         user = await userBusiness.create(user);
-        
+
         if (files.length) {
             const image = new ImageModel(files[0], baseDir, `img/${user.uuid}/profile/`, 'profile');
             await imageBusiness.create(image);
@@ -27,11 +29,13 @@ export function profileApi(router: Router, baseDir: string, userBusiness: UserBu
     });
 
     router.post('/api/addAddress/:userName', async (ctx, next) => {
-        if (!ctx.request.is('multipart/*')) return await next();
-        
+        if (!ctx.request.is('multipart/*')) {
+            return await next();
+        }
+
         let user = await userBusiness.findByUserName(ctx.params.userName);
-        
-        const {files, fields} = await asyncBusboy(ctx.req);            
+
+        const {files, fields} = await asyncBusboy(ctx.req);
 
         let address = fromAddressJson(fields);
         address = {...address, uuid: uuid()};
@@ -51,9 +55,8 @@ export function profileApi(router: Router, baseDir: string, userBusiness: UserBu
 
         address = {...address, images: List(urlModels)};
 
-        user = await userBusiness.addAddress(user, address)
-        user = {...user, address: address};
-        user = await userBusiness.update(user);
+        await userBusiness.addAddress(user, address);
+        user = await userBusiness.findByUserName(ctx.params.userName);
     });
 
     router.post('/api/updateUser/:userName', async (ctx) => {
@@ -81,7 +84,7 @@ export function profileApi(router: Router, baseDir: string, userBusiness: UserBu
         if (!ctx.query.keywords) {
             users = await userBusiness.findAll(new PaginationModel(page));
         } else {
-            users = await userBusiness.findByText(ctx.query.keywords, new PaginationModel(page));            
+            users = await userBusiness.findByText(ctx.query.keywords, new PaginationModel(page));
         }
         ctx.body = users;
     });

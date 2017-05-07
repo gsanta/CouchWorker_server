@@ -37,7 +37,7 @@
         "switch-default": true,
         "triple-equals": [true, "allow-null-check"],
         "use-isnan": true,
- 
+
         // Maintainability
         //
         "eofline": true,
@@ -45,7 +45,7 @@
         "max-line-length": [true, 160],
         "no-require-imports": false, // would be nice to enable
         "no-trailing-whitespace": true,
- 
+
         // Style
         //
         "align": [
@@ -83,7 +83,7 @@
             "check-type"
         ]
     },
- 
+
     "rules": {
         // TypeScript Specific
         //
@@ -110,7 +110,7 @@
                 "variable-declaration": "nospace"
             }
         ],
- 
+
         // Functionality
         //
         "curly": true,
@@ -149,7 +149,7 @@
         "switch-default": true,
         "triple-equals": [true, "allow-null-check"],
         "use-isnan": true,
- 
+
         // Maintainability
         //
         "eofline": true,
@@ -159,7 +159,7 @@
         "no-mergeable-namespace": true,
         "no-require-imports": false, // would be nice to enable
         "no-trailing-whitespace": true,
- 
+
         // Style
         //
         "align": [

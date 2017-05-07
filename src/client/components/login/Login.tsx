@@ -10,14 +10,14 @@ import * as passport from 'passport';
 import { loginValidator } from '../../../shared/model/login/loginValidator';
 
 export class Login extends React.Component<LoginProps, LoginState> {
-    
+
     constructor() {
         super();
 
         this.state = {
             model: new LoginModel(),
             errors: null
-        }
+        };
     }
 
     public render() {
@@ -28,19 +28,19 @@ export class Login extends React.Component<LoginProps, LoginState> {
                     <StringInput
                         value={this.state.model.email}
                         onChange={this.onEmailChange.bind(this)}
-                        controlId='cw-form-login-email'
-                        placeHolder='Enter email'
-                        controlLabel='Email'
-                        error={this.state.errors['email']}
+                        controlId="cw-form-login-email"
+                        placeHolder="Enter email"
+                        controlLabel="Email"
+                        error={this.state.errors.email}
                     />
                     <StringInput
                         value={this.state.model.password}
                         onChange={this.onPasswordChange.bind(this)}
-                        controlId='cw-form-login-password'
-                        placeHolder='Enter password'
-                        controlLabel='Password'
-                        error={this.state.errors['password']}
-                        type='password'
+                        controlId="cw-form-login-password"
+                        placeHolder="Enter password"
+                        controlLabel="Password"
+                        error={this.state.errors.password}
+                        type="password"
                     />
                     <Button
                         bsStyle="primary"
