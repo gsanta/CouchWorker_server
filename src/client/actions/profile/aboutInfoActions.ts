@@ -4,7 +4,7 @@ import { Dispatch } from 'redux';
 
 export const UPDATE_ABOUT_INFO = 'UPDATE_ABOUT_INFO';
 export const UPDATE_ABOUT_INFO_REQUEST = 'UPDATE_ABOUT_INFO_REQUEST';
-export const UDPATE_ABOUT_INFO_RESPONSE = 'UDPATE_ABOUT_INFO_RESPONSE';
+export const UPDATE_ABOUT_INFO_RESPONSE = 'UPDATE_ABOUT_INFO_RESPONSE';
 
 export function updateAboutInfoRequest(profile: UserModel) {
     return {
@@ -14,7 +14,7 @@ export function updateAboutInfoRequest(profile: UserModel) {
 
 export function updateAboutInfoResponse(json: UserJson) {
     return {
-        type: UDPATE_ABOUT_INFO_RESPONSE,
+        type: UPDATE_ABOUT_INFO_RESPONSE,
         user: fromUserJson(json)
     };
 }

@@ -59,6 +59,13 @@ export function profileApi(router: Router, baseDir: string, userBusiness: UserBu
         user = await userBusiness.findByUserName(ctx.params.userName);
     });
 
+    router.post('/api/updateAddress/:userName', async (ctx, next) => {
+        const address = fromAddressJson(ctx.request.body);
+        const userModel = await userBusiness.findByUserName(ctx.params.userName);
+        await userBusiness.updateAddress(userModel, address);
+        ctx.body = await userBusiness.findByUserName(ctx.params.userName);
+    });
+
     router.post('/api/updateUser/:userName', async (ctx) => {
         let newUserModel =  fromUserJson(ctx.request.body);
         const oldUserModel = await userBusiness.findByUserName(ctx.params.userName);

@@ -15,6 +15,8 @@ export class AddressEditor extends React.Component<AddressEditorProps, AddressEd
             errors: null,
             isCountryModified: false,
             isCityModified: false,
+            isStreetModified: false,
+            isHouseModified: false
         };
     }
 
@@ -36,7 +38,7 @@ export class AddressEditor extends React.Component<AddressEditorProps, AddressEd
                     <StringInput
                         value={this.state.address.country}
                         onChange={this.onCountryChange.bind(this)}
-                        controlId="cw-form-profile-country"
+                        controlId="cw-form-address-country"
                         placeHolder="Enter country"
                         controlLabel="Country"
                         error={this.state.isCountryModified && errors.country}
@@ -44,15 +46,32 @@ export class AddressEditor extends React.Component<AddressEditorProps, AddressEd
                     <StringInput
                         value={this.state.address.city}
                         onChange={this.onCityChange.bind(this)}
-                        controlId="cw-form-profile-city"
+                        controlId="cw-form-address-city"
                         placeHolder="Enter city"
                         controlLabel="City"
                         error={this.state.isCityModified && errors.city}
+                    />
+                    <StringInput
+                        value={this.state.address.street}
+                        onChange={this.onStreetChange.bind(this)}
+                        controlId="cw-form-address-street"
+                        placeHolder="Enter street"
+                        controlLabel="Street"
+                        error={this.state.isStreetModified && errors.street}
+                    />
+                    <StringInput
+                        value={this.state.address.house}
+                        onChange={this.onHouseChange.bind(this)}
+                        controlId="cw-form-address-house"
+                        placeHolder="Enter house"
+                        controlLabel="House"
+                        error={this.state.isHouseModified && errors.house}
                     />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={this.props.close}>Cancel</Button>
                     <Button
+                        disabled={this.state.errors}
                         onClick={() => this.props.onSubmit(this.state.address)}>
                         Save
                         </Button>
@@ -81,6 +100,25 @@ export class AddressEditor extends React.Component<AddressEditorProps, AddressEd
         });
     }
 
+    private onStreetChange(event: React.ChangeEvent<any>) {
+        const address = {...this.state.address, street: event.target.value};
+        const errors = this.validate(address);
+        this.setState({
+            address,
+            errors,
+            isStreetModified: true
+        });
+    }
+
+    private onHouseChange(event: React.ChangeEvent<any>) {
+        const address = {...this.state.address, house: event.target.value};
+        const errors = this.validate(address);
+        this.setState({
+            address,
+            errors,
+            isHouseModified: true
+        });
+    }
 
     private validate(model: AddressModel) {
         return (validate as any).validate(model, addressValidator);
@@ -98,5 +136,7 @@ export interface AddressEditorState {
     address: AddressModel;
     isCountryModified: boolean;
     isCityModified: boolean;
+    isStreetModified: boolean;
+    isHouseModified: boolean;
     errors: any;
 }

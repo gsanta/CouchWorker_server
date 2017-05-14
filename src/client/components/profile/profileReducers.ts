@@ -2,7 +2,8 @@ import { LOGIN } from '../login/loginActions';
 import { UserModel } from '../../../shared/model/user/UserModel';
 import { ASYNC_STATES } from '../../utils/AsyncStates';
 import { SIGNUP, LOGOUT, PROFILE } from './profileActions';
-import { UDPATE_ABOUT_INFO_RESPONSE } from '../../actions/profile/aboutInfoActions';
+import { UPDATE_ABOUT_INFO_RESPONSE } from '../../actions/profile/aboutInfoActions';
+import { UPDATE_ADDRESS_RESPONSE } from '../../actions/profile/addressActions';
 
 export function profile(state: UserModel = new UserModel(), action: any): UserModel {
   switch (action.type) {    
@@ -23,7 +24,9 @@ export function profile(state: UserModel = new UserModel(), action: any): UserMo
             return action.user;        
         }
         return state;
-    case UDPATE_ABOUT_INFO_RESPONSE:
+    case UPDATE_ABOUT_INFO_RESPONSE:
+        return action.user;
+    case UPDATE_ADDRESS_RESPONSE:
         return action.user;
     default:
         return state;

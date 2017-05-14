@@ -22,6 +22,16 @@ export class UserBusiness {
         return this.userRepository.update(user);
     }
 
+    public updateAddress(user: UserModel, address: AddressModel) {
+        const index = user.addresses.findIndex(addr => addr.uuid === address.uuid);
+        if (index === -1) {
+            throw new Error('Address not found.');
+        }
+        user = {...user, addresses: user.addresses.set(index, address)}
+
+        return this.userRepository.update(user);
+    }
+
     public delete (item: UserModel): Promise<any> {
         return this.userRepository.delete(item);
     }

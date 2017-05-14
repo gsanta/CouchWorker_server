@@ -5,6 +5,8 @@ import { Profile } from './Profile';
 import { UserModel } from '../../../shared/model/user/UserModel';
 import { signup } from './profileActions';
 import { updateAboutInfo } from '../../actions/profile/aboutInfoActions';
+import { AddressModel } from '../../../shared/model/AddressModel';
+import { updateAddress } from '../../actions/profile/addressActions';
 
 const mapStateToProps = (state: RootModel) => {
     return {
@@ -26,6 +28,9 @@ const mapDispatchToProps = (dispatch, props: any) => {
         },
         onSubmitAboutInfo: (model: UserModel) => {
             dispatch(updateAboutInfo(model));
+        },
+        onSubmitAddress: (model: AddressModel) => {
+            dispatch(updateAddress())
         }
     };
 };

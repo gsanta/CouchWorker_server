@@ -41,7 +41,7 @@ export function Profile(props: ProfileProps) {
             <AddressEditor
                 address={address}
                 isOpen={props.editedComponent === editedComponent}
-                onSubmit={null}
+                onSubmit={props.onSubmitAddress}
                 close={() => props.onEditModeChange(null)}
             />
         );
