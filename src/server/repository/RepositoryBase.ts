@@ -39,6 +39,31 @@ export class RepositoryBase<T extends {uuid: string}> {
         });
     }
 
+    public pull(base: any, nested: any) {
+        return new Promise((resolve, reject) => {
+            this.model.update(base, { $pull: nested }, (error: any, result: any) => {
+                if (error) {
+                    reject(error);
+                }
+
+                resolve(result);
+            });
+        });
+    }
+
+    public set(base: any, nested: any) {
+        return new Promise((resolve, reject) => {
+            this.model.update(base, { $set: nested }, (error: any, result: any) => {
+                if (error) {
+                    reject(error);
+                }
+
+                resolve(result);
+            });
+        });
+    }
+
+
     public delete(item: T): Promise<T> {
         return new Promise((resolve, reject) => {
             this.model.remove({uuid: item.uuid}, (error: any) => {
@@ -55,6 +80,22 @@ export class RepositoryBase<T extends {uuid: string}> {
         return new Promise((resolve, reject) => {
             this.model
                 .find({})
+                .skip(pagination.getPage() * pagination.getLimit())
+                .limit(pagination.getLimit())
+                .exec((error: any, result: T[]) => {
+                    if (error) {
+                        reject(error);
+                    }
+
+                    resolve(result);
+                });
+        });
+    }
+
+    public findByQuery(item: any, pagination: PaginationModel = new PaginationModel()): Promise<T[]> {
+        return new Promise((resolve, reject) => {
+            this.model
+                .find(item)
                 .skip(pagination.getPage() * pagination.getLimit())
                 .limit(pagination.getLimit())
                 .exec((error: any, result: T[]) => {

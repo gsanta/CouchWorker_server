@@ -256,7 +256,7 @@ describe('UserRepository', () => {
                 then: (callback: any) => callback([userDocument, userDocument2])
             });
 
-            userRepository.findBy(userModel, pagination);
+            userRepository.findByUser(userModel, pagination);
 
             expect(repositoryBase.findBy.callCount).toBe(1);
             expect(repositoryBase.findBy.calledWith(userDocument, pagination)).toBe(true);
@@ -270,7 +270,7 @@ describe('UserRepository', () => {
                     resolve([userDocument, userDocument2]);
                 }));
 
-            userRepository.findBy(userModel, pagination)
+            userRepository.findByUser(userModel, pagination)
             .then((models) => {
                 expect(models.length).toEqual(2);
                 expect(models[0]).toEqual(userModel);
@@ -288,7 +288,7 @@ describe('UserRepository', () => {
                     reject('Error happened');
                 }));
 
-            userRepository.findBy(userModel, pagination)
+            userRepository.findByUser(userModel, pagination)
             .then(() => done.fail('This Promise should have been rejected'))
             .catch((error: any) => {
                 expect(error).toEqual('Error happened');

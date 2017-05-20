@@ -29,6 +29,7 @@ export function profileApi(router: Router, baseDir: string, userBusiness: UserBu
     });
 
     router.post('/api/addAddress/:userName', async (ctx, next) => {
+        debugger;
         if (!ctx.request.is('multipart/*')) {
             return await next();
         }
@@ -36,7 +37,7 @@ export function profileApi(router: Router, baseDir: string, userBusiness: UserBu
         let user = await userBusiness.findByUserName(ctx.params.userName);
 
         const {files, fields} = await asyncBusboy(ctx.req);
-
+        debugger;
         let address = fromAddressJson(fields);
         address = {...address, uuid: uuid()};
 
@@ -61,9 +62,14 @@ export function profileApi(router: Router, baseDir: string, userBusiness: UserBu
 
     router.post('/api/updateAddress/:userName', async (ctx, next) => {
         const address = fromAddressJson(ctx.request.body);
-        const userModel = await userBusiness.findByUserName(ctx.params.userName);
-        await userBusiness.updateAddress(userModel, address);
+        await userBusiness.updateAddress(ctx.params.userName, address);
         ctx.body = await userBusiness.findByUserName(ctx.params.userName);
+    });
+
+    router.post('/api/deleteAddress/:userName', async (ctx, next) => {
+        console.log(ctx.request.body);
+        console.log(ctx.params.userName);
+        ctx.body = userBusiness.deleteAddress(ctx.params.userName, ctx.request.body.uuid);
     });
 
     router.post('/api/updateUser/:userName', async (ctx) => {

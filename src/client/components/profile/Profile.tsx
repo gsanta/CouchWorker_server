@@ -6,6 +6,7 @@ import { AboutInfoEditor } from './edit_profile/AboutInfoEditor';
 import { AboutHeader } from './view_profile/AboutHeader';
 import { AddressHeader } from './view_profile/AddressHeader';
 import { AddressEditor } from './edit_profile/AddressEditor';
+import { AddressModel } from '../../../shared/model/AddressModel';
 require('./Profile.scss');
 
 function getAge(birthDate: Date) {
@@ -22,7 +23,13 @@ export function Profile(props: ProfileProps) {
     const header = <AboutHeader editAboutInfo={() => props.onEditModeChange('aboutInfo')}/>;
     const addresses = user.addresses.map(address => {
         const editedComponent = `address-${address.uuid}`;
-        const addressHeader = <AddressHeader editAddress={() => props.onEditModeChange(editedComponent)}/>;
+        const addressHeader = (
+            <AddressHeader
+                edit={() => props.onEditModeChange(editedComponent)}
+                delete={() => props.onDeleteAddress(address, props.user.userName)}
+            />
+        );
+
         return (
             <Panel header={addressHeader}>
                 <div>
@@ -41,7 +48,7 @@ export function Profile(props: ProfileProps) {
             <AddressEditor
                 address={address}
                 isOpen={props.editedComponent === editedComponent}
-                onSubmit={props.onSubmitAddress}
+                onSubmit={(newAddress) => props.onSubmitAddress(newAddress, props.user.userName)}
                 close={() => props.onEditModeChange(null)}
             />
         );
@@ -64,6 +71,18 @@ export function Profile(props: ProfileProps) {
                 close={() => props.onEditModeChange(null)}
             />
             {addressEditors}
+            <div
+                className="cw-add-address"
+                onClick={() => props.onEditModeChange('address-new')}
+            >
+                Add address
+            </div>
+            <AddressEditor
+                address={new AddressModel()}
+                isOpen={props.editedComponent === `address-new`}
+                onSubmit={(newAddress) => props.onAddAddress(newAddress, props.user.userName)}
+                close={() => props.onEditModeChange(null)}
+            />
         </div>
     );
 }
@@ -73,5 +92,8 @@ export interface ProfileProps {
     editedComponent: string;
     onSubmit: (user: UserModel) => void;
     onSubmitAboutInfo: (user: UserModel) => void;
+    onSubmitAddress: (address: AddressModel, userName: string) => void;
+    onDeleteAddress: (address: AddressModel, userName: string) => void;
+    onAddAddress: (address: AddressModel, userName: string) => void;
     onEditModeChange: (editedComponent: string) => void;
 }

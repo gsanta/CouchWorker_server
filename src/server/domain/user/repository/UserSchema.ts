@@ -1,6 +1,5 @@
 import { MongooseUserDocument } from './MongooseUserDocument';
-import { AddressSchema } from './AddressSchema';
-import Mongoose = require("mongoose");
+import Mongoose = require('mongoose');
 
 export class UserSchema {
     private mInstance: Mongoose.Mongoose;
@@ -12,7 +11,7 @@ export class UserSchema {
     }
 
     public getModel(): Mongoose.Model<MongooseUserDocument> {
-        return this.mConnection.model<MongooseUserDocument>("Users", this.getSchema());
+        return this.mConnection.model<MongooseUserDocument>('Users', this.getSchema());
     }
 
     public getSchema(): Mongoose.Schema {
@@ -81,6 +80,10 @@ export class UserSchema {
                     house: {
                         type: String,
                         required: false
+                    },
+                    uuid: {
+                        type: String,
+                        required: true
                     },
                     images: [
                         {

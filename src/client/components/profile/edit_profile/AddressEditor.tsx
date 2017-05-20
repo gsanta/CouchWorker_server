@@ -30,43 +30,49 @@ export class AddressEditor extends React.Component<AddressEditorProps, AddressEd
         const errors = this.state.errors || {};
 
         return (
-            <Modal show={this.props.isOpen} onHide={this.props.close}>
+            <Modal show={this.props.isOpen} onHide={this.props.close} className="cw-address-new">
                 <Modal.Header closeButton>
                     <Modal.Title>Modal heading</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <StringInput
-                        value={this.state.address.country}
-                        onChange={this.onCountryChange.bind(this)}
-                        controlId="cw-form-address-country"
-                        placeHolder="Enter country"
-                        controlLabel="Country"
-                        error={this.state.isCountryModified && errors.country}
-                    />
-                    <StringInput
-                        value={this.state.address.city}
-                        onChange={this.onCityChange.bind(this)}
-                        controlId="cw-form-address-city"
-                        placeHolder="Enter city"
-                        controlLabel="City"
-                        error={this.state.isCityModified && errors.city}
-                    />
-                    <StringInput
-                        value={this.state.address.street}
-                        onChange={this.onStreetChange.bind(this)}
-                        controlId="cw-form-address-street"
-                        placeHolder="Enter street"
-                        controlLabel="Street"
-                        error={this.state.isStreetModified && errors.street}
-                    />
-                    <StringInput
-                        value={this.state.address.house}
-                        onChange={this.onHouseChange.bind(this)}
-                        controlId="cw-form-address-house"
-                        placeHolder="Enter house"
-                        controlLabel="House"
-                        error={this.state.isHouseModified && errors.house}
-                    />
+                    <form>
+                        <StringInput
+                            value={this.state.address.country}
+                            onChange={this.onCountryChange.bind(this)}
+                            controlId="cw-form-address-country"
+                            placeHolder="Enter country"
+                            controlLabel="Country"
+                            name="country"
+                            error={this.state.isCountryModified && errors.country}
+                        />
+                        <StringInput
+                            value={this.state.address.city}
+                            onChange={this.onCityChange.bind(this)}
+                            controlId="cw-form-address-city"
+                            placeHolder="Enter city"
+                            controlLabel="City"
+                            name="city"
+                            error={this.state.isCityModified && errors.city}
+                        />
+                        <StringInput
+                            value={this.state.address.street}
+                            onChange={this.onStreetChange.bind(this)}
+                            controlId="cw-form-address-street"
+                            placeHolder="Enter street"
+                            controlLabel="Street"
+                            name="street"
+                            error={this.state.isStreetModified && errors.street}
+                        />
+                        <StringInput
+                            value={this.state.address.house}
+                            onChange={this.onHouseChange.bind(this)}
+                            controlId="cw-form-address-house"
+                            placeHolder="Enter house"
+                            controlLabel="House"
+                            name="house"
+                            error={this.state.isHouseModified && errors.house}
+                        />
+                    </form>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={this.props.close}>Cancel</Button>

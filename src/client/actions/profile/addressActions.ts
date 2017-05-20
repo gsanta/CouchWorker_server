@@ -13,10 +13,10 @@ export function updateAddressRequest(address: AddressModel) {
     };
 }
 
-export function updateAddressResponse(json: AddressJson) {
+export function updateAddressResponse(json: UserJson) {
     return {
         type: UPDATE_ADDRESS_RESPONSE,
-        user: fromAddressJson(json)
+        user: fromUserJson(json)
     };
 }
 
@@ -31,12 +31,12 @@ export function updateAddress(address: AddressModel, userName: string) {
             method: 'POST',
             body: JSON.stringify(addressJson),
             headers: {
-                "Content-Type": "application/json"
+                'Content-Type': 'application/json'
             }
         })
         .then(response => response.json())
         .then((json: any) => {
-            dispatch(updateAddressResponse(<AddressJson> json));
+            dispatch(updateAddressResponse(<UserJson> json));
         });
-    }
+    };
 }

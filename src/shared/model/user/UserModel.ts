@@ -18,7 +18,15 @@ export interface UserJson {
     addresses: AddressJson[];
     rating: number;
     isActive: boolean;
+}
 
+export function splitUserName(userName: string) {
+    const parts = userName.split('.');
+    return {
+        firstName: parts[0],
+        lastName: parts[1],
+        uniqueIndex: parseInt(userName.split('.')[2], 10)
+    };
 }
 
 export function toUserDocument(userModel: UserModel): UserDocument {

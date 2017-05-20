@@ -1,8 +1,8 @@
 import { RepositoryBase } from '../../../repository/RepositoryBase';
 import { MongooseUserDocument } from './MongooseUserDocument';
 import { PaginationModel } from '../../../repository/PaginationModel';
-import { UserModel, toUserDocument, fromUserDocument } from '../../../../shared/model/user/UserModel';
-import { AddressModel, AddressDocument } from '../../../../shared/model/AddressModel';
+import { UserModel, toUserDocument, fromUserDocument, splitUserName } from '../../../../shared/model/user/UserModel';
+import { AddressModel, AddressDocument, toAddressDocument } from '../../../../shared/model/AddressModel';
 import { UserDocument } from '../../../../shared/model/user/UserDocument';
 import { RatingModel } from '../../../../shared/model/RatingModel';
 
@@ -34,7 +34,32 @@ export class UserRepository {
             .then(() => user);
     }
 
-    public findBy(user: UserModel, pagination: PaginationModel): Promise<UserModel[]> {
+    public deleteAddress(userName: string, addressUuid: string) {
+        const user = {
+            ...splitUserName(userName)
+        };
+
+        return this.repoBase.pull(user, { addresses: { uuid: addressUuid }});
+    }
+
+    public updateAddress(userName: string, address: AddressModel) {
+        const query = {
+            ...splitUserName(userName),
+            'addresses.uuid': address.uuid
+        };
+
+        return this.repoBase.set(
+            query,
+            { 'addresses.$': toAddressDocument(address) }
+        );
+    }
+
+    public findByQuery(query: any, pagination?: PaginationModel): Promise<UserModel[]> {
+        return this.repoBase.findByQuery(query, pagination)
+            .then(docs => docs.map(doc => fromUserDocument(doc)));
+    }
+
+    public findByUser(user: UserModel, pagination: PaginationModel): Promise<UserModel[]> {
         const userDocument = toUserDocument(user);
         return this.repoBase.findBy(userDocument, pagination)
             .then(docs => docs.map(doc => fromUserDocument(doc)));

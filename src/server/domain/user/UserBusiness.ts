@@ -1,7 +1,7 @@
 import * as Promise from 'promise';
 import { UserRepository } from './repository/UserRepository';
 import { PaginationModel } from '../../repository/PaginationModel';
-import { UserModel } from '../../../shared/model/user/UserModel';
+import { UserModel, splitUserName } from '../../../shared/model/user/UserModel';
 import { AddressModel } from '../../../shared/model/AddressModel';
 import { ImageModel } from '../../../shared/model/image/ImageModel';
 
@@ -18,26 +18,32 @@ export class UserBusiness {
     public addAddress(user: UserModel, address: AddressModel) {
         const addresses = user.addresses.push(address);
         user = {...user, addresses: addresses };
-
+        console.log(address);
         return this.userRepository.update(user);
     }
 
-    public updateAddress(user: UserModel, address: AddressModel) {
-        const index = user.addresses.findIndex(addr => addr.uuid === address.uuid);
-        if (index === -1) {
-            throw new Error('Address not found.');
-        }
-        user = {...user, addresses: user.addresses.set(index, address)}
-
-        return this.userRepository.update(user);
+    public updateAddress(userName: string, address: AddressModel) {
+        return this.userRepository.updateAddress(userName, address);
     }
 
     public delete (item: UserModel): Promise<any> {
         return this.userRepository.delete(item);
     }
 
+    public deleteAddress(userName: string, addressUuid: string) {
+        return this.userRepository.deleteAddress(userName, addressUuid);
+    }
+
     public update (item: UserModel): Promise<any> {
         return this.userRepository.update(item);
+    }
+
+    public findAddressByUuid(userName: string, addressUuid: string) {
+        const { firstName, lastName, uniqueIndex } = splitUserName(userName);
+        return this.userRepository.findByQuery({
+            ...splitUserName(userName),
+            'addresses.uuid': addressUuid
+        });
     }
 
     public findByEmail(email: string): Promise<UserModel> {
@@ -49,7 +55,7 @@ export class UserBusiness {
     }
 
     public findBy(item: UserModel, pagination: PaginationModel): Promise<UserModel[]> {
-        return this.userRepository.findBy(item, pagination);
+        return this.userRepository.findByUser(item, pagination);
     }
 
     public findAll (pagination: PaginationModel): Promise<UserModel[]> {

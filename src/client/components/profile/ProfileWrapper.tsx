@@ -7,6 +7,8 @@ import { signup } from './profileActions';
 import { updateAboutInfo } from '../../actions/profile/aboutInfoActions';
 import { AddressModel } from '../../../shared/model/AddressModel';
 import { updateAddress } from '../../actions/profile/addressActions';
+import { deleteAddress } from '../../actions/profile/deleteAddressActions';
+import { addAddress } from '../../actions/profile/addAddressActions';
 
 const mapStateToProps = (state: RootModel) => {
     return {
@@ -29,8 +31,14 @@ const mapDispatchToProps = (dispatch, props: any) => {
         onSubmitAboutInfo: (model: UserModel) => {
             dispatch(updateAboutInfo(model));
         },
-        onSubmitAddress: (model: AddressModel) => {
-            dispatch(updateAddress())
+        onSubmitAddress: (model: AddressModel, userName: string) => {
+            dispatch(updateAddress(model, userName));
+        },
+        onDeleteAddress: (model: AddressModel, userName: string) => {
+            dispatch(deleteAddress(model, userName));
+        },
+        onAddAddress: (model: AddressModel, userName: string) => {
+            dispatch(addAddress(model, userName));
         }
     };
 };

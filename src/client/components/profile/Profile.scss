@@ -5,8 +5,18 @@
 }
 
 .cw-profile {
-    .cw-profile-header { 
-        display: flex; 
+    .cw-profile-header {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .cw-address-header {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .cw-right-side-section {
+        display: flex;
         justify-content: space-between;
     }
 }

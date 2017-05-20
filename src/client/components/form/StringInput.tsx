@@ -1,15 +1,15 @@
-import * as React from 'react'; 
+import * as React from 'react';
 import { FormGroup, ControlLabel, FormControl, HelpBlock } from 'react-bootstrap';
 
-function getValidationState(isValid: boolean): "error" | null {
-    return isValid ? null: 'error';
+function getValidationState(isValid: boolean): 'error' | null {
+    return isValid ? null : 'error';
 }
 
 export function StringInput(props: StringInputProps) {
     let error = null;
 
     if (props.error) {
-        error = <HelpBlock>{props.error}</HelpBlock>
+        error = <HelpBlock>{props.error}</HelpBlock>;
     }
 
     return (
@@ -23,16 +23,17 @@ export function StringInput(props: StringInputProps) {
                 value={props.value}
                 placeholder={props.placeHolder}
                 onChange={props.onChange}
+                name={props.name}
             />
             <FormControl.Feedback />
             {error}
         </FormGroup>
-    )
+    );
 }
 
 (StringInput as any).defaultProps = {
     type: 'text'
-}
+};
 
 export interface StringInputProps {
     value: string;
@@ -41,5 +42,6 @@ export interface StringInputProps {
     placeHolder: string;
     controlLabel: string;
     error: string;
+    name?: string;
     type?: 'text' | 'password';
 }
