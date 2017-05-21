@@ -26,18 +26,26 @@ export function addAddress(address: AddressModel, files: File[], userName: strin
 
         const addressJson = toAddressJson(address);
 
-        const formData = new FormData(<HTMLFormElement> document.querySelector('.cw-address-new form'));
-        files.forEach((file, index) => {
-            formData.append('file', file, 'file' + index + '.png');
-        });
-
         return fetch(`./api/addAddress/${userName}`, {
             method: 'POST',
-            body: formData
+            body: createFormData(address, files)
         })
         .then(response => response.json())
         .then((json: any) => {
             dispatch(addAddressResponse(<UserJson> json));
         });
     };
+}
+
+function createFormData(address: AddressModel, files: File[]): FormData {
+    const formData = new FormData();
+    formData.append('country', address.country);
+    formData.append('city', address.city);
+    formData.append('street', address.street);
+    formData.append('house', address.house);
+    files.forEach((file, index) => {
+        formData.append('file', file, 'file' + index + '.png');
+    });
+
+    return formData;
 }

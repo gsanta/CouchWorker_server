@@ -43,7 +43,6 @@ const mapDispatchToProps = (dispatch, props: any) => {
     };
 };
 
-
 export const ProfileWrapper = connect(
     mapStateToProps,
     mapDispatchToProps
