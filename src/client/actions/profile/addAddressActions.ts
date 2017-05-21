@@ -19,7 +19,7 @@ export function addAddressResponse(json: UserJson) {
     };
 }
 
-export function addAddress(address: AddressModel, userName: string) {
+export function addAddress(address: AddressModel, files: File[], userName: string) {
     return function (dispatch: Dispatch<any>) {
 
         dispatch(addAddressRequest(address));
@@ -27,6 +27,9 @@ export function addAddress(address: AddressModel, userName: string) {
         const addressJson = toAddressJson(address);
 
         const formData = new FormData(<HTMLFormElement> document.querySelector('.cw-address-new form'));
+        files.forEach((file, index) => {
+            formData.append('file', file, 'file' + index + '.png');
+        });
 
         return fetch(`./api/addAddress/${userName}`, {
             method: 'POST',

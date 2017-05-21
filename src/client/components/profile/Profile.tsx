@@ -80,7 +80,7 @@ export function Profile(props: ProfileProps) {
             <AddressEditor
                 address={new AddressModel()}
                 isOpen={props.editedComponent === `address-new`}
-                onSubmit={(newAddress) => props.onAddAddress(newAddress, props.user.userName)}
+                onSubmit={(newAddress: AddressModel, files: File[]) => props.onAddAddress(newAddress, files, props.user.userName)}
                 close={() => props.onEditModeChange(null)}
             />
         </div>
@@ -94,6 +94,6 @@ export interface ProfileProps {
     onSubmitAboutInfo: (user: UserModel) => void;
     onSubmitAddress: (address: AddressModel, userName: string) => void;
     onDeleteAddress: (address: AddressModel, userName: string) => void;
-    onAddAddress: (address: AddressModel, userName: string) => void;
+    onAddAddress: (address: AddressModel, files: File[], userName: string) => void;
     onEditModeChange: (editedComponent: string) => void;
 }

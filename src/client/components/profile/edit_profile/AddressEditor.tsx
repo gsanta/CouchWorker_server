@@ -4,6 +4,8 @@ import { Modal, Button } from 'react-bootstrap';
 import { StringInput } from '../../form/StringInput';
 import * as validate from 'validate.js';
 import { addressValidator } from '../../../../shared/model/addressValidator';
+import * as Dropzone from 'react-dropzone';
+
 
 export class AddressEditor extends React.Component<AddressEditorProps, AddressEditorState> {
 
@@ -12,6 +14,7 @@ export class AddressEditor extends React.Component<AddressEditorProps, AddressEd
 
         this.state = {
             address: this.props.address,
+            files: [],
             errors: null,
             isCountryModified: false,
             isCityModified: false,
@@ -73,17 +76,34 @@ export class AddressEditor extends React.Component<AddressEditorProps, AddressEd
                             error={this.state.isHouseModified && errors.house}
                         />
                     </form>
+                    <Dropzone onDrop={this.onDrop.bind(this)}>
+                        <p>Try dropping some files here, or click to select files to upload.</p>
+                    </Dropzone>
+                    <aside>
+                        <h2>Dropped files</h2>
+                        <ul>
+                            {
+                                this.state.files.map(f => <li>{f.name} - {f.size} bytes</li>)
+                            }
+                        </ul>
+                    </aside>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={this.props.close}>Cancel</Button>
                     <Button
                         disabled={this.state.errors}
-                        onClick={() => this.props.onSubmit(this.state.address)}>
+                        onClick={() => this.props.onSubmit(this.state.address, this.state.files)}>
                         Save
                         </Button>
                 </Modal.Footer>
             </Modal>
         );
+    }
+
+    private onDrop(files: File[]) {
+        this.setState({
+            files
+        });
     }
 
     private onCountryChange(event: React.ChangeEvent<any>) {
@@ -135,11 +155,12 @@ export interface AddressEditorProps {
     address: AddressModel;
     isOpen: boolean;
     close: () => void;
-    onSubmit: (user: AddressModel) => void;
+    onSubmit: (address: AddressModel, files: File[]) => void;
 }
 
 export interface AddressEditorState {
     address: AddressModel;
+    files: File[];
     isCountryModified: boolean;
     isCityModified: boolean;
     isStreetModified: boolean;

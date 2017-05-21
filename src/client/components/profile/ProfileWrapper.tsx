@@ -37,8 +37,8 @@ const mapDispatchToProps = (dispatch, props: any) => {
         onDeleteAddress: (model: AddressModel, userName: string) => {
             dispatch(deleteAddress(model, userName));
         },
-        onAddAddress: (model: AddressModel, userName: string) => {
-            dispatch(addAddress(model, userName));
+        onAddAddress: (model: AddressModel, files: File[], userName: string) => {
+            dispatch(addAddress(model, files, userName));
         }
     };
 };
