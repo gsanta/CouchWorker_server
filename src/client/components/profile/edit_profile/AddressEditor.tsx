@@ -101,15 +101,21 @@ export class AddressEditor extends React.Component<AddressEditorProps, AddressEd
         return this.state.files.map(file => {
             return (
                 <Thumbnail src={(file as any).preview}>
-                    <Button bsStyle="danger">Delete</Button>
+                    <Button bsStyle="danger" onClick={() => this.deleteFile(file)}>Delete</Button>
                 </Thumbnail>
             );
         });
     }
 
+    private deleteFile(file: File) {
+        this.setState({
+            files: this.state.files.filter(f => f !== file)
+        });
+    }
+
     private onDrop(files: File[]) {
         this.setState({
-            files
+            files: this.state.files.concat(files)
         });
     }
 

@@ -30,6 +30,10 @@ export function Profile(props: ProfileProps) {
             />
         );
 
+        const images = address.images.map(img => {
+            return <img src={`public/img/${props.user.uuid}/${address.uuid}/${img.fileName}.${img.extension}`}/>
+        });
+
         return (
             <Panel header={addressHeader}>
                 <div>
@@ -37,6 +41,7 @@ export function Profile(props: ProfileProps) {
                     <div>{address.city}</div>
                     <div>{address.street}</div>
                     <div>{address.house}</div>
+                    {images}
                 </div>
             </Panel>
         );

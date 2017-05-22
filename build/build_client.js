@@ -49,6 +49,10 @@ module.exports = function(gulp, config) {
                 "/api/*": {
                     target: "http://localhost:8081",
                     changeOrigin: true
+                },
+                "/public/**/*": {
+                    target: "http://localhost:8081",
+                    changeOrigin: true
                 }
             }
         }).listen(8765, '0.0.0.0', function(err) {
