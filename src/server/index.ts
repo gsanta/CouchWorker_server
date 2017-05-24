@@ -11,6 +11,7 @@ import * as passportJWT from 'passport-jwt';
 import { UserModel } from '../shared/model/user/UserModel';
 import * as Koa from 'koa';
 import * as Router from 'koa-router';
+import * as koaStatic from 'koa-static';
 import koaBody = require('koa-body');
 import * as asyncBusboy from 'async-busboy';
 // import {Promise} from 'es6-promise';
@@ -18,6 +19,8 @@ import { profileApi } from './rest/profileApi';
 import { ImageBusiness } from './domain/user/ImageBusiness';
 const app = new Koa();
 const router = new Router();
+
+console.log(__dirname)
 
 const baseDir = 'server/';//process.argv[2];
 const ExtractJwt = passportJWT.ExtractJwt;
@@ -140,6 +143,7 @@ app.use(async (ctx, next) => {
 });
 
 app.use(router.routes());
+app.use(koaStatic('./static'));
 
 var server = app.listen(8081, function () {
 

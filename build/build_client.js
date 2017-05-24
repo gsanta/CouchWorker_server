@@ -50,7 +50,7 @@ module.exports = function(gulp, config) {
                     target: "http://localhost:8081",
                     changeOrigin: true
                 },
-                "/public/**/*": {
+                "/img/*": {
                     target: "http://localhost:8081",
                     changeOrigin: true
                 }

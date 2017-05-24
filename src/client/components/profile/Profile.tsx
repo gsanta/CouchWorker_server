@@ -31,7 +31,7 @@ export function Profile(props: ProfileProps) {
         );
 
         const images = address.images.map(img => {
-            return <img src={`public/img/${props.user.uuid}/${address.uuid}/${img.fileName}.${img.extension}`}/>
+            return <img src={`img/${props.user.uuid}/addresses/${address.uuid}/${img.fileName}.${img.extension}`}/>
         });
 
         return (
