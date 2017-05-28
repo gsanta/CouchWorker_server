@@ -10,6 +10,7 @@ import { UrlModel } from '../../shared/model/UrlModel';
 import { List } from 'immutable';
 import { RatingModel } from '../../shared/model/RatingModel';
 import { PaginationModel } from '../repository/PaginationModel';
+import { ModelState } from '../../shared/model/ModelState';
 
 export function profileApi(router: Router, baseDir: string, userBusiness: UserBusiness, imageBusiness: ImageBusiness) {
 
@@ -52,7 +53,7 @@ export function profileApi(router: Router, baseDir: string, userBusiness: UserBu
             await imageBusiness.create(image);
         }
 
-        address = {...address, images: List(urlModels)};
+        address = {...address, images: List(urlModels), state: ModelState.ACTIVE};
 
         await userBusiness.addAddress(user, address);
         ctx.body = await userBusiness.findByUserName(ctx.params.userName);
@@ -69,8 +70,8 @@ export function profileApi(router: Router, baseDir: string, userBusiness: UserBu
         ctx.body = await userBusiness.findByUserName(ctx.params.userName);
     });
 
-    router.post('/api/deleteAddress/:userName', async (ctx, next) => {
-        const address = await userBusiness.deleteAddress(ctx.params.userName, ctx.request.body.uuid);
+    router.post('/api/deleteAddress/:userName/:uuid', async (ctx, next) => {
+        const address = await userBusiness.deleteAddress(ctx.params.userName, ctx.params.uuid);
         const body = await userBusiness.findByUserName(ctx.params.userName);
         ctx.body = body;
     });

@@ -1,5 +1,6 @@
 import { PaginationModel } from './PaginationModel';
 import * as Mongoose from 'mongoose';
+import { ModelState } from '../../shared/model/ModelState';
 
 
 export interface DatabaseId {
@@ -41,15 +42,13 @@ export class RepositoryBase<T extends {uuid: string}> {
     public aggregate(aggregation: any) {
         return new Promise((resolve, reject) => {
             return this.model.aggregate(
-                [
-                    {'$unwind': '$addresses'},
-                    {'$match': {'addresses.uuid' : 'a1b1041f-a8a7-42d2-af53-24de16b9b635'}},
-                    {'$project' : {'addresses' : 1}},
-                    {'$group': {'_id': '$addresses'}}
-                ],
-                function(err, result) {
+                aggregation,
+                function(error, result) {
+                    if (error) {
+                        reject(error);
+                    }
 
-                    console.log(result);
+                    resolve(result);
                 }
             );
         });
@@ -142,13 +141,31 @@ export class RepositoryBase<T extends {uuid: string}> {
 
     public findOneBy(fields: T): Promise<T> {
         return new Promise((resolve, reject) => {
-            this.model.findOne(fields, (error: any, result: T) => {
-                if (error) {
-                    reject(error);
-                }
+            this.model
+                .aggregate(
+                    { $match: fields},
+                    { $unwind: '$addresses' },
+                    { $match: {
+                        $or: [
+                            {'addresses.state': ModelState.ACTIVE},
+                            {'addresses.state': ModelState.NEW}
+                        ]
+                    }},
+                    (error: any, result: T) => {
+                        if (error) {
+                            reject(error);
+                        }
 
-                resolve(result);
-            });
+                        resolve(result);
+                    }
+                );
+            //     .findOne(fields, (error: any, result: T) => {
+            //     if (error) {
+            //         reject(error);
+            //     }
+
+            //     resolve(result);
+            // });
         });
     }
 
@@ -166,8 +183,5 @@ export class RepositoryBase<T extends {uuid: string}> {
                 });
         });
     }
-
-    private toObjectId (_id: string) : Mongoose.Types.ObjectId {
-        return mongoose.Types.ObjectId.createFromHexString(_id)
-    }
 }
+

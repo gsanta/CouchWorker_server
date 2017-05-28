@@ -2,9 +2,10 @@ import { RepositoryBase } from '../../../repository/RepositoryBase';
 import { MongooseUserDocument } from './MongooseUserDocument';
 import { PaginationModel } from '../../../repository/PaginationModel';
 import { UserModel, toUserDocument, fromUserDocument, splitUserName } from '../../../../shared/model/user/UserModel';
-import { AddressModel, AddressDocument, toAddressDocument } from '../../../../shared/model/AddressModel';
+import { AddressModel, AddressDocument, toAddressDocument, fromAddressDocument } from '../../../../shared/model/AddressModel';
 import { UserDocument } from '../../../../shared/model/user/UserDocument';
 import { RatingModel } from '../../../../shared/model/RatingModel';
+import { ModelState } from '../../../../shared/model/ModelState';
 
 export class UserRepository {
     private repoBase: RepositoryBase<UserDocument>;
@@ -35,32 +36,29 @@ export class UserRepository {
     }
 
     public findAddressByUuid(userName: string, uuid: string): Promise<AddressModel> {
-        // const query = {
-        //     ...splitUserName(userName),
-        //     'addresses.uuid': uuid
-        // };
-
-        // return this.repoBase.set(
-        //     query,
-        //     { 'addresses.$': toAddressDocument(address) }
-        // );
-
         return this.repoBase.aggregate(
-            [
-                    {'$unwind': '$addresses'},
-                    {'$match': {'addresses.uuid' : uuid}},
-                    {'$project' : {'addresses' : 1}},
-                    {'$group': {'_id': '$addresses'}}
-            ]
-        );
+                [
+                    {$unwind: '$addresses'},
+                    {$match: {'addresses.uuid' : uuid}},
+                    {$project : {addresses : 1}},
+                    {$group: {_id: '$addresses'}}
+                ]
+            )
+            .then((group: any) => {
+                if (group.length) {
+                    return fromAddressDocument(group[0]._id);
+                }
+
+                return null;
+            });
     }
 
     public deleteAddress(userName: string, addressUuid: string) {
-        const user = {
-            ...splitUserName(userName)
-        };
-
-        return this.repoBase.pull(user, { addresses: { uuid: addressUuid }});
+        return this.findAddressByUuid(userName, addressUuid)
+            .then((addressModel: AddressModel) => {
+                addressModel.state = ModelState.DELETED;
+                return this.updateAddress(userName, addressModel);
+            });
     }
 
     public updateAddress(userName: string, address: AddressModel) {
@@ -104,7 +102,7 @@ export class UserRepository {
         const userNameParts = userName.split('.');
         const firstName = userNameParts[0];
         const lastName = userNameParts[1];
-        const uniqueIndex = userNameParts.length === 3 ? userNameParts[2] : 0;
+        const uniqueIndex = userNameParts.length === 3 ? parseInt(userNameParts[2], 10) : 0;
         const userDocument = <UserDocument> {
             firstName: firstName,
             lastName: lastName,

@@ -30,7 +30,7 @@ export function splitUserName(userName: string) {
 }
 
 export function toUserDocument(userModel: UserModel): UserDocument {
-    const uniqueIndex = parseInt(userModel.userName.split('.')[2], 10);
+    const uniqueIndex = userModel.userName ? parseInt(userModel.userName.split('.')[2], 10) : undefined;
     return {
         firstName: userModel.firstName,
         lastName: userModel.lastName,
@@ -43,7 +43,7 @@ export function toUserDocument(userModel: UserModel): UserDocument {
         city: userModel.city,
         isActive: userModel.isActive,
         uuid: userModel.uuid,
-        languages: userModel.languages.toArray(),
+        languages: userModel.languages ? userModel.languages.toArray() : [],
         addresses: userModel.addresses.map(address => toAddressDocument(address)).toArray()
     };
 }

@@ -96,7 +96,11 @@ export class UserSchema {
                                 required: true
                             }
                         }
-                    ]
+                    ],
+                    state: {
+                        type: Number,
+                        required: true
+                    }
                 }
             ]
         });
