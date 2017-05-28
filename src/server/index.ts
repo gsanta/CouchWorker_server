@@ -20,9 +20,7 @@ import { ImageBusiness } from './domain/user/ImageBusiness';
 const app = new Koa();
 const router = new Router();
 
-console.log(__dirname)
-
-const baseDir = 'server/';//process.argv[2];
+const baseDir = 'static/'; //process.argv[2];
 const ExtractJwt = passportJWT.ExtractJwt;
 const JwtStrategy = passportJWT.Strategy;
 const jwtOptions = {

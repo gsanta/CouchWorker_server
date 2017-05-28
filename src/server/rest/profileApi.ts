@@ -58,6 +58,11 @@ export function profileApi(router: Router, baseDir: string, userBusiness: UserBu
         ctx.body = await userBusiness.findByUserName(ctx.params.userName);
     });
 
+    router.get('/api/findAddress/:uuid', async (ctx, next) => {
+        ctx.body = await userBusiness.findAddress(ctx.params.uuid);
+        // ctx.body = await userBusiness.findByUserName(ctx.params.userName);
+    });
+
     router.post('/api/updateAddress/:userName', async (ctx, next) => {
         const address = fromAddressJson(ctx.request.body);
         await userBusiness.updateAddress(ctx.params.userName, address);
@@ -65,7 +70,7 @@ export function profileApi(router: Router, baseDir: string, userBusiness: UserBu
     });
 
     router.post('/api/deleteAddress/:userName', async (ctx, next) => {
-        await userBusiness.deleteAddress(ctx.params.userName, ctx.request.body.uuid);
+        const address = await userBusiness.deleteAddress(ctx.params.userName, ctx.request.body.uuid);
         const body = await userBusiness.findByUserName(ctx.params.userName);
         ctx.body = body;
     });

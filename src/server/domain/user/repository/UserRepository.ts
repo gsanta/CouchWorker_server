@@ -34,6 +34,27 @@ export class UserRepository {
             .then(() => user);
     }
 
+    public findAddressByUuid(userName: string, uuid: string): Promise<AddressModel> {
+        // const query = {
+        //     ...splitUserName(userName),
+        //     'addresses.uuid': uuid
+        // };
+
+        // return this.repoBase.set(
+        //     query,
+        //     { 'addresses.$': toAddressDocument(address) }
+        // );
+
+        return this.repoBase.aggregate(
+            [
+                    {'$unwind': '$addresses'},
+                    {'$match': {'addresses.uuid' : uuid}},
+                    {'$project' : {'addresses' : 1}},
+                    {'$group': {'_id': '$addresses'}}
+            ]
+        );
+    }
+
     public deleteAddress(userName: string, addressUuid: string) {
         const user = {
             ...splitUserName(userName)

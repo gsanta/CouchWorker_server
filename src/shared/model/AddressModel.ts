@@ -1,5 +1,6 @@
 import { List } from 'immutable';
 import { UrlModel, UrlDocument, UrlJson, fromUrlJson, toUrlJson, toUrlDocument, fromUrlDocument } from './UrlModel';
+import { ModelState } from './ModelState';
 
 export interface AddressJson {
     country: string;
@@ -7,6 +8,7 @@ export interface AddressJson {
     street?: string;
     house?: string;
     uuid: string;
+    state: number;
     images?: UrlJson[];
 }
 
@@ -16,6 +18,7 @@ export interface AddressDocument {
     street?: string;
     house?: string;
     uuid: string;
+    state: number;
     images?: UrlDocument[];
 }
 
@@ -26,6 +29,7 @@ export function toAddressDocument(addressModel: AddressModel): AddressDocument {
         street: addressModel.street,
         house: addressModel.house,
         uuid: addressModel.uuid,
+        state: addressModel.state,
         images: addressModel.images.map(image => toUrlDocument(image)).toArray()
     };
 }
@@ -37,21 +41,23 @@ export function fromAddressDocument(addressDocument: AddressDocument): AddressMo
         street: addressDocument.street,
         house: addressDocument.house,
         uuid: addressDocument.uuid,
+        state: addressDocument.state,
         images: List<UrlModel>(addressDocument.images.map(image => fromUrlDocument(image)))
     };
 }
 
 export function fromAddressJson(json: AddressJson): AddressModel {
-    const address = new AddressModel();
-    address.country = json.country;
-    address.city = json.city;
-    address.street = json.street;
-    address.house = json.house;
-    address.uuid = json.uuid;
-
     const images = json.images ? json.images.map(image => fromUrlJson(image)) : [];
-    address.images = List<UrlModel>(images);
-    return address;
+
+    return {
+        country: json.country,
+        city: json.city,
+        street: json.street,
+        house: json.house,
+        uuid: json.uuid,
+        state: json.state,
+        images: List<UrlModel>(images)
+    };
 }
 
 export function toAddressJson(addressModel: AddressModel): AddressJson {
@@ -62,7 +68,8 @@ export function toAddressJson(addressModel: AddressModel): AddressJson {
         street: addressModel.street,
         house: addressModel.house,
         images: images,
-        uuid: addressModel.uuid
+        uuid: addressModel.uuid,
+        state: addressModel.state
     };
 }
 
@@ -72,6 +79,7 @@ export class AddressModel {
     public street: string;
     public house: string;
     public uuid: string;
+    public state: ModelState;
 
     public images: List<UrlModel> = List<UrlModel>();
 }

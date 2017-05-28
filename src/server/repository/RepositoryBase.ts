@@ -1,5 +1,4 @@
 import { PaginationModel } from './PaginationModel';
-import mongoose = require("mongoose");
 import * as Mongoose from 'mongoose';
 
 
@@ -36,6 +35,23 @@ export class RepositoryBase<T extends {uuid: string}> {
 
                 resolve(result);
             });
+        });
+    }
+
+    public aggregate(aggregation: any) {
+        return new Promise((resolve, reject) => {
+            return this.model.aggregate(
+                [
+                    {'$unwind': '$addresses'},
+                    {'$match': {'addresses.uuid' : 'a1b1041f-a8a7-42d2-af53-24de16b9b635'}},
+                    {'$project' : {'addresses' : 1}},
+                    {'$group': {'_id': '$addresses'}}
+                ],
+                function(err, result) {
+
+                    console.log(result);
+                }
+            );
         });
     }
 

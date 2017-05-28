@@ -22,6 +22,10 @@ export class UserBusiness {
         return this.userRepository.update(user);
     }
 
+    public findAddress(uuid: string): any {
+        return this.userRepository.findAddressByUuid(null, uuid);
+    }
+
     public updateAddress(userName: string, address: AddressModel) {
         return this.userRepository.updateAddress(userName, address);
     }
