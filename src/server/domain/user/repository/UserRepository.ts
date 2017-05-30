@@ -1,4 +1,3 @@
-import { RepositoryBase } from '../../../repository/RepositoryBase';
 import { MongooseUserDocument } from './MongooseUserDocument';
 import { PaginationModel } from '../../../repository/PaginationModel';
 import { UserModel, toUserDocument, fromUserDocument, splitUserName } from '../../../../shared/model/user/UserModel';
@@ -6,37 +5,37 @@ import { AddressModel, AddressDocument, toAddressDocument, fromAddressDocument }
 import { UserDocument } from '../../../../shared/model/user/UserDocument';
 import { RatingModel } from '../../../../shared/model/RatingModel';
 import { ModelState } from '../../../../shared/model/ModelState';
+import { UserSchema } from './UserSchema';
+import * as Mongoose from 'mongoose';
 
 export class UserRepository {
-    private repoBase: RepositoryBase<UserDocument>;
+    private model: Mongoose.Model<MongooseUserDocument>;
     private createUniqueId: () => string;
 
-    constructor (repoBase: RepositoryBase<UserDocument>, createUniqueId: () => string) {
-        this.repoBase = repoBase;
+    constructor (model: Mongoose.Model<MongooseUserDocument>, createUniqueId: () => string) {
+        this.model = model;
         this.createUniqueId = createUniqueId;
     }
 
     public create (user: UserModel): Promise<UserModel> {
-        user = {...user, uuid: this.createUniqueId()};
         const userDocument = toUserDocument(user);
-        return this.repoBase.create(userDocument)
+        return this.model.create(userDocument)
             .then(document => fromUserDocument(document));
     }
 
     public update(user: UserModel): Promise<UserModel> {
         const userDocument = toUserDocument(user);
-        return this.repoBase.update(userDocument)
+        return this.model.update({uuid: user.uuid}, userDocument)
             .then(document => fromUserDocument(document));
     }
 
     public delete(user: UserModel): Promise<UserModel> {
-        const userDocument = toUserDocument(user);
-        return this.repoBase.delete(userDocument)
+        return this.model.remove({uuid: user.uuid})
             .then(() => user);
     }
 
     public findAddressByUuid(userName: string, uuid: string): Promise<AddressModel> {
-        return this.repoBase.aggregate(
+        return this.model.aggregate(
                 [
                     {$unwind: '$addresses'},
                     {$match: {'addresses.uuid' : uuid}},
@@ -67,25 +66,15 @@ export class UserRepository {
             'addresses.uuid': address.uuid
         };
 
-        return this.repoBase.set(
-            query,
-            { 'addresses.$': toAddressDocument(address) }
-        );
-    }
-
-    public findByQuery(query: any, pagination?: PaginationModel): Promise<UserModel[]> {
-        return this.repoBase.findByQuery(query, pagination)
-            .then(docs => docs.map(doc => fromUserDocument(doc)));
-    }
-
-    public findByUser(user: UserModel, pagination: PaginationModel): Promise<UserModel[]> {
-        const userDocument = toUserDocument(user);
-        return this.repoBase.findBy(userDocument, pagination)
-            .then(docs => docs.map(doc => fromUserDocument(doc)));
+        return this.model.update(query, { $set: { 'addresses.$': toAddressDocument(address) } });
     }
 
     public findAll(pagination: PaginationModel): Promise<UserModel[]> {
-        return this.repoBase.findAll(pagination)
+        return this.model
+            .find({})
+            .skip(pagination.getPage() * pagination.getLimit())
+            .limit(pagination.getLimit())
+            .exec()
             .then(docs => docs.map(doc => fromUserDocument(doc)));
     }
 
@@ -94,7 +83,7 @@ export class UserRepository {
             email: email
         };
 
-        return this.repoBase.findOneBy(userDocument)
+        return this.findOneBy(userDocument)
             .then(userDocument => fromUserDocument(userDocument));
     }
 
@@ -109,12 +98,41 @@ export class UserRepository {
             uniqueIndex: uniqueIndex
         };
 
-        return this.repoBase.findOneBy(userDocument)
+        return this.findOneBy(userDocument)
             .then(userDocument => fromUserDocument(userDocument));
     }
 
     public findByText(searchString: string, pagination: PaginationModel): Promise<UserModel[]> {
-        return this.repoBase.findByText(searchString, pagination)
+        return this.model.find({$text: {$search: searchString}})
+            .skip(pagination.getPage() * pagination.getLimit())
+            .limit(pagination.getLimit())
+            .exec()
             .then(docs => docs.map(doc => fromUserDocument(doc)));
+    }
+
+    private findOneBy(fields: UserDocument): Promise<UserDocument> {
+        return this.model
+            .aggregate(
+                { $match: fields},
+                { $unwind: '$addresses' },
+                { $match: {
+                    $or: [
+                        {'addresses.state': ModelState.ACTIVE},
+                        {'addresses.state': ModelState.NEW}
+                    ]
+                }},
+                { $group: {'_id':'$_id'}},
+            )
+            .then((result: any[]) => {
+                if (result.length === 0) {
+                    return this.model
+                        .aggregate({ $match: fields});
+                }
+
+                return result;
+        })
+        .then(res => {
+            return res[0];
+        });
     }
 }

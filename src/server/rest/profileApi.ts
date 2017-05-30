@@ -1,5 +1,4 @@
 import * as Router from 'koa-router';
-import { UserBusiness } from '../domain/user/UserBusiness';
 import { UserModel, UserJson, fromUserJson } from '../../shared/model/user/UserModel';
 import * as asyncBusboy from 'async-busboy';
 import { ImageModel } from '../../shared/model/image/ImageModel';
@@ -11,8 +10,9 @@ import { List } from 'immutable';
 import { RatingModel } from '../../shared/model/RatingModel';
 import { PaginationModel } from '../repository/PaginationModel';
 import { ModelState } from '../../shared/model/ModelState';
+import { UserRepository } from '../domain/user/repository/UserRepository';
 
-export function profileApi(router: Router, baseDir: string, userBusiness: UserBusiness, imageBusiness: ImageBusiness) {
+export function profileApi(router: Router, baseDir: string, userRepository: UserRepository, imageBusiness: ImageBusiness) {
 
     router.post('/api/register', async (ctx, next) => {
         if (!ctx.request.is('multipart/*')) {
@@ -21,7 +21,13 @@ export function profileApi(router: Router, baseDir: string, userBusiness: UserBu
 
         const {files, fields} = await asyncBusboy(ctx.req);
         let user = fromUserJson(fields);
-        user = await userBusiness.create(user);
+        user = {
+            ...user,
+            userName: `${user.firstName}.${user.lastName}.0`,
+            registrationDate: new Date(),
+            uuid: uuid()
+        };
+        user = await userRepository.create(user);
 
         if (files.length) {
             const image = new ImageModel(files[0], baseDir, `img/${user.uuid}/profile/`, 'profile');
@@ -34,7 +40,7 @@ export function profileApi(router: Router, baseDir: string, userBusiness: UserBu
             return await next();
         }
 
-        let user = await userBusiness.findByUserName(ctx.params.userName);
+        let user = await userRepository.findByUserName(ctx.params.userName);
 
         const {files, fields} = await asyncBusboy(ctx.req);
         let address = fromAddressJson(fields);
@@ -55,44 +61,45 @@ export function profileApi(router: Router, baseDir: string, userBusiness: UserBu
 
         address = {...address, images: List(urlModels), state: ModelState.ACTIVE};
 
-        await userBusiness.addAddress(user, address);
-        ctx.body = await userBusiness.findByUserName(ctx.params.userName);
+        const addresses = user.addresses.push(address);
+        user = {...user, addresses: addresses };
+        await userRepository.update(user);
+        ctx.body = await userRepository.findByUserName(ctx.params.userName);
     });
 
     router.get('/api/findAddress/:uuid', async (ctx, next) => {
-        ctx.body = await userBusiness.findAddress(ctx.params.uuid);
-        // ctx.body = await userBusiness.findByUserName(ctx.params.userName);
+        ctx.body = await userRepository.findAddressByUuid(null, ctx.params.uuid);
     });
 
     router.post('/api/updateAddress/:userName', async (ctx, next) => {
         const address = fromAddressJson(ctx.request.body);
-        await userBusiness.updateAddress(ctx.params.userName, address);
-        ctx.body = await userBusiness.findByUserName(ctx.params.userName);
+        await userRepository.updateAddress(ctx.params.userName, address);
+        ctx.body = await userRepository.findByUserName(ctx.params.userName);
     });
 
     router.post('/api/deleteAddress/:userName/:uuid', async (ctx, next) => {
-        const address = await userBusiness.deleteAddress(ctx.params.userName, ctx.params.uuid);
-        const body = await userBusiness.findByUserName(ctx.params.userName);
+        const address = await userRepository.deleteAddress(ctx.params.userName, ctx.params.uuid);
+        const body = await userRepository.findByUserName(ctx.params.userName);
         ctx.body = body;
     });
 
     router.post('/api/updateUser/:userName', async (ctx) => {
         let newUserModel =  fromUserJson(ctx.request.body);
-        const oldUserModel = await userBusiness.findByUserName(ctx.params.userName);
+        const oldUserModel = await userRepository.findByUserName(ctx.params.userName);
         newUserModel.uuid = oldUserModel.uuid;
-        await userBusiness.update(newUserModel);
-        const body = await userBusiness.findByUserName(ctx.params.userName);
+        await userRepository.update(newUserModel);
+        const body = await userRepository.findByUserName(ctx.params.userName);
         ctx.body = body;
     });
 
     router.post('/api/deleteUser/:userName', async (ctx) => {
-        const user = await userBusiness.findByUserName(ctx.params.userName);
-        await userBusiness.delete(user);
-        ctx.body = await userBusiness.findByUserName(ctx.params.userName);
+        const user = await userRepository.findByUserName(ctx.params.userName);
+        await userRepository.delete(user);
+        ctx.body = await userRepository.findByUserName(ctx.params.userName);
     });
 
     router.get('/api/findUser/:userName', async (ctx) => {
-        ctx.body = await userBusiness.findByUserName(ctx.params.userName);
+        ctx.body = await userRepository.findByUserName(ctx.params.userName);
     });
 
     router.get('/api/findUsers/:page', async ctx => {
@@ -100,9 +107,9 @@ export function profileApi(router: Router, baseDir: string, userBusiness: UserBu
         const page = parseInt(ctx.params.page, 10) - 1;
         let users = [];
         if (!ctx.query.keywords) {
-            users = await userBusiness.findAll(new PaginationModel(page));
+            users = await userRepository.findAll(new PaginationModel(page));
         } else {
-            users = await userBusiness.findByText(ctx.query.keywords, new PaginationModel(page));
+            users = await userRepository.findByText(ctx.query.keywords, new PaginationModel(page));
         }
         ctx.body = users;
     });

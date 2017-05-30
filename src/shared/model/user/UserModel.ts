@@ -75,21 +75,21 @@ export function fromUserJson(json: UserJson): UserModel {
     userModel.firstName = json.firstName;
     userModel.lastName = json.lastName;
     userModel.userName = json.userName;
-    userModel.birthDate = new Date(json.birthDate);
-    userModel.registrationDate = new Date(json.registrationDate);
-    userModel.email = json.email;
-    userModel.profession = json.profession;
-    userModel.country = json.country;
-    userModel.city = json.city;
-    userModel.languages = List<string>(json.languages);
+    userModel.birthDate = json.birthDate ? new Date(json.birthDate) : null;
+    userModel.registrationDate = json.registrationDate ? new Date(json.registrationDate) : null;
+    userModel.email = json.email ? json.email : null;
+    userModel.profession = json.profession ? json.profession : null;
+    userModel.country = json.country ? json.country : null;
+    userModel.city = json.city ? json.city : null;
+    userModel.languages = List<string>(json.languages ? json.languages : []);
 
     if (json.addresses) {
         const addresses = json.addresses.map(address => fromAddressJson(address));
         userModel.addresses = List<AddressModel>(addresses);
     }
 
-    userModel.rating = {rating: json.rating};
-    userModel.isActive = json.isActive;
+    userModel.rating = {rating: json.rating || 0};
+    userModel.isActive = json.isActive !== undefined ? json.isActive : true;
 
     return userModel;
 }

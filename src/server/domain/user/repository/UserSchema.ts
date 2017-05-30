@@ -49,7 +49,7 @@ export class UserSchema {
             ],
             birthDate: {
                 type: Date,
-                required: true
+                required: false
             },
             registrationDate: {
                 type: Date,

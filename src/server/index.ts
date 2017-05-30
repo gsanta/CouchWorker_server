@@ -4,7 +4,6 @@ import * as express from 'express';
 import * as fs from 'mz/fs';
 import * as bodyParser from 'koa-bodyparser';
 import { Database } from './repository/Database';
-import { UserBusiness } from './domain/user/UserBusiness';
 import * as jwt from 'jsonwebtoken';
 import * as passport from 'passport';
 import * as passportJWT from 'passport-jwt';
@@ -80,10 +79,9 @@ router.get('/listUsers', function (req: express.Request, res: express.Response) 
 });
 
 const userRepository = repositoryFactory.getUserRepository();
-const userBusiness = new UserBusiness(userRepository);
 const imageBusiness = new ImageBusiness();
 
-profileApi(router, baseDir, userBusiness, imageBusiness);
+profileApi(router, baseDir, userRepository, imageBusiness);
 
 router.post('/api/login', async (ctx) => {
     ctx.body = {

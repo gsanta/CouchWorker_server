@@ -1,4 +1,3 @@
-import {RepositoryBase} from "./RepositoryBase";
 import { UserRepository } from '../domain/user/repository/UserRepository';
 import { MongooseUserDocument } from '../domain/user/repository/MongooseUserDocument';
 import { UserSchema } from '../domain/user/repository/UserSchema';
@@ -9,9 +8,7 @@ export class RepositoryFactory {
 
     constructor(mongooseInstance: Mongoose.Mongoose, mongooseConnection: Mongoose.Connection) {
         this.userRepository = new UserRepository(
-            new RepositoryBase<MongooseUserDocument>(
-                new UserSchema(mongooseInstance, mongooseConnection).getModel()
-            ),
+            new UserSchema(mongooseInstance, mongooseConnection).getModel(),
             uuid
         );
     }

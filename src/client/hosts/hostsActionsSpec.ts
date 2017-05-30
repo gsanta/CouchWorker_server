@@ -4,6 +4,7 @@ import { List } from 'immutable';
 import { UserModel, fromUserJson } from '../../shared/model/user/UserModel';
 import { AddressModel } from '../../shared/model/AddressModel';
 import { RatingModel } from '../../shared/model/RatingModel';
+import { ModelState } from '../../shared/model/ModelState';
 
 describe('hostsActions', () => {
     describe('receiveHosts', () => {
@@ -28,7 +29,8 @@ describe('hostsActions', () => {
                                 country: 'Hungary',
                                 city: 'Budapest',
                                 uuid: null,
-                                images: []
+                                images: [],
+                                state: ModelState.ACTIVE
                             }
                         ],
                         isActive: true
@@ -53,8 +55,9 @@ describe('hostsActions', () => {
                                 country: 'London',
                                 city: 'UK',
                                 uuid: null,
-                                images: []
-                            }
+                                images: [],
+                             state: ModelState.ACTIVE                                
+                            },
                         ],
                         isActive: true           
                     }
@@ -78,7 +81,8 @@ describe('hostsActions', () => {
                                 country: 'Hungary',
                                 city: 'Budapest',
                                 uuid: null,
-                                images: []
+                                images: [],
+                                state: ModelState.ACTIVE
                             }
                         ],
                         isActive: true                 

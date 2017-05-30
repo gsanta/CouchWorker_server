@@ -6,7 +6,7 @@ import { Promise } from 'es6-promise';
 import { UserModel, fromUserDocument } from '../../../../shared/model/user/UserModel';
 import { AddressModel } from '../../../../shared/model/AddressModel';
 import { UserDocument } from '../../../../shared/model/user/UserDocument';
-import { RepositoryBase } from '../../../repository/RepositoryBase';
+import { ModelState } from '../../../../shared/model/ModelState';
 
 describe('UserRepository', () => {
     let userModel: UserModel;
@@ -36,7 +36,8 @@ describe('UserRepository', () => {
                     street: 'Haller utca',
                     house: '15/a',
                     uuid: null,
-                    images: []
+                    images: [],
+                    state: ModelState.ACTIVE
                 }
             ],
             isActive: true
@@ -58,7 +59,8 @@ describe('UserRepository', () => {
                     country: 'Hungary2',
                     city: 'Budapest2',
                     uuid: null,
-                    images: []
+                    images: [],
+                    state: ModelState.ACTIVE
                 }],
                 isActive: true
             };
@@ -240,55 +242,6 @@ describe('UserRepository', () => {
             }));
 
             userRepository.findAll(pagination)
-            .then(() => done.fail('This Promise should have been rejected'))
-            .catch((error: any) => {
-                expect(error).toEqual('Error happened');
-                done();
-            });
-        });
-    });
-
-    describe('findBy', () => {
-        it('should call the findBy method of RepositoryBase with the correct parameters', () => {
-            let userRepository = new UserRepository(repositoryBase, () => null);
-
-            repositoryBase.findBy.withArgs(userDocument).returns({
-                then: (callback: any) => callback([userDocument, userDocument2])
-            });
-
-            userRepository.findByUser(userModel, pagination);
-
-            expect(repositoryBase.findBy.callCount).toBe(1);
-            expect(repositoryBase.findBy.calledWith(userDocument, pagination)).toBe(true);
-        });
-
-        it('should return with a Promise<UserModel[]> if no error occures', (done) => {
-            let userRepository = new UserRepository(repositoryBase, () => null);
-            repositoryBase.findBy
-                .withArgs(userDocument)
-                .returns(new Promise((resolve, reject) => {
-                    resolve([userDocument, userDocument2]);
-                }));
-
-            userRepository.findByUser(userModel, pagination)
-            .then((models) => {
-                expect(models.length).toEqual(2);
-                expect(models[0]).toEqual(userModel);
-                expect(models[1]).toEqual(userModel2);
-                done();
-            })
-            .catch(() => done.fail('This Promise should have been resolved'));
-        });
-
-        it('should return with a rejectet Promise if an error occures', (done) => {
-            let userRepository = new UserRepository(repositoryBase, () => null);
-            repositoryBase.findBy
-                .withArgs(userDocument)
-                .returns(new Promise((resolve, reject) => {
-                    reject('Error happened');
-                }));
-
-            userRepository.findByUser(userModel, pagination)
             .then(() => done.fail('This Promise should have been rejected'))
             .catch((error: any) => {
                 expect(error).toEqual('Error happened');
