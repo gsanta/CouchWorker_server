@@ -2,7 +2,7 @@ import * as Router from 'koa-router';
 import { UserModel, UserJson, fromUserJson } from '../../shared/model/user/UserModel';
 import * as asyncBusboy from 'async-busboy';
 import { ImageModel } from '../../shared/model/image/ImageModel';
-import { ImageBusiness } from '../domain/user/ImageBusiness';
+import { ImageRepository } from '../domain/user/ImageRepository';
 import { AddressModel, AddressDocument, fromAddressJson } from '../../shared/model/AddressModel';
 import * as uuid from 'uuid/v4';
 import { UrlModel } from '../../shared/model/UrlModel';
@@ -12,7 +12,7 @@ import { PaginationModel } from '../repository/PaginationModel';
 import { ModelState } from '../../shared/model/ModelState';
 import { UserRepository } from '../domain/user/repository/UserRepository';
 
-export function profileApi(router: Router, baseDir: string, userRepository: UserRepository, imageBusiness: ImageBusiness) {
+export function profileApi(router: Router, baseDir: string, userRepository: UserRepository, imageBusiness: ImageRepository) {
 
     router.post('/api/register', async (ctx, next) => {
         if (!ctx.request.is('multipart/*')) {

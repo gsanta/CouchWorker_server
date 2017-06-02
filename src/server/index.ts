@@ -1,4 +1,4 @@
-import {RepositoryFactory} from "./repository/RepositoryFactory";
+import {RepositoryFactory} from './repository/RepositoryFactory';
 import * as express from 'express';
 // import * as fs from 'fs';
 import * as fs from 'mz/fs';
@@ -15,7 +15,7 @@ import koaBody = require('koa-body');
 import * as asyncBusboy from 'async-busboy';
 // import {Promise} from 'es6-promise';
 import { profileApi } from './rest/profileApi';
-import { ImageBusiness } from './domain/user/ImageBusiness';
+import { ImageRepository } from './domain/user/ImageRepository';
 const app = new Koa();
 const router = new Router();
 
@@ -79,9 +79,9 @@ router.get('/listUsers', function (req: express.Request, res: express.Response) 
 });
 
 const userRepository = repositoryFactory.getUserRepository();
-const imageBusiness = new ImageBusiness();
+const imageRepository = new ImageRepository();
 
-profileApi(router, baseDir, userRepository, imageBusiness);
+profileApi(router, baseDir, userRepository, imageRepository);
 
 router.post('/api/login', async (ctx) => {
     ctx.body = {

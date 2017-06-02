@@ -25,8 +25,7 @@ function saveFile(image: ImageModel): Promise<any> {
     });
 }
 
-export class ImageBusiness {
-
+export class ImageRepository {
     public create(image: ImageModel): Promise<any> {
         return fs.exists(image.getDestination())
             .then(exists => {

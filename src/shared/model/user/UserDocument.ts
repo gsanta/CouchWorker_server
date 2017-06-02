@@ -1,7 +1,7 @@
 import { AddressDocument } from '../AddressModel';
 import * as Mongoose from 'mongoose';
 
-export interface UserDocument extends Mongoose.Document {
+export interface UserDocument {
     firstName: string;
     lastName: string;
     birthDate: Date;

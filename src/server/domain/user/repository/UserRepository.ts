@@ -7,6 +7,7 @@ import { RatingModel } from '../../../../shared/model/RatingModel';
 import { ModelState } from '../../../../shared/model/ModelState';
 import { UserSchema } from './UserSchema';
 import * as Mongoose from 'mongoose';
+import { makeAggregation } from './makeAggregation';
 
 export class UserRepository {
     private model: Mongoose.Model<MongooseUserDocument>;
@@ -111,28 +112,22 @@ export class UserRepository {
     }
 
     private findOneBy(fields: UserDocument): Promise<UserDocument> {
-        return this.model
-            .aggregate(
-                { $match: fields},
-                { $unwind: '$addresses' },
-                { $match: {
-                    $or: [
-                        {'addresses.state': ModelState.ACTIVE},
-                        {'addresses.state': ModelState.NEW}
-                    ]
-                }},
-                { $group: {'_id':'$_id'}},
-            )
-            .then((result: any[]) => {
-                if (result.length === 0) {
-                    return this.model
-                        .aggregate({ $match: fields});
-                }
+        const aggr1 = [
+            { $match: fields},
+            { $unwind: '$addresses' },
+            { $match: {
+                $or: [
+                    {'addresses.state': ModelState.ACTIVE},
+                    {'addresses.state': ModelState.NEW}
+                ]
+            }},
+            { $group: {_id: '$_id'}}
+        ];
 
-                return result;
-        })
-        .then(res => {
-            return res[0];
-        });
+        const aggr2 = [
+            { $match: fields}
+        ];
+
+        return makeAggregation<UserDocument>(aggr1, aggr2)(this.model);
     }
 }
