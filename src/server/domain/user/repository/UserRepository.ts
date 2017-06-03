@@ -7,11 +7,59 @@ import { RatingModel } from '../../../../shared/model/RatingModel';
 import { ModelState } from '../../../../shared/model/ModelState';
 import { UserSchema } from './UserSchema';
 import * as Mongoose from 'mongoose';
-import { makeAggregation } from './makeAggregation';
+import { makeAggregation, takeOne } from './makeAggregation';
+
+const getActiveAddressesFilter = () => {
+    const user = new UserModel();
+    let resultProps: UserDocument = {
+        firstName: null,
+        lastName: null,
+        birthDate: null,
+        registrationDate: null,
+        email: null,
+        profession: null,
+        country: null,
+        city: null,
+        languages: null,
+        addresses: null,
+        uniqueIndex: null,
+        isActive: null,
+        uuid: null
+    };
+
+    Object.keys(resultProps).forEach((key: string) => {
+        resultProps[key] = `$${key}`;
+    });
+
+    (<any> resultProps)._id = '$_id';
+    delete resultProps.addresses;
+
+    return [
+        { $unwind: '$addresses' },
+        { $match: {
+            $or: [
+                {'addresses.state': ModelState.ACTIVE},
+                {'addresses.state': ModelState.NEW}
+            ]
+        }},
+        { $group: {_id: resultProps, addresses: {$push: '$addresses'}}}
+    ];
+};
 
 export class UserRepository {
     private model: Mongoose.Model<MongooseUserDocument>;
     private createUniqueId: () => string;
+
+    private static ACTIVE_ADDRESS_FILTER = [
+        { $unwind: '$addresses' },
+        { $match: {
+            $or: [
+                {'addresses.state': ModelState.ACTIVE},
+                {'addresses.state': ModelState.NEW}
+            ]
+        }},
+        { $group: {_id: '$_id'}}
+    ];
 
     constructor (model: Mongoose.Model<MongooseUserDocument>, createUniqueId: () => string) {
         this.model = model;
@@ -44,13 +92,7 @@ export class UserRepository {
                     {$group: {_id: '$addresses'}}
                 ]
             )
-            .then((group: any) => {
-                if (group.length) {
-                    return fromAddressDocument(group[0]._id);
-                }
-
-                return null;
-            });
+            .then((group: any) => group.length ? fromAddressDocument(group[0]._id) : null);
     }
 
     public deleteAddress(userName: string, addressUuid: string) {
@@ -85,7 +127,7 @@ export class UserRepository {
         };
 
         return this.findOneBy(userDocument)
-            .then(userDocument => fromUserDocument(userDocument));
+            .then(userDoc => fromUserDocument(userDoc));
     }
 
     public findByUserName(userName: string): Promise<UserModel> {
@@ -100,34 +142,37 @@ export class UserRepository {
         };
 
         return this.findOneBy(userDocument)
-            .then(userDocument => fromUserDocument(userDocument));
+            .then(userDoc => fromUserDocument(userDoc));
     }
 
     public findByText(searchString: string, pagination: PaginationModel): Promise<UserModel[]> {
-        return this.model.find({$text: {$search: searchString}})
-            .skip(pagination.getPage() * pagination.getLimit())
-            .limit(pagination.getLimit())
-            .exec()
-            .then(docs => docs.map(doc => fromUserDocument(doc)));
+        const aggr1 = [
+            {$match: {$text: {$search: searchString}}},
+            {$skip: pagination.getPage() * pagination.getLimit()},
+            {$limit: pagination.getLimit()},
+            ...getActiveAddressesFilter()
+        ];
+
+        return <any> this.model.aggregate(...aggr1)
+            .then(users => users.map((user: any) => {
+                user._id.addresses = user.addresses;
+                return fromUserDocument(user._id);
+            }));
     }
 
     private findOneBy(fields: UserDocument): Promise<UserDocument> {
         const aggr1 = [
             { $match: fields},
-            { $unwind: '$addresses' },
-            { $match: {
-                $or: [
-                    {'addresses.state': ModelState.ACTIVE},
-                    {'addresses.state': ModelState.NEW}
-                ]
-            }},
-            { $group: {_id: '$_id'}}
+            ...getActiveAddressesFilter()
         ];
 
-        const aggr2 = [
-            { $match: fields}
-        ];
+        return <Promise<UserDocument>> this.model.aggregate(...aggr1)
+            .then(users => users.length ? (<any> users[0])._id : null);
 
-        return makeAggregation<UserDocument>(aggr1, aggr2)(this.model);
+        // const aggr2 = [
+        //     { $match: fields}
+        // ];
+
+        // return takeOne<UserDocument>(makeAggregation<UserDocument>(aggr1, aggr2)(this.model));
     }
 }
