@@ -26,9 +26,8 @@ export function deleteAddress(address: AddressModel, userName: string) {
 
         const addressJson = toAddressJson(address);
 
-        return fetch(`./api/deleteAddress/${userName}`, {
+        return fetch(`./api/deleteAddress/${userName}/${address.uuid}`, {
             method: 'POST',
-            body: JSON.stringify(addressJson),
             headers: {
                 'Content-Type': 'application/json'
             }

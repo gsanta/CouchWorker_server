@@ -24,6 +24,7 @@ export function profileApi(router: Router, baseDir: string, userRepository: User
         user = {
             ...user,
             userName: `${user.firstName}.${user.lastName}.0`,
+            uniqueIndex: 0,
             registrationDate: new Date(),
             uuid: uuid()
         };
@@ -59,9 +60,9 @@ export function profileApi(router: Router, baseDir: string, userRepository: User
             await imageBusiness.create(image);
         }
 
-        address = {...address, images: List(urlModels), state: ModelState.ACTIVE};
+        address = {...address, images: urlModels, state: ModelState.ACTIVE};
 
-        const addresses = user.addresses.push(address);
+        const addresses = [...user.addresses, address];
         user = {...user, addresses: addresses };
         await userRepository.update(user);
         ctx.body = await userRepository.findByUserName(ctx.params.userName);

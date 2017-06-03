@@ -7,59 +7,10 @@ import { RatingModel } from '../../../../shared/model/RatingModel';
 import { ModelState } from '../../../../shared/model/ModelState';
 import { UserSchema } from './UserSchema';
 import * as Mongoose from 'mongoose';
-import { makeAggregation, takeOne } from './makeAggregation';
-
-const getActiveAddressesFilter = () => {
-    const user = new UserModel();
-    let resultProps: UserDocument = {
-        firstName: null,
-        lastName: null,
-        birthDate: null,
-        registrationDate: null,
-        email: null,
-        profession: null,
-        country: null,
-        city: null,
-        languages: null,
-        addresses: null,
-        uniqueIndex: null,
-        isActive: null,
-        uuid: null
-    };
-
-    Object.keys(resultProps).forEach((key: string) => {
-        resultProps[key] = `$${key}`;
-    });
-
-    (<any> resultProps)._id = '$_id';
-    delete resultProps.addresses;
-
-    return [
-        { $unwind: '$addresses' },
-        { $match: {
-            $or: [
-                {'addresses.state': ModelState.ACTIVE},
-                {'addresses.state': ModelState.NEW}
-            ]
-        }},
-        { $group: {_id: resultProps, addresses: {$push: '$addresses'}}}
-    ];
-};
 
 export class UserRepository {
     private model: Mongoose.Model<MongooseUserDocument>;
     private createUniqueId: () => string;
-
-    private static ACTIVE_ADDRESS_FILTER = [
-        { $unwind: '$addresses' },
-        { $match: {
-            $or: [
-                {'addresses.state': ModelState.ACTIVE},
-                {'addresses.state': ModelState.NEW}
-            ]
-        }},
-        { $group: {_id: '$_id'}}
-    ];
 
     constructor (model: Mongoose.Model<MongooseUserDocument>, createUniqueId: () => string) {
         this.model = model;
@@ -96,11 +47,11 @@ export class UserRepository {
     }
 
     public deleteAddress(userName: string, addressUuid: string) {
-        return this.findAddressByUuid(userName, addressUuid)
-            .then((addressModel: AddressModel) => {
-                addressModel.state = ModelState.DELETED;
-                return this.updateAddress(userName, addressModel);
-            });
+        const query = {
+            ...splitUserName(userName)
+        };
+
+        return this.model.update(query, { $pull: { addresses: {uuid: addressUuid} } });
     }
 
     public updateAddress(userName: string, address: AddressModel) {
@@ -149,30 +100,19 @@ export class UserRepository {
         const aggr1 = [
             {$match: {$text: {$search: searchString}}},
             {$skip: pagination.getPage() * pagination.getLimit()},
-            {$limit: pagination.getLimit()},
-            ...getActiveAddressesFilter()
+            {$limit: pagination.getLimit()}
         ];
 
         return <any> this.model.aggregate(...aggr1)
-            .then(users => users.map((user: any) => {
-                user._id.addresses = user.addresses;
-                return fromUserDocument(user._id);
-            }));
+            .then(users => users.map((user: any) => fromUserDocument(user)));
     }
 
     private findOneBy(fields: UserDocument): Promise<UserDocument> {
         const aggr1 = [
-            { $match: fields},
-            ...getActiveAddressesFilter()
+            { $match: fields}
         ];
 
         return <Promise<UserDocument>> this.model.aggregate(...aggr1)
-            .then(users => users.length ? (<any> users[0])._id : null);
-
-        // const aggr2 = [
-        //     { $match: fields}
-        // ];
-
-        // return takeOne<UserDocument>(makeAggregation<UserDocument>(aggr1, aggr2)(this.model));
+            .then(users => users.length ? users[0] : null);
     }
 }

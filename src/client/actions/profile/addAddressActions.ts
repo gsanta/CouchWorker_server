@@ -39,10 +39,8 @@ export function addAddress(address: AddressModel, files: File[], userName: strin
 
 function createFormData(address: AddressModel, files: File[]): FormData {
     const formData = new FormData();
-    formData.append('country', address.country);
-    formData.append('city', address.city);
-    formData.append('street', address.street);
-    formData.append('house', address.house);
+
+    Object.keys(address).map(key => formData.append(key, address[key]));
     files.forEach((file, index) => {
         formData.append('file', file, 'file' + index + '.png');
     });

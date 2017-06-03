@@ -24,52 +24,33 @@ export interface AddressDocument {
 
 export function toAddressDocument(addressModel: AddressModel): AddressDocument {
     return {
-        country: addressModel.country,
-        city: addressModel.city,
-        street: addressModel.street,
-        house: addressModel.house,
-        uuid: addressModel.uuid,
-        state: addressModel.state,
-        images: addressModel.images.map(image => toUrlDocument(image)).toArray()
+        ...addressModel,
+        images: addressModel.images.map(image => toUrlDocument(image))
     };
 }
 
 export function fromAddressDocument(addressDocument: AddressDocument): AddressModel {
-    return {
-        country: addressDocument.country,
-        city: addressDocument.city,
-        street: addressDocument.street,
-        house: addressDocument.house,
-        uuid: addressDocument.uuid,
-        state: addressDocument.state,
-        images: List<UrlModel>(addressDocument.images.map(image => fromUrlDocument(image)))
+    return <AddressModel> {
+        ...addressDocument,
+        images: addressDocument.images.map(image => fromUrlDocument(image))
     };
 }
 
 export function fromAddressJson(json: AddressJson): AddressModel {
     const images = json.images ? json.images.map(image => fromUrlJson(image)) : [];
 
-    return {
-        country: json.country,
-        city: json.city,
-        street: json.street,
-        house: json.house,
-        uuid: json.uuid,
-        state: json.state,
-        images: List<UrlModel>(images)
+    return <AddressModel> {
+        ...json,
+        images: images
     };
 }
 
 export function toAddressJson(addressModel: AddressModel): AddressJson {
-    const images = addressModel.images.map(image => toUrlJson(image)).toArray();
-    return {
-        country: addressModel.country,
-        city: addressModel.city,
-        street: addressModel.street,
-        house: addressModel.house,
-        images: images,
-        uuid: addressModel.uuid,
-        state: addressModel.state
+    const images = addressModel.images.map(image => toUrlJson(image));
+
+    return <AddressJson> {
+        ...addressModel,
+        images
     };
 }
 
@@ -81,5 +62,5 @@ export class AddressModel {
     public uuid: string;
     public state: ModelState;
 
-    public images: List<UrlModel> = List<UrlModel>();
+    public images: UrlModel[] = [];
 }

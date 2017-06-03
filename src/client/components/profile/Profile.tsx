@@ -31,7 +31,7 @@ export function Profile(props: ProfileProps) {
         );
 
         const images = address.images.map(img => {
-            return <img src={`img/${props.user.uuid}/addresses/${address.uuid}/${img.fileName}.${img.extension}`}/>
+            return <img src={`img/${props.user.uuid}/addresses/${address.uuid}/${img.fileName}.${img.extension}`}/>;
         });
 
         return (
@@ -45,7 +45,7 @@ export function Profile(props: ProfileProps) {
                 </div>
             </Panel>
         );
-    }).toArray();
+    });
 
     const addressEditors = user.addresses.map(address => {
         const editedComponent = `address-${address.uuid}`;
@@ -57,7 +57,7 @@ export function Profile(props: ProfileProps) {
                 close={() => props.onEditModeChange(null)}
             />
         );
-    }).toArray();
+    });
     return (
         <div className="cw-profile">
             <Panel header={header}
