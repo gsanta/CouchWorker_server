@@ -7,6 +7,7 @@ import { AboutHeader } from './view_profile/AboutHeader';
 import { AddressHeader } from './view_profile/AddressHeader';
 import { AddressEditor } from './edit_profile/AddressEditor';
 import { AddressModel } from '../../../shared/model/AddressModel';
+import { UrlModel } from '../../../shared/model/UrlModel';
 require('./Profile.scss');
 
 function getAge(birthDate: Date) {
@@ -54,7 +55,9 @@ export function Profile(props: ProfileProps) {
                 user={props.user}
                 address={address}
                 isOpen={props.editedComponent === editedComponent}
-                onSubmit={(newAddress) => props.onSubmitAddress(newAddress, props.user.userName)}
+                onSubmit={(newAddress: AddressModel, newImages: File[], deletedImages: UrlModel[]) => (
+                    props.onUpdateddress(newAddress, newImages, deletedImages, props.user.userName)
+                )}
                 close={() => props.onEditModeChange(null)}
             />
         );
@@ -99,7 +102,7 @@ export interface ProfileProps {
     editedComponent: string;
     onSubmit: (user: UserModel) => void;
     onSubmitAboutInfo: (user: UserModel) => void;
-    onSubmitAddress: (address: AddressModel, userName: string) => void;
+    onUpdateddress: (address: AddressModel, newImages: File[], deletedImages: UrlModel[], userName: string) => void;
     onDeleteAddress: (address: AddressModel, userName: string) => void;
     onAddAddress: (address: AddressModel, files: File[], userName: string) => void;
     onEditModeChange: (editedComponent: string) => void;

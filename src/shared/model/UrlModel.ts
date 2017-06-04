@@ -17,33 +17,27 @@ export function getFullPath(basePath: string, urlModel: UrlModel): string {
 
 export function toUrlDocument(urlModel: UrlModel): UrlDocument {
     return {
-        fileName: urlModel.fileName,
-        extension: urlModel.extension,
-        state: urlModel.state
+        ...urlModel
     };
 }
 
 export function fromUrlDocument(urlDocument: UrlDocument): UrlModel {
     return {
-        fileName: urlDocument.fileName,
-        extension: urlDocument.extension,
+        ...urlDocument,
         state: ModelState[ModelState[urlDocument.state]]
     };
 }
 
 export function fromUrlJson(json: UrlJson): UrlModel {
     return {
-        fileName: json.fileName,
-        extension: json.extension,
+        ...json,
         state: ModelState[ModelState[json.state]]
     };
 }
 
 export function toUrlJson(urlModel: UrlModel): UrlJson {
     return {
-        fileName: urlModel.fileName,
-        extension: urlModel.extension,
-        state: urlModel.state
+        ...urlModel
     };
 }
 

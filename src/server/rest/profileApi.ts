@@ -12,8 +12,6 @@ import { PaginationModel } from '../repository/PaginationModel';
 import { ModelState } from '../../shared/model/ModelState';
 import { UserRepository } from '../domain/user/repository/UserRepository';
 
-console.log('helo')
-
 export function profileApi(router: Router, baseDir: string, userRepository: UserRepository, imageBusiness: ImageRepository) {
 
     router.post('/api/register', async (ctx, next) => {
@@ -86,8 +84,42 @@ export function profileApi(router: Router, baseDir: string, userRepository: User
     });
 
     router.post('/api/updateAddress/:userName', async (ctx, next) => {
-        const address = fromAddressJson(ctx.request.body);
+        if (!ctx.request.is('multipart/*')) {
+            return await next();
+        }
+
+        const {files, fields} = await asyncBusboy(ctx.req);
+
+        const user = await userRepository.findByUserName(ctx.params.userName);
+        const address = await userRepository.findAddressByUuid(ctx.params.userName, fields.uuid);
+        const deletedImages = JSON.parse(fields.deletedImages);
+
+        const remainingImages = address.images.filter(image => deletedImages.indexOf(image.fileName) === -1);
+
+        address.images = remainingImages;
+
+        let urlModels = [];
+        for (let file of files) {
+            const fileName = uuid();
+            const extension = file.mime.split('/')[1];
+            const urlModel = {
+                fileName,
+                extension
+            };
+            urlModels.push(urlModel);
+            const image: ImageModel = {
+                image: file,
+                baseDir: baseDir,
+                relativePath: `img/${user.uuid}/addresses/${address.uuid}/`,
+                fileName: fileName
+            };
+            await imageBusiness.create(image);
+        }
+
+        address.images.push(...urlModels);
+
         await userRepository.updateAddress(ctx.params.userName, address);
+
         ctx.body = await userRepository.findByUserName(ctx.params.userName);
     });
 

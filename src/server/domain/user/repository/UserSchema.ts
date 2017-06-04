@@ -94,6 +94,10 @@ export class UserSchema {
                             extension: {
                                 type: String,
                                 required: true
+                            },
+                            uuid: {
+                                type: String,
+                                required: true
                             }
                         }
                     ],

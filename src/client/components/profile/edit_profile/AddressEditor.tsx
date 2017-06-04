@@ -9,27 +9,35 @@ import {Tab, Tabs, Thumbnail} from 'react-bootstrap';
 import { UrlModel } from '../../../../shared/model/UrlModel';
 import { UserModel } from '../../../../shared/model/user/UserModel';
 
+function getInitialState(props: AddressEditorProps) {
+    return {
+        address: props.address,
+        deletedImages: [],
+        files: [],
+        errors: null,
+        isCountryModified: false,
+        isCityModified: false,
+        isStreetModified: false,
+        isHouseModified: false
+    };
+}
+
 export class AddressEditor extends React.Component<AddressEditorProps, AddressEditorState> {
 
     constructor(props: AddressEditorProps) {
         super(props);
 
-        this.state = {
-            address: this.props.address,
-            deletedImages: [],
-            files: [],
-            errors: null,
-            isCountryModified: false,
-            isCityModified: false,
-            isStreetModified: false,
-            isHouseModified: false
-        };
+        this.state = getInitialState(props);
     }
 
     componentWillReceiveProps(newProps: AddressEditorProps) {
-        this.setState({
-            address: newProps.address || new AddressModel()
-        });
+        if (!this.props.isOpen && newProps.isOpen) {
+            this.setState(getInitialState(newProps));
+        } else {
+            this.setState({
+                address: newProps.address || new AddressModel()
+            });
+        }
     }
 
     public render() {
@@ -93,7 +101,7 @@ export class AddressEditor extends React.Component<AddressEditorProps, AddressEd
                     <Button onClick={this.props.close}>Cancel</Button>
                     <Button
                         disabled={this.state.errors}
-                        onClick={() => this.props.onSubmit(this.state.address, this.state.files)}>
+                        onClick={() => this.props.onSubmit(this.state.address, this.state.files, this.state.deletedImages)}>
                         Save
                     </Button>
                 </Modal.Footer>
@@ -192,7 +200,7 @@ export interface AddressEditorProps {
     address: AddressModel;
     isOpen: boolean;
     close: () => void;
-    onSubmit: (address: AddressModel, files: File[]) => void;
+    onSubmit: (address: AddressModel, newImages: File[], deletedImages: UrlModel[]) => void;
 }
 
 export interface AddressEditorState {

@@ -2,6 +2,7 @@ import { UserModel, UserJson, fromUserJson, toUserJson } from '../../../shared/m
 import { ASYNC_STATES } from '../../utils/AsyncStates';
 import { Dispatch } from 'redux';
 import { AddressModel, toAddressJson, AddressJson, fromAddressJson } from '../../../shared/model/AddressModel';
+import { UrlModel } from '../../../shared/model/UrlModel';
 
 export const UPDATE_ADDRESS = 'UPDATE_ADDRESS';
 export const UPDATE_ADDRESS_REQUEST = 'UPDATE_ADDRESS_REQUEST';
@@ -20,7 +21,7 @@ export function updateAddressResponse(json: UserJson) {
     };
 }
 
-export function updateAddress(address: AddressModel, userName: string) {
+export function updateAddress(address: AddressModel, newImages: File[], deletedImages: UrlModel[], userName: string) {
     return function (dispatch: Dispatch<any>) {
 
         dispatch(updateAddressRequest(address));
@@ -29,10 +30,7 @@ export function updateAddress(address: AddressModel, userName: string) {
 
         return fetch(`./api/updateAddress/${userName}`, {
             method: 'POST',
-            body: JSON.stringify(addressJson),
-            headers: {
-                'Content-Type': 'application/json'
-            }
+            body: createFormData(address, newImages, deletedImages) //JSON.stringify(addressJson),
         })
         .then(response => response.json())
         .then((json: any) => {
@@ -40,3 +38,17 @@ export function updateAddress(address: AddressModel, userName: string) {
         });
     };
 }
+
+function createFormData(address: AddressModel, images: File[], deletedImages: UrlModel[]): FormData {
+    const formData = new FormData();
+
+    Object.keys(address).map(key => formData.append(key, address[key]));
+    images.forEach((file, index) => {
+        formData.append('file', file, 'file' + index + '.png');
+    });
+
+    const deletedImageNames = deletedImages.map(image => image.fileName);
+    formData.append('deletedImages', JSON.stringify(deletedImageNames));
+    return formData;
+}
+

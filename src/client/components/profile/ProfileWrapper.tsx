@@ -1,3 +1,4 @@
+import { UrlModel } from '../../../shared/model/UrlModel';
 import { setEditedComponentAction } from '../../actions/editModeActions';
 import { RootModel } from '../../RootModel';
 import { connect } from 'react-redux';
@@ -31,8 +32,8 @@ const mapDispatchToProps = (dispatch, props: any) => {
         onSubmitAboutInfo: (model: UserModel) => {
             dispatch(updateAboutInfo(model));
         },
-        onSubmitAddress: (model: AddressModel, userName: string) => {
-            dispatch(updateAddress(model, userName));
+        onUpdateddress: (model: AddressModel, newImages: File[], deletedImages: UrlModel[], userName: string) => {
+            dispatch(updateAddress(model, newImages, deletedImages, userName));
         },
         onDeleteAddress: (model: AddressModel, userName: string) => {
             dispatch(deleteAddress(model, userName));
