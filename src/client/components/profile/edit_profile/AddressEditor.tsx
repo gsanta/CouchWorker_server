@@ -6,6 +6,8 @@ import * as validate from 'validate.js';
 import { addressValidator } from '../../../../shared/model/addressValidator';
 import * as Dropzone from 'react-dropzone';
 import {Tab, Tabs, Thumbnail} from 'react-bootstrap';
+import { UrlModel } from '../../../../shared/model/UrlModel';
+import { UserModel } from '../../../../shared/model/user/UserModel';
 
 export class AddressEditor extends React.Component<AddressEditorProps, AddressEditorState> {
 
@@ -14,6 +16,7 @@ export class AddressEditor extends React.Component<AddressEditorProps, AddressEd
 
         this.state = {
             address: this.props.address,
+            deletedImages: [],
             files: [],
             errors: null,
             isCountryModified: false,
@@ -81,6 +84,7 @@ export class AddressEditor extends React.Component<AddressEditorProps, AddressEd
                             <Dropzone onDrop={this.onDrop.bind(this)}>
                                 <p>Try dropping some files here, or click to select files to upload.</p>
                             </Dropzone>
+                            {this.renderUploadedImages()}
                             {this.renderPreviewImages()}
                         </Tab>
                     </Tabs>
@@ -97,17 +101,36 @@ export class AddressEditor extends React.Component<AddressEditorProps, AddressEd
         );
     }
 
+    private renderUploadedImages() {
+        const {user} = this.props;
+        const {address} = this.state;
+        return this.state.address.images
+            .filter(image => this.state.deletedImages.indexOf(image) === -1)
+            .map(image => (
+                    <Thumbnail src={`img/${user.uuid}/addresses/${address.uuid}/${image.fileName}.${image.extension}`}>
+                        <Button bsStyle="danger" onClick={() => this.deleteUploadedImage(image)}>Delete</Button>
+                    </Thumbnail>
+                )
+            );
+    }
+
     private renderPreviewImages() {
         return this.state.files.map(file => {
             return (
                 <Thumbnail src={(file as any).preview}>
-                    <Button bsStyle="danger" onClick={() => this.deleteFile(file)}>Delete</Button>
+                    <Button bsStyle="danger" onClick={() => this.deleteLocalImage(file)}>Delete</Button>
                 </Thumbnail>
             );
         });
     }
 
-    private deleteFile(file: File) {
+    private deleteUploadedImage(img: UrlModel) {
+        this.setState({
+            deletedImages: [...this.state.deletedImages, img]
+        });
+    }
+
+    private deleteLocalImage(file: File) {
         this.setState({
             files: this.state.files.filter(f => f !== file)
         });
@@ -165,6 +188,7 @@ export class AddressEditor extends React.Component<AddressEditorProps, AddressEd
 }
 
 export interface AddressEditorProps {
+    user: UserModel;
     address: AddressModel;
     isOpen: boolean;
     close: () => void;
@@ -173,6 +197,7 @@ export interface AddressEditorProps {
 
 export interface AddressEditorState {
     address: AddressModel;
+    deletedImages: UrlModel[];
     files: File[];
     isCountryModified: boolean;
     isCityModified: boolean;

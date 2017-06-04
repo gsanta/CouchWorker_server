@@ -12,6 +12,8 @@ import { PaginationModel } from '../repository/PaginationModel';
 import { ModelState } from '../../shared/model/ModelState';
 import { UserRepository } from '../domain/user/repository/UserRepository';
 
+console.log('helo')
+
 export function profileApi(router: Router, baseDir: string, userRepository: UserRepository, imageBusiness: ImageRepository) {
 
     router.post('/api/register', async (ctx, next) => {
@@ -31,7 +33,13 @@ export function profileApi(router: Router, baseDir: string, userRepository: User
         user = await userRepository.create(user);
 
         if (files.length) {
-            const image = new ImageModel(files[0], baseDir, `img/${user.uuid}/profile/`, 'profile');
+            const image: ImageModel = {
+                image: files[0],
+                baseDir: baseDir,
+                relativePath: `img/${user.uuid}/profile/`,
+                fileName: 'profile'
+            };
+
             await imageBusiness.create(image);
         }
     });
@@ -56,7 +64,12 @@ export function profileApi(router: Router, baseDir: string, userRepository: User
                 extension
             };
             urlModels.push(urlModel);
-            const image = new ImageModel(file, baseDir, `img/${user.uuid}/addresses/${address.uuid}/`, fileName);
+            const image: ImageModel = {
+                image: file,
+                baseDir: baseDir,
+                relativePath: `img/${user.uuid}/addresses/${address.uuid}/`,
+                fileName: fileName
+            };
             await imageBusiness.create(image);
         }
 

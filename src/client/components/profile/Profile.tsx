@@ -51,6 +51,7 @@ export function Profile(props: ProfileProps) {
         const editedComponent = `address-${address.uuid}`;
         return (
             <AddressEditor
+                user={props.user}
                 address={address}
                 isOpen={props.editedComponent === editedComponent}
                 onSubmit={(newAddress) => props.onSubmitAddress(newAddress, props.user.userName)}
@@ -83,6 +84,7 @@ export function Profile(props: ProfileProps) {
                 Add address
             </div>
             <AddressEditor
+                user={props.user}
                 address={new AddressModel()}
                 isOpen={props.editedComponent === `address-new`}
                 onSubmit={(newAddress: AddressModel, files: File[]) => props.onAddAddress(newAddress, files, props.user.userName)}

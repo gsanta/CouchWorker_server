@@ -1,29 +1,17 @@
 import { UserModel } from '../user/UserModel';
+import { ModelState } from '../ModelState';
+
+export const getImageDestination = (img: ImageModel) => img.baseDir + img.relativePath;
+
+export const getImageFileName = (img: ImageModel): string => {
+    const extension = img.image.mime.split('/')[1];
+    return `${img.fileName}.${extension}`;
+};
+
 
 export class ImageModel {
-    private image: any;
-    private destination: string;
-    private baseDir: string;
-    private relativePath: string;
-    private fileName: string;
-
-    constructor(image: any, baseDir: string, relativePath: string, fileName: string) {
-        this.image = image;
-        this.baseDir = baseDir;
-        this.relativePath = relativePath;
-        this.fileName = fileName;
-    }
-
-    public getImage(): any {
-        return this.image;
-    }
-
-    public getDestination(): string {
-        return this.baseDir + this.relativePath;
-    }
-
-    public getFileName(): string {
-        const extension = this.image.mime.split('/')[1];
-        return `${this.fileName}.${extension}`;
-    }
+    public image: any;
+    public baseDir: string;
+    public relativePath: string;
+    public fileName: string;
 }
