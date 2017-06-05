@@ -13,6 +13,7 @@ import { HostsWrapper } from './components/host/HostsWrapper';
 import { UserModel } from '../shared/model/user/UserModel';
 import * as validate from 'validate.js';
 import * as moment from 'moment';
+import { SignupWrapper } from './components/profile/SignupWrapper';
 
 require('bootstrap/dist/css/bootstrap.css');
 require('./couchWorker.scss');
@@ -95,7 +96,7 @@ render(
                 <Route path="/hosts(/:page)" component={HostsWrapper} />
                 <Route path="/host(/:id)" component={HostDetailWrapper} />
                 <Route path="/profile" component={ProfileWrapper} />
-                <Route path="/signup" component={ProfileWrapper} />
+                <Route path="/signup" component={SignupWrapper} />
                 <Route path="/login" component={LoginWrapper} />
             </Route>
         </Router>

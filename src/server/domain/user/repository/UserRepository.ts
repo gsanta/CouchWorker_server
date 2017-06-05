@@ -34,11 +34,11 @@ export class UserRepository {
             .then(() => user);
     }
 
-    public findAddressByUuid(userName: string, uuid: string): Promise<AddressModel> {
+    public findAddressByUuid(userUuid: string, addressUuid: string): Promise<AddressModel> {
         return this.model.aggregate(
                 [
                     {$unwind: '$addresses'},
-                    {$match: {'addresses.uuid' : uuid}},
+                    {$match: {'addresses.uuid' : addressUuid}},
                     {$project : {addresses : 1}},
                     {$group: {_id: '$addresses'}}
                 ]
@@ -46,17 +46,17 @@ export class UserRepository {
             .then((group: any) => group.length ? fromAddressDocument(group[0]._id) : null);
     }
 
-    public deleteAddress(userName: string, addressUuid: string) {
+    public deleteAddress(userUuid: string, addressUuid: string) {
         const query = {
-            ...splitUserName(userName)
+            uuid: userUuid
         };
 
         return this.model.update(query, { $pull: { addresses: {uuid: addressUuid} } });
     }
 
-    public updateAddress(userName: string, address: AddressModel) {
+    public updateAddress(userUuid: string, address: AddressModel) {
         const query = {
-            ...splitUserName(userName),
+            uuid: userUuid,
             'addresses.uuid': address.uuid
         };
 
@@ -94,6 +94,15 @@ export class UserRepository {
 
         return this.findOneBy(userDocument)
             .then(userDoc => fromUserDocument(userDoc));
+    }
+
+    public findUuidForUser(userName: string): Promise<string> {
+        const query = {
+            ...splitUserName(userName)
+        };
+
+        return this.model.findOne(query, 'uuid')
+            .then(user => user.uuid);
     }
 
     public findByText(searchString: string, pagination: PaginationModel): Promise<UserModel[]> {

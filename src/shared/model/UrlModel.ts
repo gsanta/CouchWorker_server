@@ -5,6 +5,7 @@ export interface UrlDocument {
     fileName: string;
     extension: string;
     state: number;
+    src: string;
 }
 
 export interface UrlJson extends UrlDocument {
@@ -46,4 +47,5 @@ export class UrlModel {
     public fileName: string;
     public extension: string;
     public state: ModelState;
+    public src: string;
 }

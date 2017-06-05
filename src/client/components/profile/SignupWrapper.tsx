@@ -23,7 +23,7 @@ const mapDispatchToProps = (dispatch, props: any) => {
     };
 };
 
-export const ProfileWrapper = connect(
+export const SignupWrapper = connect(
     null,
     mapDispatchToProps
 )(Signup);

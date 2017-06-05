@@ -1,6 +1,10 @@
 import * as React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { UserModel } from '../../../shared/model/user/UserModel';
+import { AboutInfoFields } from './edit_profile/AboutInfoFields';
+import * as validate from 'validate.js';
+import { userValidator } from '../../../shared/model/user/userValidator';
+import { AddressModel } from '../../../shared/model/AddressModel';
 
 export class Signup extends React.Component<any, any> {
     constructor(props: any) {
@@ -9,61 +13,32 @@ export class Signup extends React.Component<any, any> {
         const user = props.user || new UserModel();
         this.state = {
             user,
-            errors: null,
-            isFirstNameModified: false,
-            isLastNameModified: false,
-            isEmailModified: false,
-            isProfessionModified: false,
-            isCountryModified: false,
-            isCityModified: false,
-            isBirthDateModified: false
+            errors: null
         };
-    }
-
-    public componentWillReceiveProps(newProps: AboutInfoEditorProps) {
-        this.setState({
-            user: newProps.user || new UserModel()
-        });
     }
 
     public render() {
         const errors = this.state.errors || {};
         return (
-            <Modal show={this.props.isOpen} onHide={this.props.close}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Modal heading</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button onClick={this.props.close}>Cancel</Button>
-                    <Button
-                        disabled={this.state.errors}
-                        onClick={() => this.props.onSubmit(this.state.user)}>
-                        Save
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+            <AboutInfoFields onChange={this.onAboutInfoChange.bind(this)} user={this.state.user} errors={errors}/>
         );
+    }
+
+    private onAboutInfoChange(user: UserModel) {
+        const errors = (validate as any).validate(user, userValidator);
+
+        this.setState({
+            user,
+            errors
+        });
     }
 }
 
 export interface AboutInfoEditorProps {
-    user: UserModel;
-    isOpen: boolean;
-    close: () => void;
-    onSubmit: (user: UserModel) => void;
+    onSignup: (model: UserModel, initialAddress: AddressModel, addressImages: File[]) => void;
 }
 
 interface AboutInfoEditorState {
     user: UserModel;
     errors: any;
-    isFirstNameModified: boolean;
-    isLastNameModified: boolean;
-    isEmailModified: boolean;
-    isProfessionModified: boolean;
-    isCountryModified: boolean;
-    isCityModified: boolean;
-    isBirthDateModified: boolean;
 }

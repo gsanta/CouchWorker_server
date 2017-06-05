@@ -14,4 +14,5 @@ export class ImageModel {
     public baseDir: string;
     public relativePath: string;
     public fileName: string;
+    public src: string;
 }

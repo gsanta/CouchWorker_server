@@ -1,7 +1,7 @@
 import * as Router from 'koa-router';
 import { UserModel, UserJson, fromUserJson } from '../../shared/model/user/UserModel';
 import * as asyncBusboy from 'async-busboy';
-import { ImageModel } from '../../shared/model/image/ImageModel';
+import { ImageModel, getImageFileName } from '../../shared/model/image/ImageModel';
 import { ImageRepository } from '../domain/user/ImageRepository';
 import { AddressModel, AddressDocument, fromAddressJson } from '../../shared/model/AddressModel';
 import * as uuid from 'uuid/v4';
@@ -35,7 +35,8 @@ export function profileApi(router: Router, baseDir: string, userRepository: User
                 image: files[0],
                 baseDir: baseDir,
                 relativePath: `img/${user.uuid}/profile/`,
-                fileName: 'profile'
+                fileName: 'profile',
+                src: `img/${user.uuid}/profile.png`                
             };
 
             await imageBusiness.create(image);
@@ -66,7 +67,8 @@ export function profileApi(router: Router, baseDir: string, userRepository: User
                 image: file,
                 baseDir: baseDir,
                 relativePath: `img/${user.uuid}/addresses/${address.uuid}/`,
-                fileName: fileName
+                fileName: fileName,
+                src: `img/${user.uuid}/addresses/${address.uuid}/${getImageFileName(file)}`
             };
             await imageBusiness.create(image);
         }
@@ -80,7 +82,8 @@ export function profileApi(router: Router, baseDir: string, userRepository: User
     });
 
     router.get('/api/findAddress/:uuid', async (ctx, next) => {
-        ctx.body = await userRepository.findAddressByUuid(null, ctx.params.uuid);
+        const userUuid = await userRepository.findUuidForUser(ctx.params.userName);
+        ctx.body = await userRepository.findAddressByUuid(userUuid, ctx.params.uuid);
     });
 
     router.post('/api/updateAddress/:userName', async (ctx, next) => {
@@ -91,7 +94,7 @@ export function profileApi(router: Router, baseDir: string, userRepository: User
         const {files, fields} = await asyncBusboy(ctx.req);
 
         const user = await userRepository.findByUserName(ctx.params.userName);
-        const address = await userRepository.findAddressByUuid(ctx.params.userName, fields.uuid);
+        const address = await userRepository.findAddressByUuid(user.uuid, fields.uuid);
         const deletedImages = JSON.parse(fields.deletedImages);
 
         const remainingImages = address.images.filter(image => deletedImages.indexOf(image.fileName) === -1);
@@ -111,20 +114,22 @@ export function profileApi(router: Router, baseDir: string, userRepository: User
                 image: file,
                 baseDir: baseDir,
                 relativePath: `img/${user.uuid}/addresses/${address.uuid}/`,
-                fileName: fileName
+                fileName: fileName,
+                src: `img/${user.uuid}/addresses/${address.uuid}/${getImageFileName(file)}`                
             };
             await imageBusiness.create(image);
         }
 
         address.images.push(...urlModels);
 
-        await userRepository.updateAddress(ctx.params.userName, address);
+        await userRepository.updateAddress(user.uuid, address);
 
         ctx.body = await userRepository.findByUserName(ctx.params.userName);
     });
 
     router.post('/api/deleteAddress/:userName/:uuid', async (ctx, next) => {
-        const address = await userRepository.deleteAddress(ctx.params.userName, ctx.params.uuid);
+        const userUuid = await userRepository.findUuidForUser(ctx.params.userName);
+        const address = await userRepository.deleteAddress(userUuid, ctx.params.uuid);
         const body = await userRepository.findByUserName(ctx.params.userName);
         ctx.body = body;
     });
