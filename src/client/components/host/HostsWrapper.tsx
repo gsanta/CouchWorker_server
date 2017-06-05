@@ -9,19 +9,19 @@ const mapStateToProps = (state: RootModel, props: any) => {
     return {
         hosts: state.hosts,
         page: Number(props.params.page) || 1
-    }
-}
+    };
+};
 
 const mapDispatchToProps = (dispatch, props: any) => {
   return {
     fetchHosts: () => {
-        dispatch(fetchHosts())
+        dispatch(fetchHosts());
     },
     onPageSelect: (page: number) => {
         props.history.push('/hosts/' + page);
     }
-  }
-}
+  };
+};
 
 class _HostsWrapper extends React.Component<any, any> {
 
@@ -32,11 +32,11 @@ class _HostsWrapper extends React.Component<any, any> {
     public render() {
         return (
             <Hosts {...this.props}/>
-        )
+        );
     }
-} 
+}
 
 export const HostsWrapper = connect(
     mapStateToProps,
     mapDispatchToProps
-)(_HostsWrapper)
+)(_HostsWrapper);

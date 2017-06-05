@@ -2,8 +2,7 @@ let path = require('path');
 let ExtractTextPlugin = require('extract-text-webpack-plugin');
 // We need this plugin to detect a `--watch` mode. It may be removed later
 // after https://github.com/webpack/webpack/issues/3460 will be resolved.
-let { CheckerPlugin } = require('awesome-typescript-loader');
- 
+
 module.exports = function createWebpackConfig() {
     return {
         entry: {
@@ -21,7 +20,8 @@ module.exports = function createWebpackConfig() {
                 {
                     test: /\.tsx?$/,
                     loader: 'ts-loader',
-                    exclude: /node_modules/
+                    exclude: /node_modules/,
+                    options: { configFileName: 'tsconfig_client.json' }
                 },
                 {
                     enforce: 'pre',

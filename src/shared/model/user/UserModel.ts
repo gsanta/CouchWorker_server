@@ -44,6 +44,16 @@ export function fromUserDocument(userDocument: UserDocument): UserModel {
 
     const userModel = <UserModel> {
         ...userDocument,
+        uuid: userDocument.uuid,
+        firstName: userDocument.firstName,
+        lastName: userDocument.lastName,
+        birthDate: userDocument.birthDate,
+        registrationDate: userDocument.registrationDate,
+        email: userDocument.email,
+        profession: userDocument.profession,
+        country: userDocument.country,
+        city: userDocument.city,
+        isActive: userDocument.isActive,
         rating: {rating: 5},
         userName: `${userDocument.firstName}.${userDocument.lastName}.${userDocument.uniqueIndex}`,
         languages: userDocument.languages,
@@ -77,8 +87,8 @@ export function toUserJson(userModel: UserModel): UserJson {
 
     return {
         ...userModel,
-        birthDate: userModel.birthDate.toJSON(),
-        registrationDate: userModel.registrationDate.toJSON(),
+        birthDate: userModel.birthDate ? userModel.birthDate.toJSON() : null,
+        registrationDate: userModel.registrationDate ? userModel.registrationDate.toJSON() : null,
         languages: userModel.languages,
         addresses: addresses,
         rating: userModel.rating.rating

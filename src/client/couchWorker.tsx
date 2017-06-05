@@ -94,7 +94,8 @@ render(
                 <IndexRedirect to="/hosts" />
                 <Route path="/hosts(/:page)" component={HostsWrapper} />
                 <Route path="/host(/:id)" component={HostDetailWrapper} />
-                <Route path="/register" component={ProfileWrapper} />
+                <Route path="/profile" component={ProfileWrapper} />
+                <Route path="/signup" component={ProfileWrapper} />
                 <Route path="/login" component={LoginWrapper} />
             </Route>
         </Router>

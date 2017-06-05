@@ -11,15 +11,15 @@ function HostsLink(props: HeaderProps) {
     return (
         <Nav pullRight>
             <LinkContainer to="/">
-                <NavItem 
-                    className='cw-menu-button  cw-hosts-button'
+                <NavItem
+                    className="cw-menu-button  cw-hosts-button"
                     eventKey={2}
                     href="#"
                 >
                     Hosts
                 </NavItem>
             </LinkContainer>
-        </Nav>  
+        </Nav>
     );
 }
 
@@ -31,8 +31,8 @@ function LoginLink(props: HeaderProps) {
     return (
         <Nav pullRight>
             <LinkContainer to="/login">
-                <NavItem 
-                    className='cw-menu-button cw-login-button'
+                <NavItem
+                    className="cw-menu-button cw-login-button"
                     eventKey={1}
                     href="#"
                 >
@@ -50,9 +50,9 @@ function SignupLink(props: HeaderProps) {
 
     return (
         <Nav pullRight>
-            <LinkContainer to="/register">
-                <NavItem 
-                    className='cw-menu-button cw-signup-button'
+            <LinkContainer to="/signup">
+                <NavItem
+                    className="cw-menu-button cw-signup-button"
                     eventKey={1}
                     href="#"
                 >
@@ -70,9 +70,9 @@ function LogoutLink(props: HeaderProps) {
 
     return (
         <Nav pullRight>
-            <LinkContainer to="/">            
-                <NavItem 
-                    className='cw-menu-button  cw-logout-button'
+            <LinkContainer to="/">
+                <NavItem
+                    className="cw-menu-button  cw-logout-button"
                     eventKey={1}
                     onClick={() => props.logout()}
                     href="#"
@@ -91,9 +91,9 @@ function ProfileLink(props: HeaderProps) {
 
     return (
         <Nav pullRight>
-            <LinkContainer to="/register">
-                <NavItem 
-                    className='cw-menu-button cw-profile-button'
+            <LinkContainer to="/profile">
+                <NavItem
+                    className="cw-menu-button cw-profile-button"
                     eventKey={1}
                     href="#"
                 >
@@ -101,7 +101,7 @@ function ProfileLink(props: HeaderProps) {
                 </NavItem>
             </LinkContainer>
         </Nav>
-    )
+    );
 }
 
 export function Header(props: HeaderProps) {

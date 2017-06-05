@@ -5,7 +5,7 @@ import { LoginModel } from '../../../shared/model/login/LoginModel';
 import { LoginValidationModel } from '../../../shared/model/login/LoginValidationModel';
 import { validateEmail } from '../../../shared/validation/validateEmail';
 import { validatePassword } from '../../../shared/validation/validatePassword';
-import validate from 'validate.js';
+import * as validate from 'validate.js';
 import * as passport from 'passport';
 import { loginValidator } from '../../../shared/model/login/loginValidator';
 
@@ -16,11 +16,15 @@ export class Login extends React.Component<LoginProps, LoginState> {
 
         this.state = {
             model: new LoginModel(),
-            errors: null
+            errors: null,
+            isEmailModified: false,
+            isPasswordModified: false
         };
     }
 
     public render() {
+        const errors = this.state.errors || {};
+
         return (
             <div>
                 <div>Login page</div>
@@ -31,7 +35,7 @@ export class Login extends React.Component<LoginProps, LoginState> {
                         controlId="cw-form-login-email"
                         placeHolder="Enter email"
                         controlLabel="Email"
-                        error={this.state.errors.email}
+                        error={this.state.isEmailModified && errors.email && errors.email[0]}
                     />
                     <StringInput
                         value={this.state.model.password}
@@ -39,7 +43,7 @@ export class Login extends React.Component<LoginProps, LoginState> {
                         controlId="cw-form-login-password"
                         placeHolder="Enter password"
                         controlLabel="Password"
-                        error={this.state.errors.password}
+                        error={this.state.isPasswordModified && errors.password && errors.password[0]}
                         type="password"
                     />
                     <Button
@@ -80,7 +84,8 @@ export class Login extends React.Component<LoginProps, LoginState> {
         const errors = this.validate(model);
         this.setState({
             model,
-            errors
+            errors,
+            isEmailModified: true
         });
     }
 
@@ -90,18 +95,21 @@ export class Login extends React.Component<LoginProps, LoginState> {
         const errors = this.validate(model);
         this.setState({
             model,
-            errors
+            errors,
+            isPasswordModified: true
         });
     }
 
     private validate(model: LoginModel) {
-        return validate(model, loginValidator);
+        return (validate as any).validate(model, loginValidator);
     }
 }
 
 export interface LoginState {
     model: LoginModel;
     errors: any;
+    isEmailModified: boolean;
+    isPasswordModified: boolean;
 }
 
 export interface LoginProps {

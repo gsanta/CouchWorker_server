@@ -10,7 +10,7 @@ export const FETCH_HOSTS = 'FETCH_HOSTS';
 export function requestHosts() {
     return {
         type: FETCH_HOSTS
-    }
+    };
 }
 
 export function receiveHosts(hosts: List<UserModel>) {
@@ -18,7 +18,7 @@ export function receiveHosts(hosts: List<UserModel>) {
         type: FETCH_HOSTS,
         state: ASYNC_STATES.SUCCESS,
         hosts: hosts
-    }
+    };
 }
 
 export function fetchHosts() {
@@ -33,7 +33,7 @@ export function fetchHosts() {
         .then(json => {
             dispatch(receiveHosts(parseHosts(<any> json)));
         });
-    }
+    };
 }
 
 function parseHosts(json: UserJson[]): List<UserModel> {
