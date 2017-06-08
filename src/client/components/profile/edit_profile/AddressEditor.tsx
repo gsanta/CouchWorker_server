@@ -8,17 +8,16 @@ import * as Dropzone from 'react-dropzone';
 import {Tab, Tabs, Thumbnail} from 'react-bootstrap';
 import { UrlModel } from '../../../../shared/model/UrlModel';
 import { UserModel } from '../../../../shared/model/user/UserModel';
+import { ImageSrc } from '../../../../shared/model/ImageSrc';
+import { AddressFields } from './AddressFields';
+import { ImageUploader } from './ImageUploader';
 
 function getInitialState(props: AddressEditorProps) {
     return {
         address: props.address,
-        deletedImages: [],
-        files: [],
+        images: [],
+        removableRemoteImages: [],
         errors: null,
-        isCountryModified: false,
-        isCityModified: false,
-        isStreetModified: false,
-        isHouseModified: false
     };
 }
 
@@ -27,6 +26,9 @@ export class AddressEditor extends React.Component<AddressEditorProps, AddressEd
     constructor(props: AddressEditorProps) {
         super(props);
 
+        this.onAddressChange = this.onAddressChange.bind(this);
+        this.onAddImages = this.onAddImages.bind(this);
+        this.onDeleteImage = this.onDeleteImage.bind(this);
         this.state = getInitialState(props);
     }
 
@@ -51,49 +53,18 @@ export class AddressEditor extends React.Component<AddressEditorProps, AddressEd
                 <Modal.Body>
                     <Tabs defaultActiveKey={1} id="uncontrolled-tab-example">
                         <Tab eventKey={1} title="Basic info">
-                            <StringInput
-                                value={this.state.address.country}
-                                onChange={this.onCountryChange.bind(this)}
-                                controlId="cw-form-address-country"
-                                placeHolder="Enter country"
-                                controlLabel="Country"
-                                name="country"
-                                error={this.state.isCountryModified && errors.country}
-                            />
-                            <StringInput
-                                value={this.state.address.city}
-                                onChange={this.onCityChange.bind(this)}
-                                controlId="cw-form-address-city"
-                                placeHolder="Enter city"
-                                controlLabel="City"
-                                name="city"
-                                error={this.state.isCityModified && errors.city}
-                            />
-                            <StringInput
-                                value={this.state.address.street}
-                                onChange={this.onStreetChange.bind(this)}
-                                controlId="cw-form-address-street"
-                                placeHolder="Enter street"
-                                controlLabel="Street"
-                                name="street"
-                                error={this.state.isStreetModified && errors.street}
-                            />
-                            <StringInput
-                                value={this.state.address.house}
-                                onChange={this.onHouseChange.bind(this)}
-                                controlId="cw-form-address-house"
-                                placeHolder="Enter house"
-                                controlLabel="House"
-                                name="house"
-                                error={this.state.isHouseModified && errors.house}
+                            <AddressFields
+                                address={this.state.address}
+                                onAddressChange={this.onAddressChange}
+                                errors={this.state.errors}
                             />
                         </Tab>
                         <Tab eventKey={2} title="Images">
-                            <Dropzone onDrop={this.onDrop.bind(this)}>
-                                <p>Try dropping some files here, or click to select files to upload.</p>
-                            </Dropzone>
-                            {this.renderUploadedImages()}
-                            {this.renderPreviewImages()}
+                            <ImageUploader
+                                images={this.state.images}
+                                onAddImages={this.onAddImages}
+                                onDeleteImage={this.onDeleteImage}
+                            />
                         </Tab>
                     </Tabs>
                 </Modal.Body>
@@ -101,7 +72,7 @@ export class AddressEditor extends React.Component<AddressEditorProps, AddressEd
                     <Button onClick={this.props.close}>Cancel</Button>
                     <Button
                         disabled={this.state.errors}
-                        onClick={() => this.props.onSubmit(this.state.address, this.state.files, this.state.deletedImages)}>
+                        onClick={() => this.props.onSubmit(this.state.address, this.state.images, this.state.removableRemoteImages)}>
                         Save
                     </Button>
                 </Modal.Footer>
@@ -109,84 +80,30 @@ export class AddressEditor extends React.Component<AddressEditorProps, AddressEd
         );
     }
 
-    private renderUploadedImages() {
-        const {user} = this.props;
-        const {address} = this.state;
-        return this.state.address.images
-            .filter(image => this.state.deletedImages.indexOf(image) === -1)
-            .map(image => (
-                    <Thumbnail src={`img/${user.uuid}/addresses/${address.uuid}/${image.fileName}.${image.extension}`}>
-                        <Button bsStyle="danger" onClick={() => this.deleteUploadedImage(image)}>Delete</Button>
-                    </Thumbnail>
-                )
-            );
-    }
-
-    private renderPreviewImages() {
-        return this.state.files.map(file => {
-            return (
-                <Thumbnail src={(file as any).preview}>
-                    <Button bsStyle="danger" onClick={() => this.deleteLocalImage(file)}>Delete</Button>
-                </Thumbnail>
-            );
-        });
-    }
-
-    private deleteUploadedImage(img: UrlModel) {
-        this.setState({
-            deletedImages: [...this.state.deletedImages, img]
-        });
-    }
-
-    private deleteLocalImage(file: File) {
-        this.setState({
-            files: this.state.files.filter(f => f !== file)
-        });
-    }
-
-    private onDrop(files: File[]) {
-        this.setState({
-            files: this.state.files.concat(files)
-        });
-    }
-
-    private onCountryChange(event: React.ChangeEvent<any>) {
-        const address = {...this.state.address, country: event.target.value};
+    private onAddressChange(address: AddressModel) {
         const errors = this.validate(address);
+
         this.setState({
             address,
-            errors,
-            isCountryModified: true
+            errors
         });
     }
 
-    private onCityChange(event: React.ChangeEvent<any>) {
-        const address = {...this.state.address, city: event.target.value};
-        const errors = this.validate(address);
+    private onAddImages(images: ImageSrc[]) {
         this.setState({
-            address,
-            errors,
-            isCityModified: true
+            images: [...this.state.images, ...images]
         });
     }
 
-    private onStreetChange(event: React.ChangeEvent<any>) {
-        const address = {...this.state.address, street: event.target.value};
-        const errors = this.validate(address);
-        this.setState({
-            address,
-            errors,
-            isStreetModified: true
-        });
-    }
+    private onDeleteImage(image: ImageSrc) {
+        let removableRemoteImages = this.state.removableRemoteImages;
+        if ((image as any).fileName) {
+            removableRemoteImages = {...removableRemoteImages, image};
+        }
 
-    private onHouseChange(event: React.ChangeEvent<any>) {
-        const address = {...this.state.address, house: event.target.value};
-        const errors = this.validate(address);
         this.setState({
-            address,
-            errors,
-            isHouseModified: true
+            removableRemoteImages: removableRemoteImages,
+            images: this.state.images.filter(img => img !== image)
         });
     }
 
@@ -200,16 +117,12 @@ export interface AddressEditorProps {
     address: AddressModel;
     isOpen: boolean;
     close: () => void;
-    onSubmit: (address: AddressModel, newImages: File[], deletedImages: UrlModel[]) => void;
+    onSubmit: (address: AddressModel, newImages: ImageSrc[], deletedImages: ImageSrc[]) => void;
 }
 
 export interface AddressEditorState {
     address: AddressModel;
-    deletedImages: UrlModel[];
-    files: File[];
-    isCountryModified: boolean;
-    isCityModified: boolean;
-    isStreetModified: boolean;
-    isHouseModified: boolean;
+    images: ImageSrc[];
+    removableRemoteImages: UrlModel[];
     errors: any;
 }

@@ -1,4 +1,5 @@
 import { ModelState } from './ModelState';
+import { ImageSrc } from './ImageSrc';
 
 
 export interface UrlDocument {
@@ -43,7 +44,7 @@ export function toUrlJson(urlModel: UrlModel): UrlJson {
 }
 
 
-export class UrlModel {
+export class UrlModel implements ImageSrc {
     public fileName: string;
     public extension: string;
     public state: ModelState;

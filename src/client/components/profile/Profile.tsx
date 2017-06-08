@@ -8,6 +8,7 @@ import { AddressHeader } from './view_profile/AddressHeader';
 import { AddressEditor } from './edit_profile/AddressEditor';
 import { AddressModel } from '../../../shared/model/AddressModel';
 import { UrlModel } from '../../../shared/model/UrlModel';
+import { ImageSrc } from '../../../shared/model/ImageSrc';
 require('./Profile.scss');
 
 function getAge(birthDate: Date) {
@@ -55,7 +56,7 @@ export function Profile(props: ProfileProps) {
                 user={props.user}
                 address={address}
                 isOpen={props.editedComponent === editedComponent}
-                onSubmit={(newAddress: AddressModel, newImages: File[], deletedImages: UrlModel[]) => (
+                onSubmit={(newAddress: AddressModel, newImages: ImageSrc[], deletedImages: ImageSrc[]) => (
                     props.onUpdateddress(newAddress, newImages, deletedImages, props.user.userName)
                 )}
                 close={() => props.onEditModeChange(null)}
@@ -90,7 +91,9 @@ export function Profile(props: ProfileProps) {
                 user={props.user}
                 address={new AddressModel()}
                 isOpen={props.editedComponent === `address-new`}
-                onSubmit={(newAddress: AddressModel, files: File[]) => props.onAddAddress(newAddress, files, props.user.userName)}
+                onSubmit={(newAddress: AddressModel, newImages: ImageSrc[], deletedImages: ImageSrc[]) => (
+                    props.onAddAddress(newAddress, newImages, props.user.userName)
+                )}
                 close={() => props.onEditModeChange(null)}
             />
         </div>
@@ -102,8 +105,8 @@ export interface ProfileProps {
     editedComponent: string;
     onSubmit: (user: UserModel) => void;
     onSubmitAboutInfo: (user: UserModel) => void;
-    onUpdateddress: (address: AddressModel, newImages: File[], deletedImages: UrlModel[], userName: string) => void;
+    onUpdateddress: (address: AddressModel, newImages: ImageSrc[], deletedImages: ImageSrc[], userName: string) => void;
     onDeleteAddress: (address: AddressModel, userName: string) => void;
-    onAddAddress: (address: AddressModel, files: File[], userName: string) => void;
+    onAddAddress: (address: AddressModel, newImages: ImageSrc[], userName: string) => void;
     onEditModeChange: (editedComponent: string) => void;
 }

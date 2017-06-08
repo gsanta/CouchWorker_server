@@ -10,6 +10,7 @@ import { AddressModel } from '../../../shared/model/AddressModel';
 import { updateAddress } from '../../actions/profile/addressActions';
 import { deleteAddress } from '../../actions/profile/deleteAddressActions';
 import { addAddress } from '../../actions/profile/addAddressActions';
+import { ImageSrc } from '../../../shared/model/ImageSrc';
 
 const mapStateToProps = (state: RootModel) => {
     return {
@@ -32,14 +33,14 @@ const mapDispatchToProps = (dispatch, props: any) => {
         onSubmitAboutInfo: (model: UserModel) => {
             dispatch(updateAboutInfo(model));
         },
-        onUpdateddress: (model: AddressModel, newImages: File[], deletedImages: UrlModel[], userName: string) => {
+        onUpdateddress: (model: AddressModel, newImages: ImageSrc[], deletedImages: ImageSrc[], userName: string) => {
             dispatch(updateAddress(model, newImages, deletedImages, userName));
         },
         onDeleteAddress: (model: AddressModel, userName: string) => {
             dispatch(deleteAddress(model, userName));
         },
-        onAddAddress: (model: AddressModel, files: File[], userName: string) => {
-            dispatch(addAddress(model, files, userName));
+        onAddAddress: (model: AddressModel, newImages: ImageSrc[], userName: string) => {
+            dispatch(addAddress(model, newImages, userName));
         }
     };
 };

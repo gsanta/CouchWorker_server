@@ -1,6 +1,8 @@
 import { AddressModel, toAddressJson } from '../../../shared/model/AddressModel';
 import { UserJson, fromUserJson } from '../../../shared/model/user/UserModel';
 import { Dispatch } from 'redux';
+import { PreviewImageModel } from '../../../shared/model/PreviewImageModel';
+import { ImageSrc } from '../../../shared/model/ImageSrc';
 
 export const ADD_ADDRESS_REQUEST = 'ADD_ADDRESS_REQUEST';
 export const ADD_ADDRESS_RESPONSE = 'ADD_ADDRESS_RESPONSE';
@@ -19,7 +21,7 @@ export function addAddressResponse(json: UserJson) {
     };
 }
 
-export function addAddress(address: AddressModel, files: File[], userName: string) {
+export function addAddress(address: AddressModel, images: ImageSrc[], userName: string) {
     return function (dispatch: Dispatch<any>) {
 
         dispatch(addAddressRequest(address));
@@ -28,7 +30,7 @@ export function addAddress(address: AddressModel, files: File[], userName: strin
 
         return fetch(`./api/addAddress/${userName}`, {
             method: 'POST',
-            body: createFormData(address, files)
+            body: createFormData(address, <PreviewImageModel[]> images)
         })
         .then(response => response.json())
         .then((json: any) => {
@@ -37,13 +39,14 @@ export function addAddress(address: AddressModel, files: File[], userName: strin
     };
 }
 
-function createFormData(address: AddressModel, files: File[]): FormData {
+function createFormData(address: AddressModel, images: PreviewImageModel[]): FormData {
     const formData = new FormData();
 
     Object.keys(address).map(key => formData.append(key, address[key]));
-    files.forEach((file, index) => {
-        formData.append('file', file, 'file' + index + '.png');
+    images.forEach((image, index) => {
+        formData.append('file', image.file, 'file' + index + '.png');
     });
 
     return formData;
 }
+

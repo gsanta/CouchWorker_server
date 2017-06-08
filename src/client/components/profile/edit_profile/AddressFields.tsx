@@ -10,9 +10,9 @@ import { UrlModel } from '../../../../shared/model/UrlModel';
 import { UserModel } from '../../../../shared/model/user/UserModel';
 import { ImageSrc } from '../../../../shared/model/ImageSrc';
 
-export class AddressEditor extends React.Component<AddressEditorProps, AddressEditorState> {
+export class AddressFields extends React.Component<AddressFieldsProps, AddressFieldsState> {
 
-    constructor(props: AddressEditorProps) {
+    constructor(props: AddressFieldsProps) {
         super(props);
 
         this.state = {
@@ -68,21 +68,6 @@ export class AddressEditor extends React.Component<AddressEditorProps, AddressEd
         );
     }
 
-    private renderImages(images: ImageSrc[]) {
-        return images.map(image => {
-            return (
-                <Thumbnail src={image.src}>
-                    <Button bsStyle="danger" onClick={() => this.props.onDeleteImage(image)}>Delete</Button>
-                </Thumbnail>
-            );
-        });
-    }
-
-    private onDrop(files: File[]) {
-        const images = files.map(file => ({file: file, src: (file as any).preview}));
-        this.props.onAddImages(images);
-    }
-
     private onCountryChange(event: React.ChangeEvent<any>) {
         const address = {...this.props.address, country: event.target.value};
         this.props.onAddressChange(address);
@@ -116,16 +101,13 @@ export class AddressEditor extends React.Component<AddressEditorProps, AddressEd
     }
 }
 
-export interface AddressEditorProps {
+export interface AddressFieldsProps {
     onAddressChange: (address: AddressModel) => void;
-    onAddImages(images: ImageSrc[]): void;
-    onDeleteImage(image: ImageSrc): void;
     address: AddressModel;
-    images: ImageSrc[];
     errors: any;
 }
 
-export interface AddressEditorState {
+export interface AddressFieldsState {
     isCountryModified: boolean;
     isCityModified: boolean;
     isStreetModified: boolean;

@@ -8,7 +8,6 @@ import * as Dropzone from 'react-dropzone';
 import {Tab, Tabs, Thumbnail} from 'react-bootstrap';
 import { UrlModel } from '../../../../shared/model/UrlModel';
 import { UserModel } from '../../../../shared/model/user/UserModel';
-import { ImageSrc } from '../../../../shared/model/ImageSrc';
 
 function getInitialState(props: AddressEditorProps) {
     return {
@@ -110,30 +109,84 @@ export class AddressEditor extends React.Component<AddressEditorProps, AddressEd
         );
     }
 
-    private onAddressChange(address: AddressModel) {
-        const errors = this.validate(address);
+    private renderUploadedImages() {
+        const {user} = this.props;
+        const {address} = this.state;
+        return this.state.address.images
+            .filter(image => this.state.deletedImages.indexOf(image) === -1)
+            .map(image => (
+                    <Thumbnail src={`img/${user.uuid}/addresses/${address.uuid}/${image.fileName}.${image.extension}`}>
+                        <Button bsStyle="danger" onClick={() => this.deleteUploadedImage(image)}>Delete</Button>
+                    </Thumbnail>
+                )
+            );
+    }
 
+    private renderPreviewImages() {
+        return this.state.files.map(file => {
+            return (
+                <Thumbnail src={(file as any).preview}>
+                    <Button bsStyle="danger" onClick={() => this.deleteLocalImage(file)}>Delete</Button>
+                </Thumbnail>
+            );
+        });
+    }
+
+    private deleteUploadedImage(img: UrlModel) {
+        this.setState({
+            deletedImages: [...this.state.deletedImages, img]
+        });
+    }
+
+    private deleteLocalImage(file: File) {
+        this.setState({
+            files: this.state.files.filter(f => f !== file)
+        });
+    }
+
+    private onDrop(files: File[]) {
+        this.setState({
+            files: this.state.files.concat(files)
+        });
+    }
+
+    private onCountryChange(event: React.ChangeEvent<any>) {
+        const address = {...this.state.address, country: event.target.value};
+        const errors = this.validate(address);
         this.setState({
             address,
-            errors
+            errors,
+            isCountryModified: true
         });
     }
 
-    private onAddImages(images: ImageSrc[]) {
+    private onCityChange(event: React.ChangeEvent<any>) {
+        const address = {...this.state.address, city: event.target.value};
+        const errors = this.validate(address);
         this.setState({
-            images: {...this.state.images, ...images}
+            address,
+            errors,
+            isCityModified: true
         });
     }
 
-    private onDeleteImage(image: ImageSrc) {
-        let removableRemoteImages = this.state.removableRemoteImages;
-        if ((image as any).fileName) {
-            removableRemoteImages = {...removableRemoteImages, image};
-        }
-
+    private onStreetChange(event: React.ChangeEvent<any>) {
+        const address = {...this.state.address, street: event.target.value};
+        const errors = this.validate(address);
         this.setState({
-            removableRemoteImages: removableRemoteImages,
-            images: this.state.images.filter(img => img !== image);
+            address,
+            errors,
+            isStreetModified: true
+        });
+    }
+
+    private onHouseChange(event: React.ChangeEvent<any>) {
+        const address = {...this.state.address, house: event.target.value};
+        const errors = this.validate(address);
+        this.setState({
+            address,
+            errors,
+            isHouseModified: true
         });
     }
 
@@ -152,7 +205,11 @@ export interface AddressEditorProps {
 
 export interface AddressEditorState {
     address: AddressModel;
-    images: ImageSrc[];
-    removableRemoteImages: UrlModel[];
+    deletedImages: UrlModel[];
+    files: File[];
+    isCountryModified: boolean;
+    isCityModified: boolean;
+    isStreetModified: boolean;
+    isHouseModified: boolean;
     errors: any;
 }
