@@ -58,9 +58,11 @@ export function profileApi(router: Router, baseDir: string, userRepository: User
         for (let file of files) {
             const fileName = uuid();
             const extension = file.mime.split('/')[1];
-            const urlModel = {
+            const urlModel: UrlModel = {
                 fileName,
-                extension
+                extension,
+                state: ModelState.ACTIVE,
+                src: `img/${user.uuid}/addresses/${address.uuid}/${getImageFileName(file, fileName)}`
             };
             urlModels.push(urlModel);
             const image: ImageModel = {
@@ -68,7 +70,7 @@ export function profileApi(router: Router, baseDir: string, userRepository: User
                 baseDir: baseDir,
                 relativePath: `img/${user.uuid}/addresses/${address.uuid}/`,
                 fileName: fileName,
-                src: `img/${user.uuid}/addresses/${address.uuid}/${getImageFileName(file)}`
+                src: `img/${user.uuid}/addresses/${address.uuid}/${getImageFileName(file, fileName)}`
             };
             await imageBusiness.create(image);
         }
@@ -105,9 +107,11 @@ export function profileApi(router: Router, baseDir: string, userRepository: User
         for (let file of files) {
             const fileName = uuid();
             const extension = file.mime.split('/')[1];
-            const urlModel = {
+            const urlModel: UrlModel = {
                 fileName,
-                extension
+                extension,
+                state: ModelState.ACTIVE,
+                src: `img/${user.uuid}/addresses/${address.uuid}/${getImageFileName(file, fileName)}`
             };
             urlModels.push(urlModel);
             const image: ImageModel = {
@@ -115,7 +119,7 @@ export function profileApi(router: Router, baseDir: string, userRepository: User
                 baseDir: baseDir,
                 relativePath: `img/${user.uuid}/addresses/${address.uuid}/`,
                 fileName: fileName,
-                src: `img/${user.uuid}/addresses/${address.uuid}/${getImageFileName(file)}`                
+                src: `img/${user.uuid}/addresses/${address.uuid}/${getImageFileName(file, fileName)}`
             };
             await imageBusiness.create(image);
         }

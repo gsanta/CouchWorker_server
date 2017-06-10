@@ -98,6 +98,10 @@ export class UserSchema {
                             uuid: {
                                 type: String,
                                 required: true
+                            },
+                            src: {
+                                type: String,
+                                required: true
                             }
                         }
                     ],

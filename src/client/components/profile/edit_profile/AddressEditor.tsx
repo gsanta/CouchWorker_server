@@ -15,7 +15,7 @@ import { ImageUploader } from './ImageUploader';
 function getInitialState(props: AddressEditorProps) {
     return {
         address: props.address,
-        images: [],
+        images: props.address.images,
         removableRemoteImages: [],
         errors: null,
     };
@@ -35,10 +35,6 @@ export class AddressEditor extends React.Component<AddressEditorProps, AddressEd
     componentWillReceiveProps(newProps: AddressEditorProps) {
         if (!this.props.isOpen && newProps.isOpen) {
             this.setState(getInitialState(newProps));
-        } else {
-            this.setState({
-                address: newProps.address || new AddressModel()
-            });
         }
     }
 
@@ -98,7 +94,7 @@ export class AddressEditor extends React.Component<AddressEditorProps, AddressEd
     private onDeleteImage(image: ImageSrc) {
         let removableRemoteImages = this.state.removableRemoteImages;
         if ((image as any).fileName) {
-            removableRemoteImages = {...removableRemoteImages, image};
+            removableRemoteImages = [...removableRemoteImages, image as UrlModel];
         }
 
         this.setState({

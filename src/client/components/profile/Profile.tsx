@@ -9,6 +9,7 @@ import { AddressEditor } from './edit_profile/AddressEditor';
 import { AddressModel } from '../../../shared/model/AddressModel';
 import { UrlModel } from '../../../shared/model/UrlModel';
 import { ImageSrc } from '../../../shared/model/ImageSrc';
+import { EditedComponent } from '../../utils/EditedComponent';
 require('./Profile.scss');
 
 function getAge(birthDate: Date) {
@@ -19,53 +20,67 @@ function getAge(birthDate: Date) {
 }
 
 export function Profile(props: ProfileProps) {
-    const {user = new UserModel()} = props;
-    const birthDate = user.birthDate ? user.birthDate.toString() : null;
+    function createAddresses() {
+        return user.addresses.map(address => {
+            const addressHeader = (
+                <AddressHeader
+                    edit={() => props.onEditModeChange({componentType: 'Address', model: address})}
+                    delete={() => props.onDeleteAddress(address, props.user.userName)}
+                />
+            );
 
-    const header = <AboutHeader editAboutInfo={() => props.onEditModeChange('aboutInfo')}/>;
-    const addresses = user.addresses.map(address => {
-        const editedComponent = `address-${address.uuid}`;
-        const addressHeader = (
-            <AddressHeader
-                edit={() => props.onEditModeChange(editedComponent)}
-                delete={() => props.onDeleteAddress(address, props.user.userName)}
-            />
-        );
+            const images = address.images.map(img => {
+                return (
+                    <img
+                        key={img.fileName}
+                        src={`img/${props.user.uuid}/addresses/${address.uuid}/${img.fileName}.${img.extension}`}
+                    />
+                );
+            });
 
-        const images = address.images.map(img => {
-            return <img src={`img/${props.user.uuid}/addresses/${address.uuid}/${img.fileName}.${img.extension}`}/>;
+            return (
+                <Panel header={addressHeader} key={address.uuid}>
+                    <div>
+                        <div>{address.country}</div>
+                        <div>{address.city}</div>
+                        <div>{address.street}</div>
+                        <div>{address.house}</div>
+                        {images}
+                    </div>
+                </Panel>
+            );
         });
+    }
 
-        return (
-            <Panel header={addressHeader}>
-                <div>
-                    <div>{address.country}</div>
-                    <div>{address.city}</div>
-                    <div>{address.street}</div>
-                    <div>{address.house}</div>
-                    {images}
-                </div>
-            </Panel>
-        );
-    });
+    function createAddressEditor() {
+        let address = null;
 
-    const addressEditors = user.addresses.map(address => {
-        const editedComponent = `address-${address.uuid}`;
-        return (
-            <AddressEditor
+        if (props.editedComponent && props.editedComponent.componentType === 'Address') {
+            address = props.editedComponent.model;
+        }
+
+        return (<AddressEditor
                 user={props.user}
                 address={address}
-                isOpen={props.editedComponent === editedComponent}
+                isOpen={props.editedComponent && props.editedComponent.componentType === 'Address'}
                 onSubmit={(newAddress: AddressModel, newImages: ImageSrc[], deletedImages: ImageSrc[]) => (
                     props.onUpdateddress(newAddress, newImages, deletedImages, props.user.userName)
                 )}
                 close={() => props.onEditModeChange(null)}
             />
         );
-    });
+    }
+
+    const {user = new UserModel()} = props;
+    const birthDate = user.birthDate ? user.birthDate.toString() : null;
+
+    const header = <AboutHeader editAboutInfo={() => props.onEditModeChange({componentType: 'User', model: props.user})}/>;
+
     return (
         <div className="cw-profile">
-            <Panel header={header}
+            <Panel
+                header={header}
+                key={user.uuid}
             >
                 <div>{user.firstName} {user.lastName} ({getAge(user.birthDate)})</div>
                 <div>{user.profession}</div>
@@ -73,40 +88,31 @@ export function Profile(props: ProfileProps) {
                 <div>{user.country}</div>
                 <div>{user.city}</div>
             </Panel>
-            {addresses}
+            {createAddresses()}
             <AboutInfoEditor
                 user={props.user}
-                isOpen={props.editedComponent === 'aboutInfo'}
+                isOpen={props.editedComponent.componentType === 'Usere'}
                 onSubmit={props.onSubmitAboutInfo}
                 close={() => props.onEditModeChange(null)}
             />
-            {addressEditors}
             <div
                 className="cw-add-address"
-                onClick={() => props.onEditModeChange('address-new')}
+                onClick={() => props.onEditModeChange({componentType: 'Address', model: null})}
             >
                 Add address
             </div>
-            <AddressEditor
-                user={props.user}
-                address={new AddressModel()}
-                isOpen={props.editedComponent === `address-new`}
-                onSubmit={(newAddress: AddressModel, newImages: ImageSrc[], deletedImages: ImageSrc[]) => (
-                    props.onAddAddress(newAddress, newImages, props.user.userName)
-                )}
-                close={() => props.onEditModeChange(null)}
-            />
+            {createAddressEditor()}
         </div>
     );
 }
 
 export interface ProfileProps {
     user: UserModel;
-    editedComponent: string;
+    editedComponent: EditedComponent;
     onSubmit: (user: UserModel) => void;
     onSubmitAboutInfo: (user: UserModel) => void;
     onUpdateddress: (address: AddressModel, newImages: ImageSrc[], deletedImages: ImageSrc[], userName: string) => void;
     onDeleteAddress: (address: AddressModel, userName: string) => void;
     onAddAddress: (address: AddressModel, newImages: ImageSrc[], userName: string) => void;
-    onEditModeChange: (editedComponent: string) => void;
+    onEditModeChange: (editedComponent: EditedComponent) => void;
 }

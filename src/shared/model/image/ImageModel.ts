@@ -3,9 +3,9 @@ import { ModelState } from '../ModelState';
 
 export const getImageDestination = (img: ImageModel) => img.baseDir + img.relativePath;
 
-export const getImageFileName = (img: ImageModel): string => {
-    const extension = img.image.mime.split('/')[1];
-    return `${img.fileName}.${extension}`;
+export const getImageFileName = (image: File, fileName: string): string => {
+    const extension = (<any> image).mime.split('/')[1];
+    return `${fileName}.${extension}`;
 };
 
 

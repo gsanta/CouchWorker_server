@@ -11,6 +11,7 @@ import { updateAddress } from '../../actions/profile/addressActions';
 import { deleteAddress } from '../../actions/profile/deleteAddressActions';
 import { addAddress } from '../../actions/profile/addAddressActions';
 import { ImageSrc } from '../../../shared/model/ImageSrc';
+import { EditedComponent } from '../../utils/EditedComponent';
 
 const mapStateToProps = (state: RootModel) => {
     return {
@@ -27,7 +28,7 @@ const mapDispatchToProps = (dispatch, props: any) => {
                 props.history.push('/');
             });
         },
-        onEditModeChange: (editedComponent: string) => {
+        onEditModeChange: (editedComponent: EditedComponent) => {
             dispatch(setEditedComponentAction(editedComponent));
         },
         onSubmitAboutInfo: (model: UserModel) => {
