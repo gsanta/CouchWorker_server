@@ -36,7 +36,7 @@ export function profileApi(router: Router, baseDir: string, userRepository: User
                 baseDir: baseDir,
                 relativePath: `img/${user.uuid}/profile/`,
                 fileName: 'profile',
-                src: `img/${user.uuid}/profile.png`                
+                src: `img/${user.uuid}/profile.png`
             };
 
             await imageBusiness.create(image);
@@ -96,11 +96,16 @@ export function profileApi(router: Router, baseDir: string, userRepository: User
         const {files, fields} = await asyncBusboy(ctx.req);
 
         const user = await userRepository.findByUserName(ctx.params.userName);
-        const address = await userRepository.findAddressByUuid(user.uuid, fields.uuid);
+        let address = await userRepository.findAddressByUuid(user.uuid, fields.uuid);
+
+        address = {
+            ...address,
+            country: fields.country,
+            city: fields.city
+        };
+
         const deletedImages = JSON.parse(fields.deletedImages);
-
         const remainingImages = address.images.filter(image => deletedImages.indexOf(image.fileName) === -1);
-
         address.images = remainingImages;
 
         let urlModels = [];

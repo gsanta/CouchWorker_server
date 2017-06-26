@@ -15,7 +15,7 @@ import { ImageUploader } from './ImageUploader';
 function getInitialState(props: AddressEditorProps) {
     return {
         address: props.address,
-        images: props.address.images,
+        images: props.address && props.address.images,
         removableRemoteImages: [],
         errors: null,
     };

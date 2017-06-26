@@ -63,9 +63,13 @@ export function Profile(props: ProfileProps) {
                 user={props.user}
                 address={address}
                 isOpen={props.editedComponent && props.editedComponent.componentType === 'Address'}
-                onSubmit={(newAddress: AddressModel, newImages: ImageSrc[], deletedImages: ImageSrc[]) => (
-                    props.onUpdateddress(newAddress, newImages, deletedImages, props.user.userName)
-                )}
+                onSubmit={(newAddress: AddressModel, newImages: ImageSrc[], deletedImages: ImageSrc[]) => {
+                    if (!newAddress.uuid) {
+                        props.onAddAddress(newAddress, newImages, props.user.userName);
+                    } else {
+                        props.onUpdateddress(newAddress, newImages, deletedImages, props.user.userName);
+                    }
+                }}
                 close={() => props.onEditModeChange(null)}
             />
         );
@@ -91,13 +95,13 @@ export function Profile(props: ProfileProps) {
             {createAddresses()}
             <AboutInfoEditor
                 user={props.user}
-                isOpen={props.editedComponent.componentType === 'Usere'}
+                isOpen={props.editedComponent && props.editedComponent.componentType === 'User'}
                 onSubmit={props.onSubmitAboutInfo}
                 close={() => props.onEditModeChange(null)}
             />
             <div
                 className="cw-add-address"
-                onClick={() => props.onEditModeChange({componentType: 'Address', model: null})}
+                onClick={() => props.onEditModeChange({componentType: 'Address', model: new AddressModel()})}
             >
                 Add address
             </div>
