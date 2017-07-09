@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { UserModel } from '../../../shared/model/user/UserModel';
-import { Panel } from 'react-bootstrap';
+import { Panel, Row, Col } from 'react-bootstrap';
 import * as moment from 'moment';
 import { AboutInfoEditor } from './edit_profile/AboutInfoEditor';
 import { AboutHeader } from './view_profile/AboutHeader';
@@ -32,6 +32,7 @@ export function Profile(props: ProfileProps) {
             const images = address.images.map(img => {
                 return (
                     <img
+                        className="cw-thumbnail"
                         key={img.fileName}
                         src={`img/${props.user.uuid}/addresses/${address.uuid}/${img.fileName}.${img.extension}`}
                     />
@@ -39,13 +40,15 @@ export function Profile(props: ProfileProps) {
             });
 
             return (
-                <Panel header={addressHeader} key={address.uuid}>
+                <Panel className="cw-panel" header={addressHeader} key={address.uuid}>
                     <div>
                         <div>{address.country}</div>
                         <div>{address.city}</div>
                         <div>{address.street}</div>
                         <div>{address.house}</div>
-                        {images}
+                        <div className="cw-thumbnail-grid">
+                            {images}
+                        </div>
                     </div>
                 </Panel>
             );
@@ -80,19 +83,30 @@ export function Profile(props: ProfileProps) {
 
     const header = <AboutHeader editAboutInfo={() => props.onEditModeChange({componentType: 'User', model: props.user})}/>;
 
+    const addresses = createAddresses().map(address => (
+        <Col md={5} mdOffset={0} sm={10} smOffset={1}>
+            {address}
+        </Col>
+    ));
+
     return (
         <div className="cw-profile">
-            <Panel
-                header={header}
-                key={user.uuid}
-            >
-                <div>{user.firstName} {user.lastName} ({getAge(user.birthDate)})</div>
-                <div>{user.profession}</div>
-                <div>{user.email}</div>
-                <div>{user.country}</div>
-                <div>{user.city}</div>
-            </Panel>
-            {createAddresses()}
+            <Row>
+                <Col md={5} mdOffset={1} sm={10} smOffset={1}>
+                    <Panel
+                        header={header}
+                        key={user.uuid}
+                        className="cw-about-info cw-panel"
+                    >
+                        <div>{user.firstName} {user.lastName} ({getAge(user.birthDate)})</div>
+                        <div>{user.profession}</div>
+                        <div>{user.email}</div>
+                        <div>{user.country}</div>
+                        <div>{user.city}</div>
+                    </Panel>
+                </Col>
+                {addresses}
+            </Row>
             <AboutInfoEditor
                 user={props.user}
                 isOpen={props.editedComponent && props.editedComponent.componentType === 'User'}

@@ -17,3 +17,24 @@ body {
 h2 {
     font-size: $h2FontSize;
 }
+
+.cw-thumbnail {
+    height: 300px;
+    margin-right: 10px;
+}
+
+.cw-thumbnail-grid {
+    display: flex;
+    justify-content: center;
+}
+
+.cw-panel {
+    .panel-body {
+        padding: 10px;
+    }
+}
+
+.cw-action-link {
+    cursor: pointer;
+    text-decoration: underline;
+}

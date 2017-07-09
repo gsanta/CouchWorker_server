@@ -5,8 +5,8 @@ export function AddressHeader(props: AddressHeaderProps) {
         <div className="cw-address-header">
             <div>Address</div>
             <div className="cw-right-side-section">
-                <div onClick={props.delete}>Delete</div>&nbsp;
-                <div onClick={props.edit}>Edit</div>
+                <div onClick={props.delete} className="cw-action-link">Delete</div>&nbsp;
+                <div onClick={props.edit} className="cw-action-link">Edit</div>
             </div>
         </div>
     );

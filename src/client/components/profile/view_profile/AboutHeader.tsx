@@ -4,7 +4,7 @@ export function AboutHeader(props: AboutHeaderProps) {
     return (
         <div className="cw-profile-header">
             <div>About</div>
-            <div onClick={props.editAboutInfo}>Edit</div>
+            <div onClick={props.editAboutInfo} className="cw-action-link">Edit</div>
         </div>
     );
 }
