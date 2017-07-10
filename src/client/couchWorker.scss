@@ -38,3 +38,25 @@ h2 {
     cursor: pointer;
     text-decoration: underline;
 }
+
+.modal-content {
+    border-radius: 0;
+}
+
+.form-control:focus {
+  border-color: transparent;
+  border-bottom-color: $activeColor;
+  border-radius: 0;  
+  box-shadow: none;
+}
+
+.form-control {
+  border-color: transparent;
+  border-bottom-color: $borderGray;
+  border-radius: 0;
+//   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 0, 0, 0.6);
+}
+
+.panel {
+    border-radius: 0;
+}

@@ -34,7 +34,7 @@ export class AboutInfoEditor extends React.Component<AboutInfoEditorProps, About
     public render() {
         const errors = this.state.errors || {};
         return (
-            <Modal show={this.props.isOpen} onHide={this.props.close}>
+            <Modal show={this.props.isOpen} onHide={this.props.close} backdrop={false}>
                 <Modal.Header closeButton>
                     <Modal.Title>Modal heading</Modal.Title>
                 </Modal.Header>

@@ -106,6 +106,15 @@ export function Profile(props: ProfileProps) {
                     </Panel>
                 </Col>
                 {addresses}
+
+                <Col md={10} mdOffset={1}>
+                    <div
+                        className="cw-add-address cw-action-link"
+                        onClick={() => props.onEditModeChange({componentType: 'Address', model: new AddressModel()})}
+                    >
+                        Add address
+                    </div>
+                </Col>
             </Row>
             <AboutInfoEditor
                 user={props.user}
@@ -113,12 +122,6 @@ export function Profile(props: ProfileProps) {
                 onSubmit={props.onSubmitAboutInfo}
                 close={() => props.onEditModeChange(null)}
             />
-            <div
-                className="cw-add-address"
-                onClick={() => props.onEditModeChange({componentType: 'Address', model: new AddressModel()})}
-            >
-                Add address
-            </div>
             {createAddressEditor()}
         </div>
     );

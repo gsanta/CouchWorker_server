@@ -10,5 +10,6 @@ export function AboutHeader(props: AboutHeaderProps) {
 }
 
 export interface AboutHeaderProps {
-    editAboutInfo: () => void; 
+    editAboutInfo: () => void;
+// tslint:disable-next-line:eofline
 }

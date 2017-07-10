@@ -42,7 +42,7 @@ export class AddressEditor extends React.Component<AddressEditorProps, AddressEd
         const errors = this.state.errors || {};
 
         return (
-            <Modal show={this.props.isOpen} onHide={this.props.close} className="cw-address-new">
+            <Modal show={this.props.isOpen} onHide={this.props.close} className="cw-address-new" backdrop={false}>
                 <Modal.Header closeButton>
                     <Modal.Title>Modal heading</Modal.Title>
                 </Modal.Header>
