@@ -39,13 +39,17 @@ export function Profile(props: ProfileProps) {
                 );
             });
 
+            let streetHouse = address.street;
+
+            if (address.house) {
+                streetHouse += `,${address.house}`;
+            }
+
             return (
                 <Panel className="cw-panel" header={addressHeader} key={address.uuid}>
                     <div>
-                        <div>{address.country}</div>
-                        <div>{address.city}</div>
-                        <div>{address.street}</div>
-                        <div>{address.house}</div>
+                        <div className="cw-text-primary">{address.country}, {address.city}</div>
+                        <div>{streetHouse}</div>
                         <div className="cw-thumbnail-grid">
                             {images}
                         </div>

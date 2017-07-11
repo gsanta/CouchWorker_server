@@ -24,6 +24,7 @@ h2 {
 }
 
 .cw-thumbnail-grid {
+    margin-top: 10px;
     display: flex;
     justify-content: center;
 }
@@ -59,4 +60,31 @@ h2 {
 
 .panel {
     border-radius: 0;
+}
+
+.cw-button {
+    font-weight: bold;
+    text-decoration: underline;
+    margin: 0 2px;
+    cursor: pointer;
+}
+
+.cw-save-button {
+    color: $activeColor;
+}
+
+.cw-delete-button {
+    color: $dangerColor;
+}
+
+.cw-left-button {
+    float: left;
+}
+
+.cw-right-button {
+    float: right;
+}
+
+.cw-text-primary {
+    font-weight: bold;
 }
