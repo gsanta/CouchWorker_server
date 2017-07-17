@@ -10,6 +10,8 @@ import { AddressModel } from '../../../shared/model/AddressModel';
 import { UrlModel } from '../../../shared/model/UrlModel';
 import { ImageSrc } from '../../../shared/model/ImageSrc';
 import { EditedComponent } from '../../utils/EditedComponent';
+import * as Lightbox from 'react-images';
+import { AddressPanel } from './address/AddressPanel';
 require('./Profile.scss');
 
 function getAge(birthDate: Date) {
@@ -20,6 +22,18 @@ function getAge(birthDate: Date) {
 }
 
 export function Profile(props: ProfileProps) {
+    function createImageGallery() {
+        return (
+            <Lightbox
+                images={[]}
+                isOpen={true}
+                onClickPrev={() => {}}
+                onClickNext={() => {}}
+                onClose={() => {}}
+            />
+        );
+    }
+
     function createAddresses() {
         return user.addresses.map(address => {
             const addressHeader = (
@@ -29,32 +43,17 @@ export function Profile(props: ProfileProps) {
                 />
             );
 
-            const images = address.images.map(img => {
-                return (
-                    <img
-                        className="cw-thumbnail"
-                        key={img.fileName}
-                        src={`img/${props.user.uuid}/addresses/${address.uuid}/${img.fileName}.${img.extension}`}
-                    />
-                );
-            });
-
-            let streetHouse = address.street;
-
-            if (address.house) {
-                streetHouse += `,${address.house}`;
-            }
-
             return (
-                <Panel className="cw-panel" header={addressHeader} key={address.uuid}>
-                    <div>
-                        <div className="cw-text-primary">{address.country}, {address.city}</div>
-                        <div>{streetHouse}</div>
-                        <div className="cw-thumbnail-grid">
-                            {images}
-                        </div>
-                    </div>
-                </Panel>
+                <AddressPanel
+                    header={
+                        <AddressHeader
+                            edit={() => props.onEditModeChange({componentType: 'Address', model: address})}
+                            delete={() => props.onDeleteAddress(address, props.user.userName)}
+                        />
+                    }
+                    address={address}
+                    userId={props.user.uuid}
+                />
             );
         });
     }
@@ -126,6 +125,7 @@ export function Profile(props: ProfileProps) {
                 close={() => props.onEditModeChange(null)}
             />
             {createAddressEditor()}
+            {createImageGallery()}
         </div>
     );
 }
