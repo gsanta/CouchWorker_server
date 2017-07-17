@@ -20,12 +20,18 @@
         justify-content: space-between;
     }
 
-    .cw-about-info {
-        
+    .cw-add-address-col {
+        margin-bottom: 10px;
     }
 }
 
 .cw-img-preview {
     max-width: 300px;
+}
+
+.cw-drop-zone {
+    width: 100%;
+    height: 100px;
+    border: 2px dashed grey;
 }
 

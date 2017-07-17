@@ -96,6 +96,14 @@ export function Profile(props: ProfileProps) {
     return (
         <div className="cw-profile">
             <Row>
+                <Col md={10} mdOffset={1} className="cw-add-address-col">
+                    <div
+                        className="cw-button cw-save-button"
+                        onClick={() => props.onEditModeChange({componentType: 'Address', model: new AddressModel()})}
+                    >
+                        Add address
+                    </div>
+                </Col>
                 <Col md={5} mdOffset={1} sm={10} smOffset={1}>
                     <Panel
                         header={header}
@@ -110,15 +118,6 @@ export function Profile(props: ProfileProps) {
                     </Panel>
                 </Col>
                 {addresses}
-
-                <Col md={10} mdOffset={1}>
-                    <div
-                        className="cw-add-address cw-action-link"
-                        onClick={() => props.onEditModeChange({componentType: 'Address', model: new AddressModel()})}
-                    >
-                        Add address
-                    </div>
-                </Col>
             </Row>
             <AboutInfoEditor
                 user={props.user}

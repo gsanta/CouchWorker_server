@@ -21,8 +21,8 @@ export function ImageUploader(props: ImageUploaderProps) {
 
     return (
         <div>
-            <Dropzone onDrop={onDrop}>
-                <p>Try dropping some files here, or click to select files to upload.</p>
+            <Dropzone onDrop={onDrop} className="cw-drop-zone">
+                <p>Drop files here, or click to select files to upload.</p>
             </Dropzone>
             {renderImages()}
         </div>

@@ -4,6 +4,10 @@ body {
     padding: 10px;
 }
 
+a, a:focus, a:hover, a:active {
+    color: $textColor;
+}
+
 .cw-content {
     padding-top: 50px;
     color: $textColor;

@@ -65,12 +65,12 @@ export class AddressEditor extends React.Component<AddressEditorProps, AddressEd
                     </Tabs>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={this.props.close}>Cancel</Button>
-                    <Button
+                    <div className="cw-button cw-cancel-button cw-left-button" onClick={this.props.close}>Cancel</div>
+                    <div className="cw-button cw-save-button cw-right-button"
                         disabled={this.state.errors}
                         onClick={() => this.props.onSubmit(this.state.address, this.state.images, this.state.removableRemoteImages)}>
                         Save
-                    </Button>
+                    </div>
                 </Modal.Footer>
             </Modal>
         );
