@@ -26,6 +26,8 @@ export class Profile extends React.Component<ProfileProps, ProfileState> {
 
     constructor(props: ProfileProps) {
         super();
+
+        this.onGalleryClose = this.onGalleryClose.bind(this);
         this.state = {
             activeGallery: null
         };
@@ -35,7 +37,7 @@ export class Profile extends React.Component<ProfileProps, ProfileState> {
     private createImageGallery() {
         const images = this.state.activeGallery ? this.state.activeGallery.map(image => ({ src: image.src})) : [];
         return (
-            <ImageGallery images={images} />
+            <ImageGallery images={images} onClose={this.onGalleryClose}/>
         );
     }
 
@@ -140,6 +142,12 @@ export class Profile extends React.Component<ProfileProps, ProfileState> {
     private onGalleryOpen(address: AddressModel) {
         this.setState({
             activeGallery: address.images
+        });
+    }
+
+    private onGalleryClose() {
+        this.setState({
+            activeGallery: []
         });
     }
 }

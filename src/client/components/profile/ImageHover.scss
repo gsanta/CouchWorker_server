@@ -1,0 +1,22 @@
+@import '../../constants.scss';
+
+.cw-image-hover > div {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 30px;
+    width: 100%;
+    background: $textColor;
+    opacity: 0.7;
+}
+
+.cw-trash-icon {
+    float: right;
+    margin-top: 5px;
+    margin-right: 5px;
+    color: white;
+
+    &:hover {
+        color: red;
+    }
+}

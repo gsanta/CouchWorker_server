@@ -20,7 +20,7 @@ export class ImageGallery extends React.Component<ImageGalleryProps, ImageGaller
                 isOpen={this.props.images.length > 0}
                 onClickNext={this.onClickNext.bind(this)}
                 onClickPrev={this.onClickPrev.bind(this)}
-                onClose={() => {}}
+                onClose={this.props.onClose}
                 currentImage={this.state.currentImage}
             />
         );
@@ -59,6 +59,7 @@ export class ImageGallery extends React.Component<ImageGalleryProps, ImageGaller
 
 export interface ImageGalleryProps {
     images: {src: string}[];
+    onClose(): void;
 }
 
 export interface ImageGalleryState {

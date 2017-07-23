@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as Dropzone from 'react-dropzone';
 import { Thumbnail, Button } from 'react-bootstrap';
 import { ImageSrc } from '../../../../shared/model/ImageSrc';
+import { ImageHover } from '../ImageHover';
 
 export function ImageUploader(props: ImageUploaderProps) {
     function onDrop(files: File[]) {
@@ -11,11 +12,12 @@ export function ImageUploader(props: ImageUploaderProps) {
 
     function renderImages() {
         return props.images.map(image => {
-            return (
-                <Thumbnail src={image.src}>
-                    <Button bsStyle="danger" onClick={() => props.onDeleteImage(image)}>Delete</Button>
-                </Thumbnail>
-            );
+            return (<ImageHover src={image.src} onDelete={null}/>);
+            // return (
+            //     <Thumbnail src={image.src}>
+            //         <Button bsStyle="danger" onClick={() => props.onDeleteImage(image)}>Delete</Button>
+            //     </Thumbnail>
+            // );
         });
     }
 
