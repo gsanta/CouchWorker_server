@@ -22,12 +22,16 @@ export class ImageHover extends React.Component<ImageHoverProps, ImageHoverState
                 onMouseOver={this.onMouseOver}
                 onMouseOut={this.onMouseOut}
             >
-                <img style={{width: '100%'}} src={this.props.src}/>
+                <img src={this.props.src}/>
                 <div style={{display : displayOverlay}} className="cw-overlay">
-                    Text
                 </div>
-                <div className="cw-overlay-content">
-                    <span className="glyphicon glyphicon-trash cw-trash-icon" aria-hidden="true"></span>
+                <div style={{display : displayOverlay}} className="cw-overlay-content">
+                    <div
+                        onClick={this.props.onDelete}
+                        className="cw-button cw-delete-button cw-right-button"
+                    >
+                        Delete
+                    </div>&nbsp;
                 </div>
             </div>
         );

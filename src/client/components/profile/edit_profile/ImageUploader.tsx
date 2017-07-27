@@ -12,21 +12,18 @@ export function ImageUploader(props: ImageUploaderProps) {
 
     function renderImages() {
         return props.images.map(image => {
-            return (<ImageHover src={image.src} onDelete={null}/>);
-            // return (
-            //     <Thumbnail src={image.src}>
-            //         <Button bsStyle="danger" onClick={() => props.onDeleteImage(image)}>Delete</Button>
-            //     </Thumbnail>
-            // );
+            return (<ImageHover src={image.src} onDelete={() => props.onDeleteImage(image)}/>);
         });
     }
 
     return (
-        <div>
+        <div className="cw-image-uploader">
             <Dropzone onDrop={onDrop} className="cw-drop-zone">
                 <p>Drop files here, or click to select files to upload.</p>
             </Dropzone>
-            {renderImages()}
+            <div className="cw-images">
+                {renderImages()}
+            </div>
         </div>
     );
 }

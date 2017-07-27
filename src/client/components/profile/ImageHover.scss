@@ -6,8 +6,30 @@
     left: 0;
     height: 30px;
     width: 100%;
-    background: $textColor;
-    opacity: 0.7;
+
+    &.cw-overlay-content {
+        padding: 3px; 
+    }
+
+    &.cw-overlay {
+        background: black;
+    }
+}
+
+.cw-image-hover {
+    width: calc(100% - 10px);
+    margin: 5px;
+
+    > img {
+        width: 100%;
+    }
+}
+
+.cw-image-uploader {
+    .cw-images {
+        height: 400px;
+        overflow: scroll;
+    }
 }
 
 .cw-trash-icon {
