@@ -31,8 +31,9 @@ export function splitUserName(userName: string) {
 
 export function toUserDocument(userModel: UserModel): UserDocument {
     const uniqueIndex = userModel.userName ? parseInt(userModel.userName.split('.')[2], 10) : undefined;
+    const {userName, rating, ...rest} = userModel;
     return {
-        ...userModel,
+        ...rest,
         uniqueIndex,
         languages: userModel.languages ? userModel.languages : [],
         addresses: userModel.addresses.map(address => toAddressDocument(address))

@@ -5,7 +5,7 @@
         "removeComments": true,
         "preserveConstEnums": true,
         "sourceMap": true,
-        "outDir": "server",
+        "outDir": "dist/server",
         "target": "es6"
     },
     "include": [

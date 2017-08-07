@@ -24,7 +24,6 @@ export function profileApi(router: Router, baseDir: string, userRepository: User
         user = {
             ...user,
             userName: `${user.firstName}.${user.lastName}.0`,
-            uniqueIndex: 0,
             registrationDate: new Date(),
             uuid: uuid()
         };

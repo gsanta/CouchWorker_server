@@ -45,7 +45,6 @@ export class AboutInfoEditor extends React.Component<AboutInfoEditorProps, About
                     <div className="cw-button cw-cancel-button cw-left-button" onClick={this.props.close}>Cancel</div>
                     <div
                         className="cw-button cw-save-button cw-right-button"
-                        disabled={this.state.errors}
                         onClick={() => this.props.onSubmit(this.state.user)}>
                         Save
                     </div>

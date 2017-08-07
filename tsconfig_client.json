@@ -5,7 +5,7 @@
         "removeComments": true,
         "preserveConstEnums": true,
         "sourceMap": true,
-        "outDir": "dist",
+        "outDir": "dist/client",
         "jsx": "react"
     },
     "include": [

@@ -6,8 +6,9 @@ const buildModule = require('./build/build');
 
 const config = {
     configDir: './build',
-    clientDistDir: './client',
-    serverDistDir: './server',
+    distDir: './dist',
+    clientDistDir: './dist/client',
+    serverDistDir: './dist/server',
     contentBase: './test/harness'
 }
 

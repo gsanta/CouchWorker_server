@@ -79,6 +79,6 @@ module.exports = function(gulp, config) {
     });
 
     gulp.task('clean:client', function() {
-          return del('client');
+          return del('dist/client');
     });
 };
