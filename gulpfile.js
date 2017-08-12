@@ -1,8 +1,8 @@
 const gulp = require('gulp');
-const testModule = require('./build/test');
-const buildClientModule = require('./build/build_client');
-const buildServerModule = require('./build/build_server');
-const buildModule = require('./build/build');
+const testModule = require('./build/test/test_tasks');
+const buildClientModule = require('./build/compile/build_client');
+const buildServerModule = require('./build/compile/build_server');
+const buildModule = require('./build/compile/build');
 
 const config = {
     configDir: './build',
