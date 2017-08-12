@@ -16,6 +16,8 @@ import * as asyncBusboy from 'async-busboy';
 // import {Promise} from 'es6-promise';
 import { profileApi } from './rest/profileApi';
 import { ImageRepository } from './domain/user/ImageRepository';
+import { config } from './config/Config';
+import * as url from 'url';
 const app = new Koa();
 const router = new Router();
 
@@ -63,9 +65,14 @@ passport.use(strategy);
 app.use(bodyParser());
 
 var MongoClient = require('mongodb').MongoClient;
-var url = 'mongodb://localhost:27017/myproject';
+const mongoUrl = url.format({
+    protocol: 'mongodb://',
+    hostname: 'localhost',
+    port: config.DATABASE_PORT.toString(),
+    pathname: '/couchworker'
+})
 
-const database = new Database("mongodb://localhost/couchworker");
+const database = new Database(mongoUrl);
 const repositoryFactory = new RepositoryFactory(database.getInstance(), database.getConnection());
 
 router.get('/listUsers', function (req: express.Request, res: express.Response) {
