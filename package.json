@@ -104,6 +104,8 @@
     "file-loader": "^0.10.1",
     "gulp": "^3.9.1",
     "gulp-jasmine": "^2.4.2",
+    "gulp-tslint": "^8.1.2",
+    "gulp-tslint-jenkins-reporter": "^1.1.0",
     "gulp-typescript": "^3.1.5",
     "gutil": "^1.6.4",
     "jasmine-spec-reporter": "^3.2.0",

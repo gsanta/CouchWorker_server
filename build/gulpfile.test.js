@@ -2,14 +2,14 @@ const jasmine = require('gulp-jasmine');
 const JasmineSpecReporter = require('jasmine-spec-reporter').SpecReporter;
 const es = require('event-stream');
 const gutil = require('gutil');
-const initFiles = require('./files_init');
+const filesTestSetup = require('./setup/files.test.setup');
 
 module.exports = function(gulp, config) {
     gulp.task('unit-test', ['ts-build'], function () {
         return es.concat(
                 gulp.src(config.clientDistDir + '/**/*Spec.js'),
                 gulp.src(config.serverDistDir + '/**/*Spec.js'),
-                gulp.src(config.configDir + '/**/jsdomSetup.js')
+                gulp.src(config.configDir + '/setup/jsdom.setup.js')
             )
             .pipe(jasmine({
                 reporter: new JasmineSpecReporter({
@@ -19,7 +19,7 @@ module.exports = function(gulp, config) {
                             '/**/*Spec.js'
                         ],
                         helpers: [
-                            '/**/jsdomSetup.js'
+                            '/setup/jsdom.setup.js'
                         ]
                     }
                 })

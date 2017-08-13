@@ -10,8 +10,6 @@ var fs = require('fs');
 const del = require('del');
  
 module.exports = function(gulp, config) {
-    gutil.log('Configuring build tasks.');
-
     gulp.task('build-client', ['copy-html', 'build-webpack'], function() {});
     gulp.task('watch-client', ['watch-webpack'], function() {});
 

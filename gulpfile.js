@@ -1,18 +1,32 @@
 const gulp = require('gulp');
-const testModule = require('./build/test/test_tasks');
-const buildClientModule = require('./build/compile/build_client');
-const buildServerModule = require('./build/compile/build_server');
-const buildModule = require('./build/compile/build');
+const minimist = require('minimist');
+const gulpfileTest = require('./build/gulpfile.test');
+const gulpFileBuildClient = require('./build/gulpfile.build.clientrr');
+const gulpFileBuildServer = require('./build/gulpfile.build.server');
+const gulpfileBuild = require('./build/gulpfile.build');
+const gulpfileHygiene = require('./build/gulpfile.hygiene.js')
+
+var optionsDescriptor = {
+    boolean: ['ci'],
+    default: {
+        ci: false
+    }
+};
+
+var cmdLineArguments = minimist(process.argv.slice(2), optionsDescriptor);
 
 const config = {
     configDir: './build',
     distDir: './dist',
     clientDistDir: './dist/client',
     serverDistDir: './dist/server',
-    contentBase: './test/harness'
+    contentBase: './test/harness',
+    reportDir: './dist/reports',
+    cmdLineArguments: cmdLineArguments
 }
 
-testModule(gulp, config);
-buildClientModule(gulp, config);
-buildServerModule(gulp, config);
-buildModule(gulp, config);
+gulpfileTest(gulp, config);
+gulpFileBuildClient(gulp, config);
+gulpFileBuildServer(gulp, config);
+gulpfileBuild(gulp, config);
+gulpfileHygiene(gulp, config);
